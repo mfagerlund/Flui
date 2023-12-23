@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Bootstrap/BootstrapUss.uss?fileID=7433441132597879392&amp;guid=534b208ba7f75194ebac2458c626ada3&amp;type=3#BootstrapUss" />
+    <Style src="project://database/Assets/MainMenu/MainMenuUss.uss?fileID=7433441132597879392&amp;guid=7918688154ada1843a1f112b7a379fa9&amp;type=3#MainMenuUss" />
+    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center;">
+        <ui:Label tabindex="-1" text="Select Demo" display-tooltip-when-elided="true" class="h3 menu-item" />
+        <ui:Button text="Game Settings Menu Demo" display-tooltip-when-elided="true" name="GameSettingsMenu" class="btn-primary menu-item" />
+        <ui:Button text="Bootstrap Demo" display-tooltip-when-elided="true" name="BootstrapDemo" class="btn-primary menu-item" />
+        <ui:Label tabindex="-1" text="Time: 15:22:11" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Time" class="menu-item" style="-unity-text-align: upper-right;" />
+    </ui:VisualElement>
+</ui:UXML>

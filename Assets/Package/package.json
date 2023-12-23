@@ -1,0 +1,15 @@
+{
+  "name": "com.grobian.flui",
+  "version": "1.0.0",
+  "displayName": "Flui",
+  "description": "Fluid creation of Toolkit UIs, with hassle free support for two way binding.",
+  "unity": "2022.2",
+  "dependencies": {   	
+  },
+ "keywords": ["Flui", "Toolkit UI", "Binding"],
+  "author": {
+    "name": "Mattias Fagerlund",
+    "email": "mattias.fagerlund@carretera.se",
+    "url": "http://www.grobian.net/"
+  }
+}

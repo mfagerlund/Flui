@@ -1,0 +1,76 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Package/Resources/Required.uss?fileID=7433441132597879392&amp;guid=554768fa32915df43849a5ff8f29cd04&amp;type=3#Required" />
+    <Style src="project://database/Assets/Bootstrap/BootstrapUss.uss?fileID=7433441132597879392&amp;guid=534b208ba7f75194ebac2458c626ada3&amp;type=3#BootstrapUss" />
+    <Style src="project://database/Assets/GameSettings/GameSettingsUSS.uss?fileID=7433441132597879392&amp;guid=4789625da66fc9b4ca9d8ebc16b5930f&amp;type=3#GameSettingsUSS" />
+    <ui:VisualElement name="container" class="container">
+        <ui:VisualElement name="header" class="header">
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row; margin-right: 25px;">
+                <ui:Label tabindex="-1" text="Options" display-tooltip-when-elided="true" name="options" class="main-title" style="flex-grow: 1;" />
+                <ui:Label tabindex="-1" text="CompactSettings" display-tooltip-when-elided="true" name="compact-settings" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="panels" class="panels">
+            <ui:VisualElement name="left-panel" class="left-panel w50">
+                <ui:Button text="Control Settings" display-tooltip-when-elided="true" name="ControlSettings" class="btn-gold active" />
+                <ui:Button text="Screen Settings" display-tooltip-when-elided="true" name="ScreenSettings" class="btn-gold" />
+                <ui:Button text="Volume Settings" display-tooltip-when-elided="true" name="VolumeSettings" class="btn-gold" />
+                <ui:Button text="Graphic Settings" display-tooltip-when-elided="true" name="GraphicSettings" class="btn-gold" />
+                <ui:Button text="Keyboard Settings" display-tooltip-when-elided="true" name="KeyboardSettings" class="disabled btn-gold" />
+            </ui:VisualElement>
+            <ui:VisualElement name="right-panel" class="w50 right-panel" style="margin-top: 16px;">
+                <ui:VisualElement name="ControlSettingsPanel" class="hidden">
+                    <ui:VisualElement name="Inner">
+                        <ui:VisualElement name="SimpleControls" class="right-panel-control-holder">
+                            <ui:Toggle label="Simple Controls" name="SimpleControls" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="vibration" class="right-panel-control-holder">
+                            <ui:Toggle label="Vibration" name="Vibration" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="buttonConfiguration" class="right-panel-control-holder">
+                            <ui:Toggle label="ButtonConfiguration" name="ButtonConfiguration" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="spacer" class="panel-right-spacer" />
+                        <ui:VisualElement name="cameraDistance" class="right-panel-control-holder">
+                            <ui:Slider label="Slider" value="42" high-value="100" name="CameraDistance" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="screenVibration" class="right-panel-control-holder">
+                            <ui:Toggle label="Screen Vibration" name="ScreenVibration" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="slowSpecialAttack" class="right-panel-control-holder">
+                            <ui:Toggle label="Show Special Attack" name="ShowSpecialAttack" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="spacer" class="panel-right-spacer" />
+                        <ui:VisualElement name="UserName" class="right-panel-control-holder">
+                            <ui:TextField picking-mode="Ignore" label="User Name" name="UserName" value="This is my value" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="ScreenSettingsPanel">
+                    <ui:VisualElement name="Inner">
+                        <ui:VisualElement name="Width" class="right-panel-control-holder">
+                            <ui:IntegerField label="Width" value="1024" name="Width" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="Height" class="right-panel-control-holder">
+                            <ui:IntegerField label="Height" value="360" name="Height" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="PixelDensity" class="right-panel-control-holder ">
+                            <ui:FloatField label="Float Field" value="42,2" name="PixelDensity" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="spacer" class="panel-right-spacer" />
+                        <ui:VisualElement name="ColorMode" class="right-panel-control-holder ">
+                            <ui:DropdownField label="Color Mode" choices="Red,Greg,Blue" name="ColorMode" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="CycleMode" class="right-panel-control-holder ">
+                            <ui:EnumField label="Cycle Mode" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" name="CycleMode" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="footer" class="row footer">
+            <ui:Button text="OK" display-tooltip-when-elided="true" name="Ok" class="btn-primary" />
+            <ui:Button text="Return" display-tooltip-when-elided="true" name="Return" class="btn-primary" />
+            <ui:Button text="Conquer World" display-tooltip-when-elided="true" name="conquer-world" class="btn-primary disabled" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

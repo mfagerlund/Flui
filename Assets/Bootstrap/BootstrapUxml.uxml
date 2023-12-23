@@ -1,0 +1,149 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Bootstrap/BootstrapUss.uss?fileID=7433441132597879392&amp;guid=534b208ba7f75194ebac2458c626ada3&amp;type=3#BootstrapUss" />
+    <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1">
+        <ui:VisualElement class="row">
+            <ui:Button text="Primary" display-tooltip-when-elided="true" name="Button" class="btn-primary" />
+            <ui:Button text="Secondary" display-tooltip-when-elided="true" name="Button" class="btn-secondary" />
+            <ui:Button text="Success" display-tooltip-when-elided="true" name="Button" class="btn-success" />
+            <ui:Button text="Info" display-tooltip-when-elided="true" name="Button" class="btn-info" />
+            <ui:Button text="Warning" display-tooltip-when-elided="true" name="Button" class="btn-warning" />
+            <ui:Button text="Danger" display-tooltip-when-elided="true" name="Button" class="btn-danger" />
+        </ui:VisualElement>
+        <ui:VisualElement class="row">
+            <ui:Button text="Primary" display-tooltip-when-elided="true" name="Button" class="btn-primary disabled" />
+            <ui:Button text="Secondary" display-tooltip-when-elided="true" name="Button" class="btn-secondary disabled" />
+            <ui:Button text="Success" display-tooltip-when-elided="true" name="Button" class="btn-success disabled" />
+            <ui:Button text="Info" display-tooltip-when-elided="true" name="Button" class="btn-info disabled" />
+            <ui:Button text="Warning" display-tooltip-when-elided="true" name="Button" class="btn-warning disabled" />
+            <ui:Button text="Danger" display-tooltip-when-elided="true" name="Button" class="btn-danger disabled" />
+        </ui:VisualElement>
+        <ui:VisualElement class="row">
+            <ui:Label tabindex="-1" text="Typography" display-tooltip-when-elided="true" class="h2" />
+        </ui:VisualElement>
+        <ui:VisualElement class="row">
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="Heading 1" display-tooltip-when-elided="true" class="h1" />
+                <ui:Label tabindex="-1" text="Heading 2" display-tooltip-when-elided="true" class="h2" />
+                <ui:Label tabindex="-1" text="Heading 3" display-tooltip-when-elided="true" class="h3" />
+                <ui:Label tabindex="-1" text="Heading 4" display-tooltip-when-elided="true" class="h4" />
+                <ui:Label tabindex="-1" text="Heading 5" display-tooltip-when-elided="true" class="h5" />
+                <ui:Label tabindex="-1" text="Heading 6" display-tooltip-when-elided="true" class="h6" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="Emphasis Classes" display-tooltip-when-elided="true" class="h2" />
+                <ui:Label tabindex="-1" text="Primary: Fusce dapibus, tellus ac cursus commodo, tortor mauris nibh." display-tooltip-when-elided="true" class="text-primary" />
+                <ui:Label tabindex="-1" text="Secondary: Nullam id dolor id nibh ultricies vehicula ut id elit." display-tooltip-when-elided="true" class="text-secondary" />
+                <ui:Label tabindex="-1" text="Success: Pellentesque ornare sem lacinia quam venenatis vestibulum." display-tooltip-when-elided="true" class="text-success" />
+                <ui:Label tabindex="-1" text="Info: Etiam porta sem malesuada magna mollis euismod." display-tooltip-when-elided="true" class="text-info" />
+                <ui:Label tabindex="-1" text="Warning: Donec ullamcorper nulla non metus auctor fringilla." display-tooltip-when-elided="true" class="text-warning" />
+                <ui:Label tabindex="-1" text="Danger: Duis mollis, est non commodo luctus, nisi erat porttitor ligula." display-tooltip-when-elided="true" class="text-danger" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement class="row">
+            <ui:Label tabindex="-1" text="Tables" display-tooltip-when-elided="true" class="h2" />
+        </ui:VisualElement>
+        <ui:VisualElement class="table">
+            <ui:VisualElement class="row">
+                <ui:VisualElement class="th" style="width: 30%;">
+                    <ui:Label tabindex="-1" text="Type" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="th" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column heading" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="th" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column heading" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="th" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column heading" style="flex-grow: 1;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="row">
+                <ui:VisualElement class="th" style="width: 30%;">
+                    <ui:Label tabindex="-1" text="Default" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="row">
+                <ui:VisualElement class="th primary" style="width: 30%;">
+                    <ui:Label tabindex="-1" text="Primary" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td primary" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td primary" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td primary" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="row">
+                <ui:VisualElement class="th secondary" style="width: 30%;">
+                    <ui:Label tabindex="-1" text="Secondary" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td secondary" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td secondary" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td secondary" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="row">
+                <ui:VisualElement class="th success" style="width: 30%;">
+                    <ui:Label tabindex="-1" text="Success" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td success" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td success" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td success" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="row">
+                <ui:VisualElement class="th warning" style="width: 30%;">
+                    <ui:Label tabindex="-1" text="Success" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td warning" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td warning" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td warning" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="row">
+                <ui:VisualElement class="th danger" style="width: 30%;">
+                    <ui:Label tabindex="-1" text="Danger" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td danger" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td danger" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="td danger" style="width: 20%;">
+                    <ui:Label tabindex="-1" text="Column content" style="flex-grow: 1;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement class="row" style="flex-grow: 1; align-self: flex-start; flex-direction: column; align-items: flex-start;">
+            <ui:Button text="Close" display-tooltip-when-elided="true" name="Close" class="btn-warning" />
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>

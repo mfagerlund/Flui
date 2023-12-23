@@ -1,0 +1,9 @@
+/* These classes are required for the proper functioning of Flui */
+
+.hidden {
+    display: none;
+}
+
+.invisible {
+    visibility: hidden;
+}

@@ -1,0 +1,4 @@
+.menu-item {
+    width: 217px;
+    margin-bottom: 15px;
+}
