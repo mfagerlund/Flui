@@ -11,6 +11,7 @@ namespace FluiDemo.GameSettings
     public class GameSettings : MonoBehaviour
     {
         private UIDocument _document;
+        [SerializeField] public string _hierarchy;
         [SerializeField] private bool _pause;
         [SerializeField] private bool _rebuild;
 
@@ -18,20 +19,21 @@ namespace FluiDemo.GameSettings
         public Settings Settings { get; set; } = new Settings();
         public Panel ActivePanel { get; set; } = Panel.ScreenSettings;
 
+
         private Action _onHide;
-        
+
         public void Show(Action onHide)
         {
             _onHide = onHide;
             gameObject.SetActive(true);
         }
-        
+
         private void Hide()
         {
             gameObject.SetActive(false);
             _onHide();
         }
-        
+
         private void OnValidate()
         {
             if (Application.isPlaying || !gameObject.activeSelf) return;
@@ -70,7 +72,7 @@ namespace FluiDemo.GameSettings
             {
                 _document = GetComponent<UIDocument>();
             }
-                
+
             if (_document == null)
             {
                 throw new InvalidOperationException("_document not assigned");
@@ -114,9 +116,17 @@ namespace FluiDemo.GameSettings
                         .EnumDropdown("CycleMode", t => t.CycleMode)
                     )
                 )
+                .Group("VolumeSettingsPanel", ctx => ctx, cs => cs
+                    .SetHidden(ctx => ctx.ActivePanel != Panel.VolumeSettings))
+                .Group("GraphicSettingsPanel", ctx => ctx, cs => cs
+                    .SetHidden(ctx => ctx.ActivePanel != Panel.GraphicSettings))
+                .Group("KeyboardSettingsPanel", ctx => ctx, cs => cs
+                    .SetHidden(ctx => ctx.ActivePanel != Panel.KeyboardSettings))
                 .Button("Ok", ctx => Hide())
                 .Button("Return", ctx => Hide())
             );
+
+            _hierarchy = _root.HierarchyAsString();
         }
     }
 

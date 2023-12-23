@@ -33,5 +33,10 @@ namespace Flui.Binder
             buildAction(Root);
             Root.RemoveUnvisited();
         }
+
+        public string HierarchyAsString()
+        {
+            return Root.HierarchyAsString();
+        }
     }
 }

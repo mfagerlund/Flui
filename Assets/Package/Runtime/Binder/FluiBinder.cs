@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,8 +14,11 @@ namespace Flui.Binder
     {
         private readonly Dictionary<VisualElement, IFluiBinder> _childBinders = new();
         private Action<FluiBinder<TContext, TVisualElement>> _updateAction;
+        private Action<FluiBinder<TContext, TVisualElement>> _bindAction;
         private bool _visited;
         private IValueBinding _valueBinding;
+        private Func<TContext, bool> _hiddenFunc;
+        private Func<TContext, bool> _invisibleFunc;
 
         public FluiBinder(string query, TContext context, TVisualElement element)
         {
@@ -32,8 +36,10 @@ namespace Flui.Binder
         public bool Visited => _visited;
         public TVisualElement Element { get; }
         VisualElement IFluiBinder.VisualElement => Element;
+        IEnumerable<IFluiBinder> IFluiBinder.GetChildren() => _childBinders.Values;
         public string Query { get; }
         public TContext Context { get; }
+        public bool Visible => !Hidden && !Invisible;
         public bool Hidden { get; set; } = false;
         public bool Invisible { get; set; } = false;
         public bool IsFocused => Element.focusController?.focusedElement == Element;
@@ -52,12 +58,12 @@ namespace Flui.Binder
                     $"The query '{query}' doesn't return a {typeof(TChildVisualElement)} on '{Element.name}'");
             }
 
-            UpdateVisibility<TChildContext, TChildVisualElement>(visualElement);
             var rawChild = _childBinders.GetOrCreate(visualElement, () =>
             {
                 var binder = new FluiBinder<TChildContext, TChildVisualElement>(query, contextFunc(Context), visualElement)
                 {
-                    _updateAction = updateAction
+                    _updateAction = updateAction,
+                    _bindAction = bindAction
                 };
                 initiateAction?.Invoke(binder);
                 return binder;
@@ -70,39 +76,50 @@ namespace Flui.Binder
             }
 
             var child = (FluiBinder<TChildContext, TChildVisualElement>)rawChild;
-            child._visited = true;
-            if (!Invisible && !Hidden)
-            {
-                child._updateAction?.Invoke(child);
-                child._valueBinding?.Update();
-                if (bindAction != null)
-                {
-                    bindAction(child);
-                }
-            }
-
-            // SetClasses(classes, child.Element);
+            child.Update();
             return child;
         }
 
-        private void UpdateVisibility<TChildContext, TChildVisualElement>(TChildVisualElement visualElement) where TChildVisualElement : VisualElement, new()
+        private void Update()
         {
+            _visited = true;
+            UpdateVisibility();
+            if (!Invisible && !Hidden)
+            {
+                _updateAction?.Invoke(this);
+                _bindAction?.Invoke(this);
+                _valueBinding?.Update();
+            }
+        }
+
+        private void UpdateVisibility()
+        {
+            if (_hiddenFunc != null)
+            {
+                Hidden = _hiddenFunc(Context);
+            }
+
+            if (_invisibleFunc != null)
+            {
+                Invisible = _invisibleFunc(Context);
+            }
+
             if (Hidden)
             {
-                visualElement.AddToClassList("hidden");
+                Element.AddToClassList("hidden");
             }
             else
             {
-                visualElement.RemoveFromClassList("hidden");
+                Element.RemoveFromClassList("hidden");
             }
 
             if (Invisible)
             {
-                visualElement.AddToClassList("invisible");
+                Element.AddToClassList("invisible");
             }
             else
             {
-                visualElement.RemoveFromClassList("invisible");
+                Element.RemoveFromClassList("invisible");
             }
         }
 
@@ -122,13 +139,13 @@ namespace Flui.Binder
 
         public FluiBinder<TContext, TVisualElement> SetHidden(Func<TContext, bool> hiddenFunc)
         {
-            Hidden = hiddenFunc(Context);
+            _hiddenFunc = hiddenFunc;
             return this;
         }
 
         public FluiBinder<TContext, TVisualElement> SetInvisible(Func<TContext, bool> invisibleFunc)
         {
-            Invisible = invisibleFunc(Context);
+            _invisibleFunc = invisibleFunc;
             return this;
         }
 
@@ -575,6 +592,28 @@ namespace Flui.Binder
                     child.RemoveUnvisited();
                 }
             }
+        }
+
+        public string HierarchyAsString()
+        {
+            var sb = new StringBuilder();
+            Recurse(this, 0);
+
+            void Recurse(IFluiBinder fluiBinder, int indent)
+            {
+                // hi={fluiBinder.Hidden}, iv={fluiBinder.Invisible}
+                var state = fluiBinder.Hidden ? "Hidden" : (fluiBinder.Invisible ? "Invisible" : "Visible");
+                sb.AppendLine($"{new string(' ', indent * 2)}q={fluiBinder.Query}, st={state}");
+                if (fluiBinder.Visible)
+                {
+                    foreach (var binder in fluiBinder.GetChildren())
+                    {
+                        Recurse(binder, indent + 1);
+                    }
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }
