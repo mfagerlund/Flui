@@ -86,7 +86,7 @@ namespace FluiDemo.GameSettings
 
             _root.BindGui(this, _document.rootVisualElement, x => x
                 .Label("compact-settings", ctx => ctx.Settings.CompactString)
-                .EnumButtons<Panel>(
+                .EnumButtons(
                     "left-panel",
                     ctx => ctx.ActivePanel,
                     b => b
@@ -95,33 +95,31 @@ namespace FluiDemo.GameSettings
                         .EnumButton(Panel.VolumeSettings)
                         .EnumButton(Panel.GraphicSettings)
                         .EnumButton(Panel.KeyboardSettings))
-                .Group("ControlSettingsPanel", ctx => ctx, cs => cs
-                    .SetHidden(ctx => ctx.ActivePanel != Panel.ControlSettings)
-                    .Group("Inner", ctx => ctx.Settings.ControlSettings, inner => inner
-                        .Toggle("SimpleControls", t => t.SimpleControls)
-                        .Toggle("Vibration", t => t.Vibration)
-                        .Toggle("ButtonConfiguration", t => t.ButtonConfiguration)
-                        .Slider("CameraDistance", t => t.CameraDistance, lowValue: 1, highValue: 20)
-                        .Toggle("ScreenVibration", t => t.ScreenVibration)
-                        .Toggle("ShowSpecialAttack", t => t.ShowSpecialAttack)
-                        .TextField("UserName", t => t.UserName))
+            
+                .EnumSwitch(
+                    "right-panel",
+                    ctx => ctx.ActivePanel, p => p
+                        .Case(
+                            "ControlSettingsPanel", Panel.ControlSettings, ctx => ctx.Settings.ControlSettings, c => c
+                                .Toggle("SimpleControls", t => t.SimpleControls)
+                                .Toggle("Vibration", t => t.Vibration)
+                                .Toggle("ButtonConfiguration", t => t.ButtonConfiguration)
+                                .Slider("CameraDistance", t => t.CameraDistance, lowValue: 1, highValue: 20)
+                                .Toggle("ScreenVibration", t => t.ScreenVibration)
+                                .Toggle("ShowSpecialAttack", t => t.ShowSpecialAttack)
+                                .TextField("UserName", t => t.UserName)
+                        )
+                        .Case("ScreenSettingsPanel", Panel.ScreenSettings, ctx => ctx.Settings.ScreenSettings, c => c
+                            .IntegerField("Width", t => t.Width)
+                            .IntegerField("Height", t => t.Height)
+                            .FloatField("PixelDensity", t => t.PixelDensity)
+                            .DropdownField("ColorMode", t => t.ColorModeId)
+                            .EnumField("CycleMode", t => t.CycleMode)
+                        )
+                        .Case("VolumeSettingsPanel", Panel.VolumeSettings, ctx=>ctx)
+                        .Case("GraphicSettingsPanel", Panel.GraphicSettings, ctx=>ctx)
+                        .Case("KeyboardSettingsPanel", Panel.KeyboardSettings, ctx=>ctx)
                 )
-                .Group("ScreenSettingsPanel", ctx => ctx, cs => cs
-                    .SetHidden(ctx => ctx.ActivePanel != Panel.ScreenSettings)
-                    .Group("Inner", ctx => ctx.Settings.ScreenSettings, inner => inner
-                        .IntegerField("Width", t => t.Width)
-                        .IntegerField("Height", t => t.Height)
-                        .FloatField("PixelDensity", t => t.PixelDensity)
-                        .Dropdown("ColorMode", t => t.ColorModeId)
-                        .EnumDropdown("CycleMode", t => t.CycleMode)
-                    )
-                )
-                .Group("VolumeSettingsPanel", ctx => ctx, cs => cs
-                    .SetHidden(ctx => ctx.ActivePanel != Panel.VolumeSettings))
-                .Group("GraphicSettingsPanel", ctx => ctx, cs => cs
-                    .SetHidden(ctx => ctx.ActivePanel != Panel.GraphicSettings))
-                .Group("KeyboardSettingsPanel", ctx => ctx, cs => cs
-                    .SetHidden(ctx => ctx.ActivePanel != Panel.KeyboardSettings))
                 .Button("Ok", ctx => Hide())
                 .Button("Return", ctx => Hide())
             );

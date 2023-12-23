@@ -10,7 +10,7 @@ namespace FluiDemo.Bootstrap
         private UIDocument _document;
         private FluiBinderRoot<BootstrapDemo, VisualElement> _root;
         private Action _onHide;
-        
+
         public void Show(Action onHide)
         {
             _onHide = onHide;
@@ -34,6 +34,7 @@ namespace FluiDemo.Bootstrap
                 this,
                 _document.rootVisualElement,
                 x => x
+                    .Button("TopClose", ctx => Hide())
                     .Button("Close", ctx => Hide())
             );
         }

@@ -2,9 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,141 +10,57 @@ namespace Flui.Binder
 {
     public partial class FluiBinder<TContext, TVisualElement> : IFluiBinder where TVisualElement : VisualElement
     {
-        private readonly Dictionary<VisualElement, IFluiBinder> _childBinders = new();
-        private Action<FluiBinder<TContext, TVisualElement>> _updateAction;
-        private Action<FluiBinder<TContext, TVisualElement>> _bindAction;
-        private bool _visited;
-        private IValueBinding _valueBinding;
-        private Func<TContext, bool> _hiddenFunc;
-        private Func<TContext, bool> _invisibleFunc;
-
-        public FluiBinder(string query, TContext context, TVisualElement element)
-        {
-            FluiBinderStats.FluiBinderCreated++;
-            Query = query;
-            Context = context;
-            Element = element;
-        }
-
-        ~FluiBinder()
-        {
-            FluiBinderStats.FluidBinderDestroyed++;
-        }
-
-        public bool Visited => _visited;
-        public TVisualElement Element { get; }
-        VisualElement IFluiBinder.VisualElement => Element;
-        IEnumerable<IFluiBinder> IFluiBinder.GetChildren() => _childBinders.Values;
-        public string Query { get; }
-        public TContext Context { get; }
-        public bool Visible => !Hidden && !Invisible;
-        public bool Hidden { get; set; } = false;
-        public bool Invisible { get; set; } = false;
-        public bool IsFocused => Element.focusController?.focusedElement == Element;
-
-        private FluiBinder<TChildContext, TChildVisualElement> RawBind<TChildContext, TChildVisualElement>(
+        public FluiBinder<TContext, TVisualElement> EnumSwitch<TEnum>(
             string query,
-            Func<TContext, TChildContext> contextFunc,
-            Action<FluiBinder<TChildContext, TChildVisualElement>> bindAction = null,
-            Action<FluiBinder<TChildContext, TChildVisualElement>> initiateAction = null,
-            Action<FluiBinder<TChildContext, TChildVisualElement>> updateAction = null) where TChildVisualElement : VisualElement, new()
+            Func<TContext, TEnum> enumGetter,
+            Action<Switcher<TEnum>> bindAction)
         {
-            var visualElement = Element.Q<TChildVisualElement>(query);
-            if (visualElement == null)
-            {
-                throw new InvalidOperationException(
-                    $"The query '{query}' doesn't return a {typeof(TChildVisualElement)} on '{Element.name}'");
-            }
-
-            var rawChild = _childBinders.GetOrCreate(visualElement, () =>
-            {
-                var binder = new FluiBinder<TChildContext, TChildVisualElement>(query, contextFunc(Context), visualElement)
-                {
-                    _updateAction = updateAction,
-                    _bindAction = bindAction
-                };
-                initiateAction?.Invoke(binder);
-                return binder;
-            });
-
-            if (rawChild.Visited)
-            {
-                throw new InvalidOperationException(
-                    $"The query '{query}) on '{Element.name}' has already been visited - only use one binding per visual element");
-            }
-
-            var child = (FluiBinder<TChildContext, TChildVisualElement>)rawChild;
-            child.Update();
-            return child;
-        }
-
-        private void Update()
-        {
-            _visited = true;
-            UpdateVisibility();
-            if (!Invisible && !Hidden)
-            {
-                _updateAction?.Invoke(this);
-                _bindAction?.Invoke(this);
-                _valueBinding?.Update();
-            }
-        }
-
-        private void UpdateVisibility()
-        {
-            if (_hiddenFunc != null)
-            {
-                Hidden = _hiddenFunc(Context);
-            }
-
-            if (_invisibleFunc != null)
-            {
-                Invisible = _invisibleFunc(Context);
-            }
-
-            if (Hidden)
-            {
-                Element.AddToClassList("hidden");
-            }
-            else
-            {
-                Element.RemoveFromClassList("hidden");
-            }
-
-            if (Invisible)
-            {
-                Element.AddToClassList("invisible");
-            }
-            else
-            {
-                Element.RemoveFromClassList("invisible");
-            }
-        }
-
-        public FluiBinder<TContext, TVisualElement> OptionalClass(string className, Func<TContext, bool> includeFunc)
-        {
-            if (includeFunc(Context))
-            {
-                Element.AddToClassList(className);
-            }
-            else
-            {
-                Element.RemoveFromClassList(className);
-            }
-
+            var switcher = new Switcher<TEnum>(this, enumGetter(Context));
+            bindAction(switcher);
             return this;
         }
 
-        public FluiBinder<TContext, TVisualElement> SetHidden(Func<TContext, bool> hiddenFunc)
+        public class Switcher<TEnum>
         {
-            _hiddenFunc = hiddenFunc;
-            return this;
-        }
+            private readonly FluiBinder<TContext, TVisualElement> _fluiBinder;
+            private readonly TEnum _currentValue;
 
-        public FluiBinder<TContext, TVisualElement> SetInvisible(Func<TContext, bool> invisibleFunc)
-        {
-            _invisibleFunc = invisibleFunc;
-            return this;
+            public Switcher(FluiBinder<TContext, TVisualElement> fluiBinder, TEnum currentValue)
+            {
+                _fluiBinder = fluiBinder;
+                _currentValue = currentValue;
+            }
+
+            public Switcher<TEnum> Case<TChildContext>(TEnum value,
+                Func<TContext, TChildContext> contextFunc,
+                Action<FluiBinder<TChildContext, VisualElement>> bindAction = null,
+                Action<FluiBinder<TChildContext, VisualElement>> initiateAction = null,
+                Action<FluiBinder<TChildContext, VisualElement>> updateAction = null)
+            {
+                return Case(value.ToString(), value, contextFunc, bindAction, initiateAction, updateAction);
+            }
+
+            public Switcher<TEnum> Case<TChildContext>(
+                string query,
+                TEnum value,
+                Func<TContext, TChildContext> contextFunc,
+                Action<FluiBinder<TChildContext, VisualElement>> bindAction = null,
+                Action<FluiBinder<TChildContext, VisualElement>> initiateAction = null,
+                Action<FluiBinder<TChildContext, VisualElement>> updateAction = null)
+            {
+                var @case =
+                    _fluiBinder
+                        .RawBind<TChildContext, VisualElement>(
+                            query,
+                            contextFunc,
+                            bindAction,
+                            initiateAction,
+                            updateAction);
+
+                @case.SetHiddenFunc(ctx => !Equals(_currentValue, value));
+
+                return this;
+            }
         }
 
         public FluiBinder<TContext, TVisualElement> Group<TChildContext>(
@@ -451,7 +365,7 @@ namespace Flui.Binder
             return TextField(query, getFunc, setFunc, updateOnExit, bindAction, initiateAction, updateAction);
         }
 
-        public FluiBinder<TContext, TVisualElement> EnumDropdown<TEnum>(
+        public FluiBinder<TContext, TVisualElement> EnumField<TEnum>(
             string query,
             Func<TContext, TEnum> getValue,
             Action<TContext, TEnum> setValue,
@@ -477,7 +391,7 @@ namespace Flui.Binder
             return this;
         }
 
-        public FluiBinder<TContext, TVisualElement> EnumDropdown<TEnum>(
+        public FluiBinder<TContext, TVisualElement> EnumField<TEnum>(
             string query,
             Expression<Func<TContext, TEnum>> propertyFunc,
             Action<FluiBinder<TContext, EnumField>> bindAction = null,
@@ -486,10 +400,10 @@ namespace Flui.Binder
         {
             var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-            return EnumDropdown(query, getFunc, setFunc, bindAction, initiateAction, updateAction);
+            return EnumField(query, getFunc, setFunc, bindAction, initiateAction, updateAction);
         }
 
-        public FluiBinder<TContext, TVisualElement> Dropdown(
+        public FluiBinder<TContext, TVisualElement> DropdownField(
             string query,
             Func<TContext, int> getValue,
             Action<TContext, int> setValue,
@@ -515,7 +429,7 @@ namespace Flui.Binder
             return this;
         }
 
-        public FluiBinder<TContext, TVisualElement> Dropdown(
+        public FluiBinder<TContext, TVisualElement> DropdownField(
             string query,
             Expression<Func<TContext, int>> propertyFunc,
             Action<FluiBinder<TContext, DropdownField>> bindAction = null,
@@ -524,7 +438,7 @@ namespace Flui.Binder
         {
             var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-            return Dropdown(query, getFunc, setFunc, bindAction, initiateAction, updateAction);
+            return DropdownField(query, getFunc, setFunc, bindAction, initiateAction, updateAction);
         }
 
         public FluiBinder<TContext, TVisualElement> Slider(
@@ -570,50 +484,6 @@ namespace Flui.Binder
             var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
             return Slider(query, getFunc, setFunc, lowValue, highValue, bindAction, initiateAction, updateAction);
-        }
-
-        public void PrepareVisit()
-        {
-            _visited = false;
-            _childBinders.Values.ForEach(x => x.PrepareVisit());
-        }
-
-        public void RemoveUnvisited()
-        {
-            foreach (var child in _childBinders.Values.ToList())
-            {
-                if (!child.Visited)
-                {
-                    FluiBinderStats.FluiBinderRemoved++;
-                    _childBinders.Remove(child.VisualElement);
-                }
-                else
-                {
-                    child.RemoveUnvisited();
-                }
-            }
-        }
-
-        public string HierarchyAsString()
-        {
-            var sb = new StringBuilder();
-            Recurse(this, 0);
-
-            void Recurse(IFluiBinder fluiBinder, int indent)
-            {
-                // hi={fluiBinder.Hidden}, iv={fluiBinder.Invisible}
-                var state = fluiBinder.Hidden ? "Hidden" : (fluiBinder.Invisible ? "Invisible" : "Visible");
-                sb.AppendLine($"{new string(' ', indent * 2)}q={fluiBinder.Query}, st={state}");
-                if (fluiBinder.Visible)
-                {
-                    foreach (var binder in fluiBinder.GetChildren())
-                    {
-                        Recurse(binder, indent + 1);
-                    }
-                }
-            }
-
-            return sb.ToString();
         }
     }
 }
