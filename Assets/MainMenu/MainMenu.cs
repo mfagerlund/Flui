@@ -11,49 +11,55 @@ namespace FluiDemo.MainMenu
     public class MainMenu : MonoBehaviour
     {
         private UIDocument _document;
+        private VisualElement _rootVisualElement;
         [SerializeField] private GameSettings.GameSettings _gameSettings;
         [SerializeField] private BootstrapDemo _bootstrapDemo;
         [SerializeField] private ListUi.ListUi _listUi;
 
         private readonly FluiBinderRoot<MainMenu, VisualElement> _root = new();
 
+        private void OnEnable()
+        {
+            _document ??= GetComponent<UIDocument>();
+            _rootVisualElement = _document.rootVisualElement;
+            CommonHelper.FadeIn(this, _rootVisualElement);
+        }
+
         private void Update()
         {
-            if (_document == null)
-            {
-                _document = GetComponent<UIDocument>();
-            }
-
-            if (_document == null)
-            {
-                throw new InvalidOperationException("_document not assigned");
-            }
-
-            _root.BindGui(this, _document.rootVisualElement,
+            _root.BindGui(this, _rootVisualElement,
                 x => x
-                    .Button("BootstrapDemo", ctx => ShowBootstrapDemo())
-                    .Button("GameSettingsMenu", ctx => ShowGameSettings())
-                    .Button("List", ctx => ShowList())
-                    .Label("Time", ctx => $"Time: {DateTime.Now:HH:mm:ss}")
+                    .Button("BootstrapDemo", _ => ShowBootstrapDemo())
+                    .Button("GameSettingsMenu", _ => ShowGameSettings())
+                    .Button("List", _ => ShowList())
+                    .Label("Time", _ => $"Time: {DateTime.Now:HH:mm:ss}")
             );
         }
 
         private void ShowBootstrapDemo()
         {
-            gameObject.SetActive(false);
+            Hide();
             _bootstrapDemo.Show(() => gameObject.SetActive(true));
         }
-
+        
         private void ShowGameSettings()
         {
-            gameObject.SetActive(false);
+            Hide();
             _gameSettings.Show(() => gameObject.SetActive(true));
         }
 
         private void ShowList()
         {
-            gameObject.SetActive(false);
-            _listUi.Show(() => gameObject.SetActive(true));    
+            Hide();
+            _listUi.Show(() => gameObject.SetActive(true));
+        }
+        
+        private void Hide()
+        {
+            CommonHelper.FadeOut(
+                this, 
+                _rootVisualElement, 
+                () => gameObject.SetActive(false));
         }
     }
 }

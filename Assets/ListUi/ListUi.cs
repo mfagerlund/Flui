@@ -3,7 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Flui;
 using Flui.Binder;
+using FluiDemo.Bootstrap;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
@@ -19,6 +21,7 @@ namespace FluiDemo.ListUi
         [SerializeField] private bool _rebuild;
 
         private FluiBinderRoot<ListUi, VisualElement> _root = new();
+        private VisualElement _rootVisualElement;
 
         private Action _onHide;
 
@@ -28,9 +31,20 @@ namespace FluiDemo.ListUi
             gameObject.SetActive(true);
         }
 
+        public void OnEnable()
+        {
+            _document ??= GetComponent<UIDocument>();
+            _rootVisualElement = _document.rootVisualElement;
+            CommonHelper.FadeIn(this, _rootVisualElement);
+        }
+        
         private void Hide()
         {
-            gameObject.SetActive(false);
+            // gameObject.SetActive(false);
+            CommonHelper.FadeOut(
+                this, 
+                _rootVisualElement, 
+                () => gameObject.SetActive(false));
             _onHide();
         }
 
@@ -47,24 +61,13 @@ namespace FluiDemo.ListUi
 
         private void Bind()
         {
-            if ((_document ??= _document = GetComponent<UIDocument>()) == null)
-            {
-                throw new InvalidOperationException("_document not assigned");
-            }
-
             if (_rebuild)
             {
                 _root = new FluiBinderRoot<ListUi, VisualElement>();
                 _rebuild = false;
             }
 
-            if (_document.rootVisualElement == null)
-            {
-                Debug.Log("_document.rootVisualElement is null");
-                return;
-            }
-
-            _root.BindGui(this, _document.rootVisualElement, r => r
+            _root.BindGui(this, _rootVisualElement, r => r
                 .Button("Close", _ => Hide())
                 .ForEach("Content", x => x._employees, () => _listRow.visualTreeAsset.CloneTree(), row => row
                     .Label("Name", x => x.Name)
@@ -83,15 +86,7 @@ namespace FluiDemo.ListUi
 
         private void DeleteEmployee(FluiBinder<Employee, VisualElement> row, FluiBinder<Employee, Button> x)
         {
-            row.Element.AddToClassList("transparent");
-            row.Element.RegisterCallback<TransitionEndEvent>(
-                e =>
-                {
-                    if (e.stylePropertyNames.Contains("opacity"))
-                    {
-                        _employees.Remove(x.Context);
-                    }
-                });
+            FluiHelper.ExecuteAfterClassTransition(row.Element, "transparent", "opacity", () => _employees.Remove(x.Context));
         }
 
         private void AddRandomEmployee()
@@ -111,7 +106,7 @@ namespace FluiDemo.ListUi
             new Employee { Name = "Steve", Title = "Stevedore", Salary = 6 },
             new Employee { Name = "John", Title = "Yeoman", Salary = 2 }
         };
-
+        
         private class Employee
         {
             public string Name { get; set; }

@@ -8,6 +8,7 @@ namespace FluiDemo.Bootstrap
     public class BootstrapDemo : MonoBehaviour
     {
         private UIDocument _document;
+        private VisualElement _rootVisualElement;
         private FluiBinderRoot<BootstrapDemo, VisualElement> _root;
         private Action _onHide;
 
@@ -17,22 +18,19 @@ namespace FluiDemo.Bootstrap
             gameObject.SetActive(true);
         }
 
+        public void OnEnable()
+        {
+            _document ??= GetComponent<UIDocument>();
+            _rootVisualElement = _document.rootVisualElement;
+            CommonHelper.FadeIn(this, _rootVisualElement);
+        }
+
         private void Update()
         {
-            if (_document == null)
-            {
-                _document = GetComponent<UIDocument>();
-            }
-
-            if (_document == null)
-            {
-                throw new InvalidOperationException("_document not assigned");
-            }
-
             _root ??= new FluiBinderRoot<BootstrapDemo, VisualElement>();
             _root.BindGui(
                 this,
-                _document.rootVisualElement,
+                _rootVisualElement,
                 x => x
                     .Button("TopClose", ctx => Hide())
                     .Button("Close", ctx => Hide())
@@ -41,8 +39,28 @@ namespace FluiDemo.Bootstrap
 
         private void Hide()
         {
-            gameObject.SetActive(false);
+            // gameObject.SetActive(false);
+            CommonHelper.FadeOut(
+                this, 
+                _rootVisualElement, 
+                () => gameObject.SetActive(false));
             _onHide();
+        }
+
+        private void LogState(string method)
+        {
+            if (_document == null)
+            {
+                Debug.Log($"{method}: document == null");
+            }
+            else if (_document.rootVisualElement == null)
+            {
+                Debug.Log($"{method}: rootVisualElement == null");
+            }
+            else
+            {
+                Debug.Log($"{method}: All Set!");
+            }
         }
     }
 }

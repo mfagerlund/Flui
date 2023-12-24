@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using Flui.Binder;
+using FluiDemo.Bootstrap;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -21,6 +22,7 @@ namespace FluiDemo.GameSettings
 
 
         private Action _onHide;
+        private VisualElement _rootVisualElement;
 
         public void Show(Action onHide)
         {
@@ -28,9 +30,20 @@ namespace FluiDemo.GameSettings
             gameObject.SetActive(true);
         }
 
+        public void OnEnable()
+        {
+            _document ??= GetComponent<UIDocument>();
+            _rootVisualElement = _document.rootVisualElement;
+            CommonHelper.FadeIn(this, _rootVisualElement);
+        }
+        
         private void Hide()
         {
-            gameObject.SetActive(false);
+            // gameObject.SetActive(false);
+            CommonHelper.FadeOut(
+                this, 
+                _rootVisualElement, 
+                () => gameObject.SetActive(false));
             _onHide();
         }
 
@@ -68,23 +81,13 @@ namespace FluiDemo.GameSettings
 
         private void Bind()
         {
-            if (_document == null)
-            {
-                _document = GetComponent<UIDocument>();
-            }
-
-            if (_document == null)
-            {
-                throw new InvalidOperationException("_document not assigned");
-            }
-
             if (_rebuild)
             {
                 _root = new FluiBinderRoot<GameSettings, VisualElement>();
                 _rebuild = false;
             }
 
-            _root.BindGui(this, _document.rootVisualElement, x => x
+            _root.BindGui(this, _rootVisualElement, x => x
                 .Label("compact-settings", ctx => ctx.Settings.CompactString)
                 .EnumButtons(
                     "left-panel",

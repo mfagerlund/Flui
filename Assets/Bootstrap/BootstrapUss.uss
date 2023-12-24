@@ -181,13 +181,12 @@ VisualElement {
     color: rgb(220, 53, 69);
 }
 
-.btn-sm{
-    margin:0;
-    padding:0;
+.btn-sm {
+    margin: 0;
+    padding: 0;
     font-size: 12;
 }
 
-/* btn-primary */
 VisualElement {
     --btn-primary-normal: rgb(0, 123, 255);
     --btn-primary-hovered: rgb(0, 104, 216);
