@@ -1,6 +1,13 @@
 # Flui
 Fluid Unity UI Toolkit binding. Allows you to easiy connect backend code to UI Toolkit frontend.
 
+Install Flui by opening Package Manager in Unity, pressing the "+" symbol and selecting "Install Package From GIT url", use this url: https://github.com/mfagerlund/Flui.git?path=/Assets/Package
+
+## Included Resources
+Flui includes a number of scripts - described below, and also two USS files, one including "required" classes and one with a USS that emulates Bootstrap to some extent.
+
+For demos, clone https://github.com/mfagerlund/Flui.git and look at the included project.
+
 ## Simple Example
 Flui binds through the name of a component - or actually a Q query, but that typically means a name. Given a simple ui that looks like this:
 
@@ -87,3 +94,4 @@ _root.BindGui(this, _document.rootVisualElement, x => x
 	.Button("Ok", ctx => Hide())
 	.Button("Return", ctx => Hide())
 );
+
