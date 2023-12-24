@@ -19,8 +19,7 @@ namespace FluiDemo.GameSettings
         private FluiBinderRoot<GameSettings, VisualElement> _root = new();
         public Settings Settings { get; set; } = new Settings();
         public Panel ActivePanel { get; set; } = Panel.ScreenSettings;
-
-
+        
         private Action _onHide;
         private VisualElement _rootVisualElement;
 
