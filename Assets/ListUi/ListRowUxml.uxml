@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/ListUi/ListUss.uss?fileID=7433441132597879392&amp;guid=193227d9b0edd8b4784209f844e91bba&amp;type=3#ListUss" />
+    <Style src="project://database/Assets/Package/Resources/Required.uss?fileID=7433441132597879392&amp;guid=554768fa32915df43849a5ff8f29cd04&amp;type=3#Required" />
+    <Style src="project://database/Assets/Bootstrap/BootstrapUss.uss?fileID=7433441132597879392&amp;guid=534b208ba7f75194ebac2458c626ada3&amp;type=3#BootstrapUss" />
+    <ui:VisualElement name="Row" class="tr">
+        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Name" class="td" />
+        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" class="td" />
+        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Salary" class="td" />
+        <ui:VisualElement style="flex-shrink: 0; width: 50px;">
+            <ui:Button text="Delete" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Delete" class="btn-warning btn-sm" style="height: auto; width: 50px; flex-grow: 0.2;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

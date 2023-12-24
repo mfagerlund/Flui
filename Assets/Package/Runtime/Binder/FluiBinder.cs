@@ -8,7 +8,8 @@ using UnityEngine.UIElements;
 
 namespace Flui.Binder
 {
-    public partial class FluiBinder<TContext, TVisualElement> : IFluiBinder where TVisualElement : VisualElement
+    public partial class FluiBinder<TContext, TVisualElement> : IFluiBinder
+        where TVisualElement : VisualElement
     {
         private readonly Dictionary<VisualElement, IFluiBinder> _childBinders = new();
         private Action<FluiBinder<TContext, TVisualElement>> _updateAction;
@@ -17,6 +18,8 @@ namespace Flui.Binder
         private IValueBinding _valueBinding;
         private Func<TContext, bool> _hiddenFunc;
         private Func<TContext, bool> _invisibleFunc;
+        // Data to use for complex binding actions - such as in ForEach
+        // private object _data;
 
         public FluiBinder(string query, TContext context, TVisualElement element)
         {
@@ -34,6 +37,7 @@ namespace Flui.Binder
         public bool Visited => _visited;
         public TVisualElement Element { get; }
         VisualElement IFluiBinder.VisualElement => Element;
+        object IFluiBinder.Context => Context;
         IEnumerable<IFluiBinder> IFluiBinder.GetChildren() => _childBinders.Values;
         public string Query { get; }
         public TContext Context { get; }
@@ -146,7 +150,7 @@ namespace Flui.Binder
             _invisibleFunc = invisibleFunc;
             return this;
         }
-        
+
         public void PrepareVisit()
         {
             _visited = false;

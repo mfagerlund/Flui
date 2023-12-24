@@ -1,7 +1,9 @@
 // ReSharper disable InconsistentNaming
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -63,6 +65,29 @@ namespace Flui.Binder
             }
         }
 
+        // public FluiBinder<TContext, TVisualElement> ListView<TChildContext>(
+        //     string query,
+        //     Func<TContext, IList<TChildContext>> contextFunc,
+        //     Func<VisualElement> visualElementFunc,
+        //     Action<FluiBinder<TChildContext, VisualElement>> bindAction = null,
+        //     Action<FluiBinder<TChildContext, VisualElement>> initiateAction = null,
+        //     Action<FluiBinder<TChildContext, VisualElement>> updateAction = null)
+        // {
+        //     RawBind<TContext, ListView>(
+        //         query,
+        //         x => x,
+        //         null,
+        //         initiateAction: s =>
+        //         {
+        //             s.Element.makeItem = visualElementFunc;
+        //             s.Element.itemsSource = (IList)contextFunc(s.Context);
+        //         },
+        //         null
+        //     );
+        //
+        //     return this;
+        // }
+
         public FluiBinder<TContext, TVisualElement> Group<TChildContext>(
             string query,
             Func<TContext, TChildContext> contextFunc,
@@ -103,7 +128,7 @@ namespace Flui.Binder
 
         public FluiBinder<TContext, TVisualElement> Button(
             string query,
-            Action<TContext> clicked,
+            Action<FluiBinder<TContext, Button>> clicked,
             Action<FluiBinder<TContext, Button>> bindAction = null,
             Action<FluiBinder<TContext, Button>> initiateAction = null,
             Action<FluiBinder<TContext, Button>> updateAction = null)
@@ -114,7 +139,7 @@ namespace Flui.Binder
                 bindAction,
                 s =>
                 {
-                    s.Element.clicked += () => clicked(s.Context);
+                    s.Element.clicked += () => clicked(s);
                     initiateAction?.Invoke(s);
                 },
                 updateAction);
@@ -182,7 +207,7 @@ namespace Flui.Binder
                     {
                         f.Button(
                             button.Query,
-                            ctx => setFunc(ctx, button.Value),
+                            f => setFunc(f.Context, button.Value),
                             bindAction: b => b
                                 .OptionalClass(activeClass, ctx => Equals(getFunc(ctx), button.Value)
                                 )
@@ -484,6 +509,83 @@ namespace Flui.Binder
             var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
             return Slider(query, getFunc, setFunc, lowValue, highValue, bindAction, initiateAction, updateAction);
+        }
+
+        public FluiBinder<TContext, TVisualElement> ForEach<TChildContext>(
+            string query,
+            Func<TContext, IEnumerable<TChildContext>> itemsFunc,
+            Func<VisualElement> visualElementFunc,
+            Action<FluiBinder<TChildContext, VisualElement>> bindAction = null,
+            Action<FluiBinder<TChildContext, VisualElement>> initiateAction = null,
+            Action<FluiBinder<TChildContext, VisualElement>> updateAction = null)
+        {
+            RawBind<TContext, VisualElement>(
+                query,
+                x => x,
+                s =>
+                {
+                    // No bind action for the container (?)
+                },
+                s =>
+                {
+
+                },
+                s =>
+                {
+                    s.SynchronizeList(
+                        itemsFunc, 
+                        visualElementFunc,
+                        bindAction,
+                        initiateAction,
+                        updateAction);
+                });
+
+            return this;
+        }
+
+        private void SynchronizeList<TChildContext>(
+            Func<TContext, IEnumerable<TChildContext>> itemsFunc, 
+            Func<VisualElement> visualElementFunc,
+            Action<FluiBinder<TChildContext, VisualElement>> bindAction, 
+            Action<FluiBinder<TChildContext, VisualElement>> initiateAction, 
+            Action<FluiBinder<TChildContext, VisualElement>> updateAction)
+        {
+            var children = itemsFunc(Context);
+            HashSet<VisualElement> unvisited = new HashSet<VisualElement>(Element.Children());
+            foreach (var context in children)
+            {
+                // Could be slow - need two way dictionary
+                var rawFlui = _childBinders.Values.SingleOrDefault(x => Equals(x.Context, context));
+                var veName = "";
+                if (rawFlui == null)    
+                {
+                    var visualElement = visualElementFunc();    
+                    veName = visualElement.name = Guid.NewGuid().ToString().Replace("-", "");
+                    Element.Add(visualElement);
+                }
+                else
+                {
+                    veName = rawFlui.Query;
+                }
+
+                var flui = RawBind<TChildContext, VisualElement>(
+                    veName,
+                    xy => context,
+                    bindAction,
+                    initiateAction,
+                    updateAction);
+
+                unvisited.Remove(flui.Element);
+            }
+
+            foreach (var visualElement in unvisited)
+            {
+                if (visualElement.parent != null)
+                {
+                    Element.Remove(visualElement);
+                }
+                _childBinders.Remove(visualElement);
+            }
         }
     }
 }

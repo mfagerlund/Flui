@@ -36,6 +36,10 @@ namespace Flui.Binder
 
         public string HierarchyAsString()
         {
+            if (Root == null)
+            {
+                return "NO ROOT!";
+            }
             return Root.HierarchyAsString();
         }
     }

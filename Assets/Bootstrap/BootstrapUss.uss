@@ -3,6 +3,30 @@ VisualElement {
     --button-border-width: 3px;
 }
 
+.tr {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.td {
+    border-top-color: rgb(222, 226, 230);
+    border-top-width: 1px;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0;
+}
+
+.th {
+    -unity-font-style: bold;
+    border-top-color: rgb(222, 226, 230);
+    border-top-width: 1px;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0;
+}
+
 .row {
     flex-direction: row;
 }
@@ -47,19 +71,6 @@ VisualElement {
     margin-bottom: 8px;
     -unity-font-style: normal;
     -unity-text-align: middle-left;
-}
-
-.th {
-    -unity-font-style: bold;
-    border-top-color: rgb(222, 226, 230);
-    border-top-width: 1px;
-    flex-grow: 1;
-}
-
-.td {
-    border-top-color: rgb(222, 226, 230);
-    border-top-width: 1px;
-    flex-grow: 1;
 }
 
 .row.primary {
@@ -170,6 +181,13 @@ VisualElement {
     color: rgb(220, 53, 69);
 }
 
+.btn-sm{
+    margin:0;
+    padding:0;
+    font-size: 12;
+}
+
+/* btn-primary */
 VisualElement {
     --btn-primary-normal: rgb(0, 123, 255);
     --btn-primary-hovered: rgb(0, 104, 216);
