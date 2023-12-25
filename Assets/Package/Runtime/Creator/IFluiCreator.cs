@@ -1,8 +1,8 @@
 ﻿using UnityEngine.UIElements;
 
-namespace Flui.Builder
+namespace Flui.Creator
 {
-    public interface IFluiBuilder
+    public interface IFluiCreator
     {
         string Name { get; }
         bool Visited { get; }

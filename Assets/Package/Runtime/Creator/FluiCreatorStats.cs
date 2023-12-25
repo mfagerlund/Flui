@@ -1,6 +1,6 @@
-﻿namespace Flui.Builder
+﻿namespace Flui.Creator
 {
-    public static class FluiBuilderStats
+    public static class FluiCreatorStats
     {
         public static void Reset()
         {
@@ -8,6 +8,7 @@
             FluisRemoved = 0;
             FluisDestroyed = 0;
             UnparentedVisualElementsRemoved = 0;
+            TotalRebuild = 0;
             ValueBindingStats.Reset();
         }
 
@@ -15,5 +16,6 @@
         public static int FluisRemoved { get; set; }
         public static int FluisDestroyed { get; set; }
         public static int UnparentedVisualElementsRemoved { get; set; }
+        public static int TotalRebuild { get; set; }
     }
 }

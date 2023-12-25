@@ -1,12 +1,24 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Bootstrap/BootstrapUss.uss?fileID=7433441132597879392&amp;guid=534b208ba7f75194ebac2458c626ada3&amp;type=3#BootstrapUss" />
+    <Style src="project://database/Assets/Package/Resources/BootstrapUss.uss?fileID=7433441132597879392&amp;guid=534b208ba7f75194ebac2458c626ada3&amp;type=3#BootstrapUss" />
     <Style src="project://database/Assets/MainMenu/MainMenuUss.uss?fileID=7433441132597879392&amp;guid=7918688154ada1843a1f112b7a379fa9&amp;type=3#MainMenuUss" />
     <Style src="project://database/Assets/CommonUss.uss?fileID=7433441132597879392&amp;guid=c4f9af48e2644a929dd15ba3bd46a469&amp;type=3#CommonUss" />
     <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center;">
         <ui:Label tabindex="-1" text="Select Demo" display-tooltip-when-elided="true" class="h3 menu-item" />
-        <ui:Button text="Game Settings Menu Demo" display-tooltip-when-elided="true" name="GameSettingsMenu" class="btn-primary menu-item" />
-        <ui:Button text="Bootstrap Demo" display-tooltip-when-elided="true" name="BootstrapDemo" class="btn-primary menu-item" />
-        <ui:Button text="List" display-tooltip-when-elided="true" name="List" class="btn-primary menu-item" />
+        <ui:VisualElement class="row">
+            <ui:VisualElement name="FluiBinderDemos">
+                <ui:Label tabindex="-1" text="FluiBinder Demos" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+                <ui:Button text="Game Settings Menu Demo" display-tooltip-when-elided="true" name="GameSettingsMenu" class="btn-primary menu-item" />
+                <ui:Button text="Bootstrap Demo" display-tooltip-when-elided="true" name="BootstrapDemo" class="btn-primary menu-item" />
+                <ui:Button text="List" display-tooltip-when-elided="true" name="List" class="btn-primary menu-item" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Spacer" style="width: 24px;" />
+            <ui:VisualElement name="FluiCreatorDemos">
+                <ui:Label tabindex="-1" text="FluiCreator Demos" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+                <ui:Button text="Game Settings Menu Demo" display-tooltip-when-elided="true" name="GameSettingsMenu" class="btn-primary menu-item" />
+                <ui:Button text="Bootstrap Demo" display-tooltip-when-elided="true" name="BootstrapDemo" class="btn-primary menu-item" />
+                <ui:Button text="List" display-tooltip-when-elided="true" name="List" class="btn-primary menu-item disabled" />
+            </ui:VisualElement>
+        </ui:VisualElement>
         <ui:Label tabindex="-1" text="Time: 15:22:11" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Time" class="menu-item" style="-unity-text-align: upper-right;" />
     </ui:VisualElement>
 </ui:UXML>

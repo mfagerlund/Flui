@@ -123,6 +123,69 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &42804638
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 42804641}
+  - component: {fileID: 42804640}
+  - component: {fileID: 42804639}
+  m_Layer: 5
+  m_Name: Game Settings Creator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &42804639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42804638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a94365e419b4ac894230a91364fbea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pause: 0
+  _rebuild: 0
+--- !u!114 &42804640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42804638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 10b99eb857cbde34b9e62642f3bb160c, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 68793c69ae9722848b531b890949a95d, type: 3}
+  m_SortingOrder: 0
+--- !u!4 &42804641
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42804638}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &422246955
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,8 +387,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78a32d91bf140fe85349523c9867c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameSettings: {fileID: 981760931}
-  _bootstrapDemo: {fileID: 946848413}
+  gameSettingsBinder: {fileID: 981760931}
+  gameSettingsCreator: {fileID: 42804639}
+  bootstrapBinderDemo: {fileID: 946848413}
+  bootstrapCreatorDemo: {fileID: 1448169389}
   _listUi: {fileID: 1758358592}
 --- !u!1 &946848410
 GameObject:
@@ -339,7 +404,7 @@ GameObject:
   - component: {fileID: 946848411}
   - component: {fileID: 946848413}
   m_Layer: 5
-  m_Name: Bootstrap Demo
+  m_Name: Bootstrap Binder Demo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -400,7 +465,7 @@ GameObject:
   - component: {fileID: 981760929}
   - component: {fileID: 981760931}
   m_Layer: 5
-  m_Name: Game Settings
+  m_Name: Game Settings Binder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -462,6 +527,192 @@ MonoBehaviour:
     st=Visible\r\n  q=Ok, st=Visible\r\n  q=Return, st=Visible\r\n"
   _pause: 0
   _rebuild: 0
+--- !u!1 &1448169385
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1448169388}
+  - component: {fileID: 1448169387}
+  - component: {fileID: 1448169389}
+  m_Layer: 5
+  m_Name: Bootstrap Creator Demo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1448169387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448169385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 10b99eb857cbde34b9e62642f3bb160c, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: c86b4e1635c995d4999fbc3c5a6222a4, type: 3}
+  m_SortingOrder: 0
+--- !u!4 &1448169388
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448169385}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1448169389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448169385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f8be2ac2e04a63b2cf0416d3c86d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _styleSheets:
+  - {fileID: 7433441132597879392, guid: 534b208ba7f75194ebac2458c626ada3, type: 3}
+  - {fileID: 7433441132597879392, guid: 554768fa32915df43849a5ff8f29cd04, type: 3}
+  _pause: 0
+--- !u!1 &1711627055
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1711627058}
+  - component: {fileID: 1711627057}
+  - component: {fileID: 1711627056}
+  m_Layer: 5
+  m_Name: Flui Creator Code Creator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1711627056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711627055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82b242e5450b402bba66810d5294e6a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _createCode: 0
+  _code: "  .VisualElement(\"container\", \"container\", container=>container\r\n   
+    .VisualElement(\"header\", \"header\", header=>header\r\n      .VisualElement(\"unnamed0\",
+    \"options-header\", unnamed0=>unnamed0\r\n        .Label(\"options\", _=>\"Options\",
+    \"main-title\")\r\n        .Label(\"compact-settings\", _=>\"CompactSettings\",
+    \"\")\r\n)\r\n)\r\n    .VisualElement(\"panels\", \"panels\", panels=>panels\r\n     
+    .VisualElement(\"left-panel\", \"left-panel, w50\", leftpanel=>leftpanel\r\n       
+    .Button(\"ControlSettings\", \"Control Settings\", \"btn-gold, active\", null)\r\n       
+    .Button(\"ScreenSettings\", \"Screen Settings\", \"btn-gold\", null)\r\n       
+    .Button(\"VolumeSettings\", \"Volume Settings\", \"btn-gold\", null)\r\n       
+    .Button(\"GraphicSettings\", \"Graphic Settings\", \"btn-gold\", null)\r\n       
+    .Button(\"KeyboardSettings\", \"Keyboard Settings\", \"disabled, btn-gold\",
+    null)\r\n)\r\n      .VisualElement(\"right-panel\", \"w50, right-panel\", rightpanel=>rightpanel\r\n       
+    .VisualElement(\"ControlSettingsPanel\", \"\", controlSettingsPanel=>controlSettingsPanel\r\n         
+    .VisualElement(\"Inner\", \"\", inner=>inner\r\n            .VisualElement(\"SimpleControls\",
+    \"right-panel-control-holder\", simpleControls=>simpleControls\r\n             
+    .Toggle(\"SimpleControls\", \"Simple Controls\", \"\", ctx=> ctx.SimpleControls)\r\n)\r\n           
+    .VisualElement(\"vibration\", \"right-panel-control-holder\", vibration=>vibration\r\n             
+    .Toggle(\"Vibration\", \"Vibration\", \"\", ctx=> ctx.Vibration)\r\n)\r\n           
+    .VisualElement(\"buttonConfiguration\", \"right-panel-control-holder\", buttonConfiguration=>buttonConfiguration\r\n             
+    .Toggle(\"ButtonConfiguration\", \"ButtonConfiguration\", \"\", ctx=> ctx.ButtonConfiguration)\r\n)\r\n           
+    .VisualElement(\"spacer\", \"panel-right-spacer\")\r\n            .VisualElement(\"cameraDistance\",
+    \"right-panel-control-holder\", cameraDistance=>cameraDistance\r\n             
+    .Slider(\"CameraDistance\", \"Slider\", \"\", 0, 1, ctx=> ctx.CameraDistance)\r\n)\r\n           
+    .VisualElement(\"screenVibration\", \"right-panel-control-holder\", screenVibration=>screenVibration\r\n             
+    .Toggle(\"ScreenVibration\", \"Screen Vibration\", \"\", ctx=> ctx.ScreenVibration)\r\n)\r\n           
+    .VisualElement(\"slowSpecialAttack\", \"right-panel-control-holder\", slowSpecialAttack=>slowSpecialAttack\r\n             
+    .Toggle(\"ShowSpecialAttack\", \"Show Special Attack\", \"\", ctx=> ctx.ShowSpecialAttack)\r\n)\r\n           
+    .VisualElement(\"spacer2\", \"panel-right-spacer\")\r\n            .VisualElement(\"UserName\",
+    \"right-panel-control-holder\", userName=>userName\r\n              .TextField(\"UserName\",
+    \"User Name\", \"\", ctx=> ctx.UserName)\r\n)\r\n)\r\n)\r\n        .VisualElement(\"ScreenSettingsPanel\",
+    \"hidden\", screenSettingsPanel=>screenSettingsPanel\r\n          .VisualElement(\"Inner\",
+    \"\", inner=>inner\r\n            .VisualElement(\"Width\", \"right-panel-control-holder\",
+    width=>width\r\n              .IntegerField(\"Width\", \"Width\", \"\", ctx=>
+    ctx.Width)\r\n)\r\n            .VisualElement(\"Height\", \"right-panel-control-holder\",
+    height=>height\r\n              .IntegerField(\"Height\", \"Height\", \"\", ctx=>
+    ctx.Height)\r\n)\r\n            .VisualElement(\"PixelDensity\", \"right-panel-control-holder\",
+    pixelDensity=>pixelDensity\r\n              .FloatField(\"PixelDensity\", \"Float
+    Field\", \"\", ctx=> ctx.PixelDensity)\r\n)\r\n            .VisualElement(\"spacer\",
+    \"panel-right-spacer\")\r\n            .VisualElement(\"ColorMode\", \"right-panel-control-holder\",
+    colorMode=>colorMode\r\n              .DropdownField(\"ColorMode\", \"Color Mode\",
+    \"\", new List<string>{\"a\", \"b\"}, ctx=> ctx.ColorMode)\r\n)\r\n           
+    .VisualElement(\"CycleMode\", \"right-panel-control-holder\", cycleMode=>cycleMode\r\n             
+    .EnumField(\"CycleMode\", \"Cycle Mode\", \"\", ctx=> ctx.CycleMode)\r\n)\r\n)\r\n)\r\n       
+    .VisualElement(\"VolumeSettingsPanel\", \"hidden\", volumeSettingsPanel=>volumeSettingsPanel\r\n         
+    .VisualElement(\"Inner\", \"\", inner=>inner\r\n            .VisualElement(\"unnamed1\",
+    \"right-panel-control-holder\", unnamed1=>unnamed1\r\n              .Label(\"VolumeSettings-NOTIMPLEMENTED\",
+    _=>\"Volume Settings - NOT IMPLEMENTED\", \"not-implemented\")\r\n)\r\n)\r\n)\r\n       
+    .VisualElement(\"GraphicSettingsPanel\", \"hidden\", graphicSettingsPanel=>graphicSettingsPanel\r\n         
+    .VisualElement(\"Inner\", \"\", inner=>inner\r\n            .VisualElement(\"unnamed2\",
+    \"right-panel-control-holder\", unnamed2=>unnamed2\r\n              .Label(\"GraphicsSettings-NOTIMPLEMENTED\",
+    _=>\"Graphics Settings - NOT IMPLEMENTED\", \"not-implemented\")\r\n)\r\n)\r\n)\r\n       
+    .VisualElement(\"KeyboardSettingsPanel\", \"hidden\", keyboardSettingsPanel=>keyboardSettingsPanel\r\n         
+    .VisualElement(\"Inner\", \"\", inner=>inner\r\n            .VisualElement(\"unnamed3\",
+    \"right-panel-control-holder\", unnamed3=>unnamed3\r\n              .Label(\"KeyboardSettings-NOTIMPLEMENTED\",
+    _=>\"Keyboard Settings - NOT IMPLEMENTED\", \"not-implemented\")\r\n)\r\n)\r\n)\r\n)\r\n)\r\n   
+    .VisualElement(\"footer\", \"row, footer\", footer=>footer\r\n      .Button(\"Ok\",
+    \"OK\", \"btn-primary\", null)\r\n      .Button(\"Return\", \"Return\", \"btn-primary\",
+    null)\r\n      .Button(\"conquer-world\", \"Conquer World\", \"btn-primary, disabled\",
+    null)\r\n)\r\n)\r\n"
+--- !u!114 &1711627057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711627055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 10b99eb857cbde34b9e62642f3bb160c, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 68793c69ae9722848b531b890949a95d, type: 3}
+  m_SortingOrder: 0
+--- !u!4 &1711627058
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711627055}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1758358591
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,5 +858,8 @@ SceneRoots:
   - {fileID: 1788866581}
   - {fileID: 680506819}
   - {fileID: 981760930}
+  - {fileID: 42804641}
   - {fileID: 946848412}
+  - {fileID: 1448169388}
+  - {fileID: 1711627058}
   - {fileID: 1758358594}

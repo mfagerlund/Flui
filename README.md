@@ -3,6 +3,11 @@ Fluid Unity UI Toolkit binding. Allows you to easiy connect backend code to UI T
 
 Install Flui by opening Package Manager in Unity, pressing the "+" symbol and selecting "Install Package From GIT url", use this url: https://github.com/mfagerlund/Flui.git?path=/Assets/Package
 
+## FluiBinder vs FluiCreator
+FluiBinder is used when you have a UIDocument that you want to bind in code (bind meaning populate texts or execution button actions)
+
+FluiCreator is used when you want to create the VisualElements in code, and you also want to bind them.
+
 ## Included Resources
 Flui includes a number of scripts - described below, and also two USS files, one including "required" classes and one with a USS that emulates Bootstrap to some extent.
 

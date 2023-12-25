@@ -5,42 +5,39 @@ namespace Flui.Binder
 {
     public class FluiBinderRoot<TContext, TVisualElement> where TVisualElement : VisualElement
     {
-        public FluiBinder<TContext, TVisualElement> Root { get; private set; }
+        private FluiBinder<TContext, TVisualElement> _root;
 
         public void BindGui(
             TContext context,
             TVisualElement root,
             Action<FluiBinder<TContext, TVisualElement>> buildAction)
         {
-            if (root==null)
+            if (root == null)
             {
-                if (Root != null)
-                {
-                    FluiBinderStats.TotalRebuild++;
-                    Root = null;
-                }
+                _root = null;
                 return;
             }
-            
-            if (Root != null && (Root.Element != root || !Equals(Root.Context, context)))
+
+            if (_root != null && (_root.Element != root || !Equals(_root.Context, context)))
             {
                 FluiBinderStats.TotalRebuild++;
-                Root = null;
+                _root = null;
             }
 
-            Root ??= new FluiBinder<TContext, TVisualElement>("root", context, root);
-            Root.PrepareVisit();
-            buildAction(Root);
-            Root.RemoveUnvisited();
+            _root ??= new FluiBinder<TContext, TVisualElement>("root", context, root);
+            _root.PrepareVisit();
+            buildAction(_root);
+            _root.RemoveUnvisited();
         }
 
         public string HierarchyAsString()
         {
-            if (Root == null)
+            if (_root == null)
             {
                 return "NO ROOT!";
             }
-            return Root.HierarchyAsString();
+
+            return _root.HierarchyAsString();
         }
     }
 }

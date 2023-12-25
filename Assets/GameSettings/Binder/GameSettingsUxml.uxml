@@ -1,11 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Package/Resources/Required.uss?fileID=7433441132597879392&amp;guid=554768fa32915df43849a5ff8f29cd04&amp;type=3#Required" />
-    <Style src="project://database/Assets/Bootstrap/BootstrapUss.uss?fileID=7433441132597879392&amp;guid=534b208ba7f75194ebac2458c626ada3&amp;type=3#BootstrapUss" />
     <Style src="project://database/Assets/GameSettings/GameSettingsUSS.uss?fileID=7433441132597879392&amp;guid=4789625da66fc9b4ca9d8ebc16b5930f&amp;type=3#GameSettingsUSS" />
+    <Style src="project://database/Assets/Package/Resources/Required.uss?fileID=7433441132597879392&amp;guid=554768fa32915df43849a5ff8f29cd04&amp;type=3#Required" />
+    <Style src="project://database/Assets/Package/Resources/BootstrapUss.uss?fileID=7433441132597879392&amp;guid=534b208ba7f75194ebac2458c626ada3&amp;type=3#BootstrapUss" />
     <Style src="project://database/Assets/CommonUss.uss?fileID=7433441132597879392&amp;guid=c4f9af48e2644a929dd15ba3bd46a469&amp;type=3#CommonUss" />
     <ui:VisualElement name="container" class="container">
         <ui:VisualElement name="header" class="header">
-            <ui:VisualElement style="flex-grow: 1; flex-direction: row; margin-right: 25px;">
+            <ui:VisualElement class="options-header">
                 <ui:Label tabindex="-1" text="Options" display-tooltip-when-elided="true" name="options" class="main-title" style="flex-grow: 1; -unity-font-style: bold; -unity-text-outline-color: rgba(195, 161, 161, 0.98); text-shadow: 2.3px 1.8px -20.1px rgb(0, 0, 0); -unity-text-outline-width: 1px;" />
                 <ui:Label tabindex="-1" text="CompactSettings" display-tooltip-when-elided="true" name="compact-settings" />
             </ui:VisualElement>

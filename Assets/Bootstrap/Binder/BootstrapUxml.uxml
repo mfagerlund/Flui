@@ -1,8 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Bootstrap/BootstrapUss.uss?fileID=7433441132597879392&amp;guid=534b208ba7f75194ebac2458c626ada3&amp;type=3#BootstrapUss" />
+    <Style src="project://database/Assets/Package/Resources/BootstrapUss.uss?fileID=7433441132597879392&amp;guid=534b208ba7f75194ebac2458c626ada3&amp;type=3#BootstrapUss" />
     <Style src="project://database/Assets/CommonUss.uss?fileID=7433441132597879392&amp;guid=c4f9af48e2644a929dd15ba3bd46a469&amp;type=3#CommonUss" />
     <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" style="margin-top: 24px; margin-right: 24px; margin-bottom: 24px; margin-left: 24px;">
-        <ui:VisualElement class="row" style="flex-grow: 1; align-self: flex-end; flex-direction: column; align-items: flex-start;">
+        <ui:VisualElement class="row" style="flex-grow: 1; align-self: flex-end; flex-direction: column; align-items: flex-start; opacity: 1;">
             <ui:Button text="Close" display-tooltip-when-elided="true" name="TopClose" class="btn-warning" />
         </ui:VisualElement>
         <ui:VisualElement class="row">

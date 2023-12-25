@@ -209,9 +209,7 @@ namespace Flui.Binder
                             button.Query,
                             f => setFunc(f.Context, button.Value),
                             bindAction: b => b
-                                .OptionalClass(activeClass, ctx => Equals(getFunc(ctx), button.Value)
-                                )
-                        );
+                                .OptionalClass(activeClass, ctx => Equals(getFunc(ctx), button.Value)));
                     }
 
                     bindAction?.Invoke(f);
@@ -526,14 +524,11 @@ namespace Flui.Binder
                 {
                     // No bind action for the container (?)
                 },
-                s =>
-                {
-
-                },
+                s => { },
                 s =>
                 {
                     s.SynchronizeList(
-                        itemsFunc, 
+                        itemsFunc,
                         visualElementFunc,
                         bindAction,
                         initiateAction,
@@ -544,10 +539,10 @@ namespace Flui.Binder
         }
 
         private void SynchronizeList<TChildContext>(
-            Func<TContext, IEnumerable<TChildContext>> itemsFunc, 
+            Func<TContext, IEnumerable<TChildContext>> itemsFunc,
             Func<VisualElement> visualElementFunc,
-            Action<FluiBinder<TChildContext, VisualElement>> bindAction, 
-            Action<FluiBinder<TChildContext, VisualElement>> initiateAction, 
+            Action<FluiBinder<TChildContext, VisualElement>> bindAction,
+            Action<FluiBinder<TChildContext, VisualElement>> initiateAction,
             Action<FluiBinder<TChildContext, VisualElement>> updateAction)
         {
             var children = itemsFunc(Context);
@@ -557,9 +552,9 @@ namespace Flui.Binder
                 // Could be slow - need two way dictionary
                 var rawFlui = _childBinders.Values.SingleOrDefault(x => Equals(x.Context, context));
                 var veName = "";
-                if (rawFlui == null)    
+                if (rawFlui == null)
                 {
-                    var visualElement = visualElementFunc();    
+                    var visualElement = visualElementFunc();
                     veName = visualElement.name = Guid.NewGuid().ToString().Replace("-", "");
                     Element.Add(visualElement);
                 }
@@ -584,6 +579,7 @@ namespace Flui.Binder
                 {
                     Element.Remove(visualElement);
                 }
+
                 _childBinders.Remove(visualElement);
             }
         }

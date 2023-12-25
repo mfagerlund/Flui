@@ -178,3 +178,9 @@ VisualElement {
     -unity-font-style: bold;
     margin-left: 5px;
 }
+
+.options-header {
+    flex-grow: 1;
+    flex-direction: row;
+    margin-right: 25px;
+}
