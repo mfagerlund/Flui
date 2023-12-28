@@ -72,7 +72,6 @@ namespace FluiDemo.ListUi.Binder
                 .ForEach(
                     "Offices",
                     x => x._offices,
-                    "OfficeUxml",
                     office => office
                         .Label("OfficeName", x => x.Name)
                         .Button("DeleteOffice", x => DeleteOffice(office.Element, office.Context))
@@ -81,7 +80,6 @@ namespace FluiDemo.ListUi.Binder
                             .ForEach(
                                 "Content",
                                 x => x.Employees,
-                                "EmployeeUxml",
                                 row => row
                                     .Label("Name", x => x.Name)
                                     .Label("Title", x => x.Title)

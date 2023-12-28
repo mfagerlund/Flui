@@ -565,12 +565,11 @@ namespace Flui.Binder
         public FluiBinder<TContext, TVisualElement> ForEach<TChildContext>(
             string query,
             Func<TContext, IEnumerable<TChildContext>> itemsFunc,
-            string templateName,
             Action<FluiBinder<TChildContext, VisualElement>> bindAction = null,
             Action<FluiBinder<TChildContext, VisualElement>> initiateAction = null,
             Action<FluiBinder<TChildContext, VisualElement>> updateAction = null)
         {
-            var template = _fluiBinderRoot.GetOrCreateTemplate(Element, templateName);
+            var template = _fluiBinderRoot.GetOrCreateTemplate(Element, query);
             RawBind<TContext, VisualElement>(
                 query,
                 x => x,

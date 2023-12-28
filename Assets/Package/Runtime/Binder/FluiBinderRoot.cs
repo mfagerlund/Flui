@@ -43,14 +43,14 @@ namespace Flui.Binder
             return _root.HierarchyAsString();
         }
 
-        public TemplateContainer GetOrCreateTemplate(VisualElement element, string templateName)
+        public TemplateContainer GetOrCreateTemplate(VisualElement element, string query)
         {
-            var template = _templates.GetOrCreate(templateName, () =>
+            var template = _templates.GetOrCreate(query, () =>
             {
-                var template = element.Q<TemplateContainer>(templateName);
+                var template = element.Q(query).Q<TemplateContainer>();
                 if (template == null)
                 {
-                    throw new InvalidOperationException($"Unable to find template {templateName} in {element.name}");
+                    throw new InvalidOperationException($"Unable to find template {query} in {element.name}");
                 }
 
                 template.parent.Remove(template);

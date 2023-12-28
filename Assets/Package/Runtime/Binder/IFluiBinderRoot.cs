@@ -4,6 +4,6 @@ namespace Flui.Binder
 {
     public interface IFluiBinderRoot
     {
-        TemplateContainer GetOrCreateTemplate(VisualElement element, string templateName);
+        TemplateContainer GetOrCreateTemplate(VisualElement element, string query);
     }
 }
