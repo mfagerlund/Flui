@@ -104,6 +104,24 @@ namespace Flui.Binder
             return this;
         }
 
+        
+        public FluiBinder<TContext, TVisualElement> Foldout<TChildContext>(
+            string query,
+            Func<TContext, TChildContext> contextFunc,
+            Action<FluiBinder<TChildContext, Foldout>> bindAction = null,
+            Action<FluiBinder<TChildContext, Foldout>> initiateAction = null,
+            Action<FluiBinder<TChildContext, Foldout>> updateAction = null)
+        {
+            RawBind<TChildContext, Foldout>(
+                query,
+                contextFunc,
+                bindAction,
+                initiateAction,
+                updateAction);
+
+            return this;
+        }
+        
         public FluiBinder<TContext, TVisualElement> Label(
             string query,
             Func<TContext, string> getLabel,
