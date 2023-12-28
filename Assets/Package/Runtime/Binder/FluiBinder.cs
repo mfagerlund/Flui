@@ -11,22 +11,29 @@ namespace Flui.Binder
     public partial class FluiBinder<TContext, TVisualElement> : IFluiBinder
         where TVisualElement : VisualElement
     {
+        private readonly IFluiBinderRoot _fluiBinderRoot;
         private readonly Dictionary<VisualElement, IFluiBinder> _childBinders = new();
         private Action<FluiBinder<TContext, TVisualElement>> _updateAction;
         private Action<FluiBinder<TContext, TVisualElement>> _bindAction;
         private bool _visited;
         private IValueBinding _valueBinding;
         private Func<TContext, bool> _hiddenFunc;
+
         private Func<TContext, bool> _invisibleFunc;
         // Data to use for complex binding actions - such as in ForEach
         // private object _data;
 
-        public FluiBinder(string query, TContext context, TVisualElement element)
+        public FluiBinder(
+            IFluiBinderRoot fluiBinderRoot,
+            string query,
+            TContext context,
+            TVisualElement element)
         {
             FluiBinderStats.FluiBinderCreated++;
             Query = query;
             Context = context;
             Element = element;
+            _fluiBinderRoot = fluiBinderRoot;
         }
 
         ~FluiBinder()
@@ -39,6 +46,12 @@ namespace Flui.Binder
         VisualElement IFluiBinder.VisualElement => Element;
         object IFluiBinder.Context => Context;
         IEnumerable<IFluiBinder> IFluiBinder.GetChildren() => _childBinders.Values;
+
+        public int GetHierarchyChildCount()
+        {
+            return 1 + _childBinders.Values.Sum(x => x.GetHierarchyChildCount());
+        }
+
         public string Query { get; }
         public TContext Context { get; }
         public bool Visible => !Hidden && !Invisible;
@@ -62,7 +75,7 @@ namespace Flui.Binder
 
             var rawChild = _childBinders.GetOrCreate(visualElement, () =>
             {
-                var binder = new FluiBinder<TChildContext, TChildVisualElement>(query, contextFunc(Context), visualElement)
+                var binder = new FluiBinder<TChildContext, TChildVisualElement>(_fluiBinderRoot, query, contextFunc(Context), visualElement)
                 {
                     _updateAction = updateAction,
                     _bindAction = bindAction
@@ -161,14 +174,11 @@ namespace Flui.Binder
         {
             foreach (var child in _childBinders.Values.ToList())
             {
+                child.RemoveUnvisited();
                 if (!child.Visited)
                 {
                     FluiBinderStats.FluiBinderRemoved++;
                     _childBinders.Remove(child.VisualElement);
-                }
-                else
-                {
-                    child.RemoveUnvisited();
                 }
             }
         }

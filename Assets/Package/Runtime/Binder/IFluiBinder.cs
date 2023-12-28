@@ -16,5 +16,6 @@ namespace Flui.Binder
         void PrepareVisit();
         void RemoveUnvisited();
         IEnumerable<IFluiBinder> GetChildren();
+        int GetHierarchyChildCount();
     }
 }

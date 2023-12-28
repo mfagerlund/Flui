@@ -15,7 +15,6 @@ namespace FluiDemo.ListUi.Binder
     public class ListUi : MonoBehaviour
     {
         private UIDocument _document;
-        [SerializeField] private UIDocument _listRow;
         [SerializeField] private bool _rebuild;
         [SerializeField] private bool _pause;
         [SerializeField] public string _hierarchy;
@@ -44,7 +43,7 @@ namespace FluiDemo.ListUi.Binder
                 this,
                 _rootVisualElement,
                 () => gameObject.SetActive(false));
-            _onHide();
+            _onHide?.Invoke();
         }
 
         // private void OnValidate()
@@ -58,8 +57,6 @@ namespace FluiDemo.ListUi.Binder
             Bind();
         }
 
-        private TemplateContainer _template;
-
         private void Bind()
         {
             Connect();
@@ -69,45 +66,70 @@ namespace FluiDemo.ListUi.Binder
                 _rebuild = false;
             }
 
-            if (_template == null && _rootVisualElement != null)
-            {
-               _template = _rootVisualElement.Q("ExternalTemplateList").Q("Content").Q<TemplateContainer>("ListRowUxml");
-               _template.parent.Remove(_template);
-            }
-
             _root.BindGui(this, _rootVisualElement, r => r
+                .Button("AddOffice", _ => AddOffice())
                 .Button("Close", _ => Hide())
-                .Group("ExternalTemplateList", x => x, b => b
-                    .Button("Add", x => AddRandomEmployee())
-                    .ForEach("Content", x => x._employees, () => _template.templateSource.CloneTree(), row => row
-                        .Label("Name", x => x.Name)
-                        .Label("Title", x => x.Title)
-                        .Label("Salary", x => $"{x.Salary:0}")
-                        .Button("Delete", x => { DeleteEmployee(row, x); })
-                    ))
-                .Group("Footer", x => x, g => g
-                    .Label("Salary", ctx => $"{GetSalarySum():0}")
-                )
+                .ForEach(
+                    "Offices",
+                    x => x._offices,
+                    "OfficeUxml",
+                    office => office
+                        .Label("OfficeName", x => x.Name)
+                        .Button("DeleteOffice", x => DeleteOffice(office.Element, office.Context))
+                        .Group("List", x => x, b => b
+                            .Button("Add", x => office.Context.AddRandomEmployee())
+                            .ForEach(
+                                "Content",
+                                x => x.Employees,
+                                "EmployeeUxml",
+                                row => row
+                                    .Label("Name", x => x.Name)
+                                    .Label("Title", x => x.Title)
+                                    .Label("Salary", x => $"{x.Salary:0}")
+                                    .Button("Delete", x => { DeleteEmployee(row, office.Context, x); })
+                            ))
+                        .Group("Footer", x => x, g => g
+                            .Label("Salary", ctx => $"{g.Context.GetSalarySum():0}")
+                        ))
             );
 
             _hierarchy = _root.HierarchyAsString();
         }
 
-        private TemplateContainer CreateRowTemplate() => _listRow.visualTreeAsset.CloneTree();
-
-        private void DeleteEmployee(FluiBinder<Employee, VisualElement> row, FluiBinder<Employee, Button> x)
+        private void DeleteOffice(VisualElement officeElement, Office office)
         {
-            FluiHelper.ExecuteAfterClassTransition(row.Element, "transparent", "opacity", () => _employees.Remove(x.Context));
+            FluiHelper.ExecuteAfterClassTransition(
+                officeElement,
+                "transparent",
+                "opacity",
+                () => _offices.Remove(office));
         }
 
-        private void AddRandomEmployee()
+        private void AddOffice()
         {
-            _employees.Add(new Employee
+            var office =
+                new Office
+                {
+                    Name = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6),
+                };
+            _offices.Add(office);
+
+            for (int i = 0; i < Random.Range(1, 4); i++)
             {
-                Name = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6),
-                Title = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 3),
-                Salary = Random.Range(1, 6)
-            });
+                office.AddRandomEmployee();
+            }
+        }
+
+        private void DeleteEmployee(
+            FluiBinder<Employee, VisualElement> row,
+            Office office,
+            FluiBinder<Employee, Button> x)
+        {
+            FluiHelper.ExecuteAfterClassTransition(
+                row.Element,
+                "transparent",
+                "opacity",
+                () => office.Employees.Remove(x.Context));
         }
 
         private void Connect()
@@ -119,21 +141,57 @@ namespace FluiDemo.ListUi.Binder
             }
         }
 
-        private readonly List<Employee> _employees = new()
+        private readonly List<Office> _offices = new()
         {
-            new Employee { Name = "Arne", Title = "Chimney Sweep", Salary = 7 },
-            new Employee { Name = "Benny", Title = "Chimney Sweep", Salary = 3 },
-            new Employee { Name = "Steve", Title = "Stevedore", Salary = 6 },
-            new Employee { Name = "John", Title = "Yeoman", Salary = 2 }
+            new Office
+            {
+                Name = "Central",
+                Employees = new()
+                {
+                    new Employee { Name = "Arne", Title = "Chimney Sweep", Salary = 7 },
+                    new Employee { Name = "Benny", Title = "Chimney Sweep", Salary = 3 },
+                    new Employee { Name = "Steve", Title = "Stevedore", Salary = 6 },
+                    new Employee { Name = "John", Title = "Yeoman", Salary = 2 }
+                }
+            },
+            new Office
+            {
+                Name = "South",
+                Employees = new()
+                {
+                    new Employee { Name = "Schultz", Title = "Chimney Sweep", Salary = 7 },
+                    new Employee { Name = "Frantz", Title = "Chimney Sweep", Salary = 3 },
+                    new Employee { Name = "Hanz", Title = "Stevedore", Salary = 6 },
+                    new Employee { Name = "Salander", Title = "Yeoman", Salary = 2 }
+                }
+            }
         };
-
-        private float GetSalarySum() => _employees.Sum(x => x.Salary);
 
         private class Employee
         {
             public string Name { get; set; }
             public string Title { get; set; }
             public float Salary { get; set; }
+        }
+
+        private class Office
+        {
+            public string Name { get; set; }
+            public List<Employee> Employees { get; set; } = new();
+
+            public float GetSalarySum() => Employees.Sum(x => x.Salary);
+
+            private void DeleteEmployee(Employee employee) => Employees.Remove(employee);
+
+            public void AddRandomEmployee()
+            {
+                Employees.Add(new Employee
+                {
+                    Name = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6),
+                    Title = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 3),
+                    Salary = Random.Range(1, 6)
+                });
+            }
         }
     }
 }

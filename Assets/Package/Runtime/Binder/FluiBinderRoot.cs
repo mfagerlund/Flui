@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine.UIElements;
 
 namespace Flui.Binder
 {
-    public class FluiBinderRoot<TContext, TVisualElement> where TVisualElement : VisualElement
+    public class FluiBinderRoot<TContext, TVisualElement> : IFluiBinderRoot where TVisualElement : VisualElement
     {
+        private readonly Dictionary<string, TemplateContainer> _templates = new();
         private FluiBinder<TContext, TVisualElement> _root;
 
         public void BindGui(
@@ -15,6 +17,7 @@ namespace Flui.Binder
             if (root == null)
             {
                 _root = null;
+                _templates.Clear();
                 return;
             }
 
@@ -24,7 +27,7 @@ namespace Flui.Binder
                 _root = null;
             }
 
-            _root ??= new FluiBinder<TContext, TVisualElement>("root", context, root);
+            _root ??= new FluiBinder<TContext, TVisualElement>(this, "root", context, root);
             _root.PrepareVisit();
             buildAction(_root);
             _root.RemoveUnvisited();
@@ -38,6 +41,23 @@ namespace Flui.Binder
             }
 
             return _root.HierarchyAsString();
+        }
+
+        public TemplateContainer GetOrCreateTemplate(VisualElement element, string templateName)
+        {
+            var template = _templates.GetOrCreate(templateName, () =>
+            {
+                var template = element.Q<TemplateContainer>(templateName);
+                if (template == null)
+                {
+                    throw new InvalidOperationException($"Unable to find template {templateName} in {element.name}");
+                }
+
+                template.parent.Remove(template);
+
+                return template;
+            });
+            return template;
         }
     }
 }

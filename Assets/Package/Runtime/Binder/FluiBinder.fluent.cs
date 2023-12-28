@@ -1,7 +1,6 @@
 // ReSharper disable InconsistentNaming
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -538,6 +537,34 @@ namespace Flui.Binder
             return this;
         }
 
+        public FluiBinder<TContext, TVisualElement> ForEach<TChildContext>(
+            string query,
+            Func<TContext, IEnumerable<TChildContext>> itemsFunc,
+            string templateName,
+            Action<FluiBinder<TChildContext, VisualElement>> bindAction = null,
+            Action<FluiBinder<TChildContext, VisualElement>> initiateAction = null,
+            Action<FluiBinder<TChildContext, VisualElement>> updateAction = null)
+        {
+            var template = _fluiBinderRoot.GetOrCreateTemplate(Element, templateName);
+            RawBind<TContext, VisualElement>(
+                query,
+                x => x,
+                s => { },
+                s => { },
+                s =>
+                {
+                    s.SynchronizeList(
+                        itemsFunc,
+                        () => template.templateSource.CloneTree(),
+                        bindAction,
+                        initiateAction,
+                        updateAction);
+                });
+
+            return this;
+        }
+
+
         private void SynchronizeList<TChildContext>(
             Func<TContext, IEnumerable<TChildContext>> itemsFunc,
             Func<VisualElement> visualElementFunc,
@@ -580,7 +607,13 @@ namespace Flui.Binder
                     Element.Remove(visualElement);
                 }
 
-                _childBinders.Remove(visualElement);
+                
+                var childBinder = _childBinders.SafeGetValue(visualElement);
+                if (childBinder != null)
+                {
+                    FluiBinderStats.FluiBinderRemoved += childBinder.GetHierarchyChildCount();
+                    _childBinders.Remove(visualElement);
+                }
             }
         }
     }

@@ -186,54 +186,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &422246955
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 422246957}
-  - component: {fileID: 422246956}
-  m_Layer: 5
-  m_Name: ListUiRow
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &422246956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 422246955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: 10b99eb857cbde34b9e62642f3bb160c, type: 2}
-  m_ParentUI: {fileID: 1758358593}
-  sourceAsset: {fileID: 9197481963319205126, guid: 81f4b03434a07534cacd0692aec05546, type: 3}
-  m_SortingOrder: 0
---- !u!4 &422246957
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 422246955}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1758358594}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +295,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &680506818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,10 +509,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3906944d74165cb4396710a624ed2109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _forceUpdate: 1
-  _runPerformanceTest: 0
-  _generate: 0
-  _code: 
 --- !u!114 &1097064370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -795,7 +743,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1758358592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -808,9 +756,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27580f553b5a40aea0a0618827c84d42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _listRow: {fileID: 422246956}
   _rebuild: 0
-  _pause: 1
+  _pause: 0
   _hierarchy: "q=root, st=Visible\r\n  q=Close, st=Visible\r\n  q=ExternalTemplateList,
     st=Visible\r\n    q=Add, st=Visible\r\n    q=Content, st=Visible\r\n      q=02c0d593ba6440d2bf2912f3fc5fc9ad,
     st=Visible\r\n        q=Name, st=Visible\r\n        q=Title, st=Visible\r\n       
@@ -850,8 +797,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 422246957}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1788866578

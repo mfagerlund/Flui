@@ -7,6 +7,8 @@ namespace Flui
 {
     internal static class Extensions
     {
+        public static TValue SafeGetValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key) => !dictionary.TryGetValue(key, out TValue value) ? default(TValue) : value;
+        
         public static TValue GetOrCreate<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TValue> constructor)
         {
             if (!dictionary.TryGetValue(key, out TValue value))
