@@ -107,6 +107,7 @@ namespace Flui.Binder
 
         public FluiBinder<TContext, TVisualElement> Foldout<TChildContext>(
             string query,
+            string text,
             Func<TContext, TChildContext> contextFunc,
             bool initialOpen,
             Action<FluiBinder<TChildContext, Foldout>> bindAction = null,
@@ -120,6 +121,7 @@ namespace Flui.Binder
                 initiateAction: x =>
                 {
                     x.Element.value = initialOpen;
+                    x.Element.text = text;
                     initiateAction?.Invoke(x);
                 },
                 updateAction);
