@@ -104,10 +104,11 @@ namespace Flui.Binder
             return this;
         }
 
-        
+
         public FluiBinder<TContext, TVisualElement> Foldout<TChildContext>(
             string query,
             Func<TContext, TChildContext> contextFunc,
+            bool initialOpen,
             Action<FluiBinder<TChildContext, Foldout>> bindAction = null,
             Action<FluiBinder<TChildContext, Foldout>> initiateAction = null,
             Action<FluiBinder<TChildContext, Foldout>> updateAction = null)
@@ -116,12 +117,16 @@ namespace Flui.Binder
                 query,
                 contextFunc,
                 bindAction,
-                initiateAction,
+                initiateAction: x =>
+                {
+                    x.Element.value = initialOpen;
+                    initiateAction?.Invoke(x);
+                },
                 updateAction);
 
             return this;
         }
-        
+
         public FluiBinder<TContext, TVisualElement> Label(
             string query,
             Func<TContext, string> getLabel,
@@ -625,7 +630,7 @@ namespace Flui.Binder
                     Element.Remove(visualElement);
                 }
 
-                
+
                 var childBinder = _childBinders.SafeGetValue(visualElement);
                 if (childBinder != null)
                 {
