@@ -343,7 +343,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &680506818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,6 +527,71 @@ MonoBehaviour:
     st=Visible\r\n  q=Ok, st=Visible\r\n  q=Return, st=Visible\r\n"
   _pause: 0
   _rebuild: 0
+--- !u!1 &1097064368
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1097064371}
+  - component: {fileID: 1097064370}
+  - component: {fileID: 1097064369}
+  m_Layer: 5
+  m_Name: CloneTests
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1097064369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097064368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3906944d74165cb4396710a624ed2109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _forceUpdate: 1
+  _runPerformanceTest: 0
+  _generate: 0
+  _code: 
+--- !u!114 &1097064370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097064368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 10b99eb857cbde34b9e62642f3bb160c, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 4d96b72db431fe5459a2b85ab3fa41c2, type: 3}
+  m_SortingOrder: 0
+--- !u!4 &1097064371
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097064368}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1448169385
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,7 +795,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1758358592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -744,18 +809,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _listRow: {fileID: 422246956}
-  _hierarchy: "q=root, st=Visible\r\n  q=Content, st=Visible\r\n    q=6099849121e24b9a9d0bd5946a9d9c3d,
-    st=Visible\r\n      q=Name, st=Visible\r\n      q=Title, st=Visible\r\n     
-    q=Salary, st=Visible\r\n      q=Delete, st=Visible\r\n    q=7b068d1bf3f04c1d899774bf8c67583b,
-    st=Visible\r\n      q=Name, st=Visible\r\n      q=Title, st=Visible\r\n     
-    q=Salary, st=Visible\r\n      q=Delete, st=Visible\r\n    q=e1cb16c02d3a4201a13f7b27bf6b4394,
-    st=Visible\r\n      q=Name, st=Visible\r\n      q=Title, st=Visible\r\n     
-    q=Salary, st=Visible\r\n      q=Delete, st=Visible\r\n    q=a5d302d86f57487ca036c00847d55458,
-    st=Visible\r\n      q=Name, st=Visible\r\n      q=Title, st=Visible\r\n     
-    q=Salary, st=Visible\r\n      q=Delete, st=Visible\r\n  q=Footer, st=Visible\r\n   
-    q=Salary, st=Visible\r\n  q=Add, st=Visible\r\n"
-  _pause: 0
   _rebuild: 0
+  _pause: 1
+  _hierarchy: "q=root, st=Visible\r\n  q=Close, st=Visible\r\n  q=ExternalTemplateList,
+    st=Visible\r\n    q=Add, st=Visible\r\n    q=Content, st=Visible\r\n      q=02c0d593ba6440d2bf2912f3fc5fc9ad,
+    st=Visible\r\n        q=Name, st=Visible\r\n        q=Title, st=Visible\r\n       
+    q=Salary, st=Visible\r\n        q=Delete, st=Visible\r\n      q=d13030a4ff00406ca5dc113ce9a6a3fe,
+    st=Visible\r\n        q=Name, st=Visible\r\n        q=Title, st=Visible\r\n       
+    q=Salary, st=Visible\r\n        q=Delete, st=Visible\r\n      q=28a366c563ca4eb98d25404b69c2da49,
+    st=Visible\r\n        q=Name, st=Visible\r\n        q=Title, st=Visible\r\n       
+    q=Salary, st=Visible\r\n        q=Delete, st=Visible\r\n      q=feedeace32d747cabad466efac34b52f,
+    st=Visible\r\n        q=Name, st=Visible\r\n        q=Title, st=Visible\r\n       
+    q=Salary, st=Visible\r\n        q=Delete, st=Visible\r\n  q=Footer, st=Visible\r\n   
+    q=Salary, st=Visible\r\n"
 --- !u!114 &1758358593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -856,6 +922,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 1788866581}
+  - {fileID: 1097064371}
   - {fileID: 680506819}
   - {fileID: 981760930}
   - {fileID: 42804641}

@@ -23,7 +23,7 @@ namespace FluiDemo.MainMenu
         [SerializeField] private BootstrapBinderDemo bootstrapBinderDemo;
         [SerializeField] private BootstrapCreatorDemo bootstrapCreatorDemo;
         
-        [SerializeField] private ListUi.ListUi _listUi;
+        [SerializeField] private ListUi.Binder.ListUi _listUi;
         
         private readonly FluiBinderRoot<MainMenu, VisualElement> _root = new();
 

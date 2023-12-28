@@ -51,9 +51,9 @@ namespace Flui.Creator
                 {
                     sb.Append($", \"{textElement.text}\"");
                 }
-                else if (IsBaseFieldType(visualElement))
+                else if (FluiHelper.IsBaseFieldType(visualElement))
                 {
-                    sb.Append($", \"{GetBaseFieldLabel(visualElement)}\"");
+                    sb.Append($", \"{FluiHelper.GetBaseFieldLabel(visualElement)}\"");
                 }
                 // else if (visualElement is TextElement te)
                 // {
@@ -95,7 +95,7 @@ namespace Flui.Creator
                     sb.Append(", new List<string>{\"a\", \"b\"}");
                 }
 
-                if (IsBaseFieldType(visualElement)
+                if (FluiHelper.IsBaseFieldType(visualElement)
                     // type == typeof(Toggle)
                     // || type == typeof(Slider)
                     // || type == typeof(TextField)
@@ -116,7 +116,7 @@ namespace Flui.Creator
                 // Action<TContext, float> setValue,
 
                 if (visualElement.childCount == 0
-                    || IsBaseFieldType(visualElement))
+                    || FluiHelper.IsBaseFieldType(visualElement))
                 {
                     sb.AppendLine(")");
                 }
@@ -140,52 +140,7 @@ namespace Flui.Creator
 
             return sb.ToString();
         }
-
-        private static bool IsBaseFieldType(VisualElement obj)
-        {
-            if (obj == null) return false;
-
-            var type = obj.GetType();
-            while (type != null && type != typeof(object))
-            {
-                if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(BaseField<>))
-                {
-                    return true;
-                }
-
-                type = type.BaseType;
-            }
-
-            return false;
-        }
-
-        public static string GetBaseFieldLabel(VisualElement obj)
-        {
-            if (obj == null)
-                throw new ArgumentNullException(nameof(obj));
-
-            Type objType = obj.GetType();
-            while (objType != null && objType != typeof(object))
-            {
-                if (objType.IsGenericType && objType.GetGenericTypeDefinition() == typeof(BaseField<>))
-                {
-                    PropertyInfo labelProperty = objType.GetProperty("label");
-                    if (labelProperty != null && labelProperty.PropertyType == typeof(string))
-                    {
-                        return labelProperty.GetValue(obj) as string;
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException("The 'label' property was not found or is not a string.");
-                    }
-                }
-
-                objType = objType.BaseType;
-            }
-
-            throw new ArgumentException("The object is not a BaseField<?>.", nameof(obj));
-        }
-
+        
         private static string ToValidVariableName(string input)
         {
             if (string.IsNullOrEmpty(input))
