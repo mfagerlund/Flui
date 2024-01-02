@@ -431,7 +431,7 @@ namespace Flui.Creator
         {
             var neme = ReflectionHelper.GetPath(propertyFunc);
             VisualElement(neme, "row", pr => pr
-                .Label(neme + "Label", _ => neme, "unity-base-field")
+                .Label(neme + "Label", _ => AddSpacesToSentence(neme), "unity-base-field")
                 .Label(neme + "Value", y => AddSpacesToSentence(propertyStringFunc(y)), "value")
             );
             return this;
