@@ -100,7 +100,7 @@ namespace Flui
         public static int BindingSetModelValueCount { get; set; }
 
         public static string Describe() => $"Value Binding: View Update={BindingSetViewValueCount} | Model Update={BindingSetModelValueCount}";
-
+        
         public static void Reset()
         {
             BindingSetViewValueCount = 0;

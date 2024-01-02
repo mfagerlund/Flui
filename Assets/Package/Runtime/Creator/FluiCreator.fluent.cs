@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using Flui.Binder;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Flui.Creator
@@ -104,27 +105,6 @@ namespace Flui.Creator
             return this;
         }
 
-        // public FluiCreator<TContext, TVisualElement> Label(
-        //     string name,
-        //     string text,
-        //     string classes,
-        //     Action<FluiCreator<TContext, Label>> buildAction = null,
-        //     Action<FluiCreator<TContext, Label>> initiateAction = null,
-        //     Action<FluiCreator<TContext, Label>> updateAction = null)
-        // {
-        //     RawBuild<Label>(
-        //         name,
-        //         classes,
-        //         buildAction,
-        //         b =>
-        //         {
-        //             b.Element.text = text;
-        //             initiateAction?.Invoke(b);
-        //         },
-        //         updateAction);
-        //     return this;
-        // }
-
         public FluiCreator<TContext, TVisualElement> Label(
             string name,
             Func<TContext, string> textFunc,
@@ -208,6 +188,55 @@ namespace Flui.Creator
                 updateAction);
         }
 
+        public FluiCreator<TContext, TVisualElement> Slider(
+            Expression<Func<TContext, float>> propertyFunc,
+            string classes,
+            float lowValue,
+            float highValue,
+            Action<FluiCreator<TContext, Slider>> buildAction = null,
+            Action<FluiCreator<TContext, Slider>> initiateAction = null,
+            Action<FluiCreator<TContext, Slider>> updateAction = null)
+        {
+            var name = ReflectionHelper.GetPath(propertyFunc);
+
+            return Slider(
+                name,
+                AddSpacesToSentence(name),
+                classes,
+                lowValue,
+                highValue,
+                propertyFunc,
+                buildAction,
+                initiateAction,
+                updateAction);
+        }
+
+        public FluiCreator<TContext, TVisualElement> Toggle(
+            Expression<Func<TContext, bool>> propertyFunc,
+            string classes,
+            Action<FluiCreator<TContext, Toggle>> buildAction = null,
+            Action<FluiCreator<TContext, Toggle>> initiateAction = null,
+            Action<FluiCreator<TContext, Toggle>> updateAction = null)
+        {
+            var name = ReflectionHelper.GetPath(propertyFunc);
+            return Toggle(name, AddSpacesToSentence(name), classes, propertyFunc, buildAction, initiateAction, updateAction);
+        }
+
+        public FluiCreator<TContext, TVisualElement> Toggle(
+            string name,
+            string label,
+            string classes,
+            Expression<Func<TContext, bool>> propertyFunc,
+            Action<FluiCreator<TContext, Toggle>> buildAction = null,
+            Action<FluiCreator<TContext, Toggle>> initiateAction = null,
+            Action<FluiCreator<TContext, Toggle>> updateAction = null)
+        {
+            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+
+            return Toggle(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction);
+        }
+
         public FluiCreator<TContext, TVisualElement> Toggle(
             string name,
             string label,
@@ -236,21 +265,6 @@ namespace Flui.Creator
                 .Set(x => x.PurgeUnmanagedChildren = false);
 
             return this;
-        }
-
-        public FluiCreator<TContext, TVisualElement> Toggle(
-            string name,
-            string label,
-            string classes,
-            Expression<Func<TContext, bool>> propertyFunc,
-            Action<FluiCreator<TContext, Toggle>> buildAction = null,
-            Action<FluiCreator<TContext, Toggle>> initiateAction = null,
-            Action<FluiCreator<TContext, Toggle>> updateAction = null)
-        {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-
-            return Toggle(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction);
         }
 
         public FluiCreator<TContext, TVisualElement> DropdownField(
@@ -304,6 +318,32 @@ namespace Flui.Creator
         }
 
         public FluiCreator<TContext, TVisualElement> EnumField<TEnum>(
+            Expression<Func<TContext, TEnum>> propertyFunc,
+            string classes,
+            Action<FluiCreator<TContext, EnumField>> buildAction = null,
+            Action<FluiCreator<TContext, EnumField>> initiateAction = null,
+            Action<FluiCreator<TContext, EnumField>> updateAction = null) where TEnum : Enum
+        {
+            var name = ReflectionHelper.GetPath(propertyFunc);
+            return EnumField(name, AddSpacesToSentence(name), classes, propertyFunc, buildAction, initiateAction, updateAction);
+        }
+
+        public FluiCreator<TContext, TVisualElement> EnumField<TEnum>(
+            string name,
+            string label,
+            string classes,
+            Expression<Func<TContext, TEnum>> propertyFunc,
+            Action<FluiCreator<TContext, EnumField>> buildAction = null,
+            Action<FluiCreator<TContext, EnumField>> initiateAction = null,
+            Action<FluiCreator<TContext, EnumField>> updateAction = null) where TEnum : Enum
+        {
+            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+
+            return EnumField(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction);
+        }
+
+        public FluiCreator<TContext, TVisualElement> EnumField<TEnum>(
             string name,
             string label,
             string classes,
@@ -335,21 +375,6 @@ namespace Flui.Creator
             return this;
         }
 
-        public FluiCreator<TContext, TVisualElement> EnumField<TEnum>(
-            string name,
-            string label,
-            string classes,
-            Expression<Func<TContext, TEnum>> propertyFunc,
-            Action<FluiCreator<TContext, EnumField>> buildAction = null,
-            Action<FluiCreator<TContext, EnumField>> initiateAction = null,
-            Action<FluiCreator<TContext, EnumField>> updateAction = null) where TEnum : Enum
-        {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-
-            return EnumField(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction);
-        }
-
         public FluiCreator<TContext, TVisualElement> TextField(
             string name,
             string label,
@@ -371,15 +396,32 @@ namespace Flui.Creator
                         s.Element.value = getValue(Context);
                         s.Element.focusable = true;
                         // s.Element.Focus();
-                        s._valueBinding = new ValueBinding<string>(
-                            () => getValue(Context), v => setValue(Context, v),
-                            () => s.Element.value, v => s.Element.value = v).SetLockedFunc(() => s.IsFocused);
+                        var valueBinding = SetUpdateOnReturn(
+                            s,
+                            new ValueBinding<string>(
+                                () => getValue(Context), v => setValue(Context, v),
+                                () => s.Element.value, v => s.Element.value = v));
+
+
+                        s._valueBinding = valueBinding;
                         initiateAction?.Invoke(s);
                     },
                     updateAction)
                 .Set(x => x.PurgeUnmanagedChildren = false);
 
             return this;
+        }
+
+        public FluiCreator<TContext, TVisualElement> TextField(
+            Expression<Func<TContext, string>> propertyFunc,
+            string classes,
+            Action<FluiCreator<TContext, TextField>> buildAction = null,
+            Action<FluiCreator<TContext, TextField>> initiateAction = null,
+            Action<FluiCreator<TContext, TextField>> updateAction = null)
+        {
+            var name = ReflectionHelper.GetPath(propertyFunc);
+
+            return TextField(name, AddSpacesToSentence(name), classes, propertyFunc, buildAction, initiateAction, updateAction);
         }
 
         public FluiCreator<TContext, TVisualElement> TextField(
@@ -395,6 +437,32 @@ namespace Flui.Creator
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
 
             return TextField(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction);
+        }
+
+        public FluiCreator<TContext, TVisualElement> IntegerField(
+            Expression<Func<TContext, int>> propertyFunc,
+            string classes,
+            Action<FluiCreator<TContext, IntegerField>> buildAction = null,
+            Action<FluiCreator<TContext, IntegerField>> initiateAction = null,
+            Action<FluiCreator<TContext, IntegerField>> updateAction = null)
+        {
+            var name = ReflectionHelper.GetPath(propertyFunc);
+            return IntegerField(name, AddSpacesToSentence(name), classes, propertyFunc, buildAction, initiateAction, updateAction);
+        }
+
+        public FluiCreator<TContext, TVisualElement> IntegerField(
+            string name,
+            string label,
+            string classes,
+            Expression<Func<TContext, int>> propertyFunc,
+            Action<FluiCreator<TContext, IntegerField>> buildAction = null,
+            Action<FluiCreator<TContext, IntegerField>> initiateAction = null,
+            Action<FluiCreator<TContext, IntegerField>> updateAction = null)
+        {
+            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+
+            return IntegerField(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction);
         }
 
         public FluiCreator<TContext, TVisualElement> IntegerField(
@@ -418,9 +486,11 @@ namespace Flui.Creator
                         s.Element.value = getValue(Context);
                         s.Element.focusable = true;
                         // s.Element.Focus();
-                        s._valueBinding = new ValueBinding<int>(
-                            () => getValue(Context), v => setValue(Context, v),
-                            () => s.Element.value, v => s.Element.value = v).SetLockedFunc(() => s.IsFocused);
+                        s._valueBinding = SetUpdateOnReturn(
+                            s,
+                            new ValueBinding<int>(
+                                () => getValue(Context), v => setValue(Context, v),
+                                () => s.Element.value, v => s.Element.value = v));
                         initiateAction?.Invoke(s);
                     },
                     updateAction)
@@ -428,22 +498,6 @@ namespace Flui.Creator
 
             return this;
         }
-
-        public FluiCreator<TContext, TVisualElement> IntegerField(
-            string name,
-            string label,
-            string classes,
-            Expression<Func<TContext, int>> propertyFunc,
-            Action<FluiCreator<TContext, IntegerField>> buildAction = null,
-            Action<FluiCreator<TContext, IntegerField>> initiateAction = null,
-            Action<FluiCreator<TContext, IntegerField>> updateAction = null)
-        {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-
-            return IntegerField(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction);
-        }
-
 
         public FluiCreator<TContext, TVisualElement> FloatField(
             string name,
@@ -466,15 +520,28 @@ namespace Flui.Creator
                         s.Element.value = getValue(Context);
                         s.Element.focusable = true;
                         // s.Element.Focus();
-                        s._valueBinding = new ValueBinding<float>(
-                            () => getValue(Context), v => setValue(Context, v),
-                            () => s.Element.value, v => s.Element.value = v).SetLockedFunc(() => s.IsFocused);
+                        s._valueBinding = SetUpdateOnReturn(
+                            s, new ValueBinding<float>(
+                                () => getValue(Context), v => setValue(Context, v),
+                                () => s.Element.value, v => s.Element.value = v));
                         initiateAction?.Invoke(s);
                     },
                     updateAction)
                 .Set(x => x.PurgeUnmanagedChildren = false);
 
             return this;
+        }
+
+        public FluiCreator<TContext, TVisualElement> FloatField(
+            Expression<Func<TContext, float>> propertyFunc,
+            string classes,
+            Action<FluiCreator<TContext, FloatField>> buildAction = null,
+            Action<FluiCreator<TContext, FloatField>> initiateAction = null,
+            Action<FluiCreator<TContext, FloatField>> updateAction = null)
+        {
+            var name = ReflectionHelper.GetPath(propertyFunc);
+
+            return FloatField(name, AddSpacesToSentence(name), classes, propertyFunc, buildAction, initiateAction, updateAction);
         }
 
         public FluiCreator<TContext, TVisualElement> FloatField(
@@ -643,6 +710,48 @@ namespace Flui.Creator
         {
             setAction(this);
             return this;
+        }
+
+        public static string AddSpacesToSentence(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return text;
+
+            StringBuilder newText = new StringBuilder(text.Length * 2);
+            newText.Append(text[0]);
+
+            for (int i = 1; i < text.Length; i++)
+            {
+                if (char.IsUpper(text[i]) && char.IsLower(text[i - 1]))
+                {
+                    newText.Append(' ');
+                }
+
+                newText.Append(text[i]);
+            }
+
+            return newText.ToString();
+        }
+
+        private IValueBinding SetUpdateOnReturn<T, TVE>(FluiCreator<TContext, TVE> fluiCreator, ValueBinding<T> valueBinding)
+            where TVE : VisualElement
+        {
+            valueBinding.SetLockedFunc(() =>
+            {
+                if (!fluiCreator.IsFocused)
+                {
+                    return false;
+                }
+
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    // We're focused and the user pressed enter.
+                    return false;
+                }
+
+                return fluiCreator.IsFocused;
+            });
+            return valueBinding;
         }
     }
 }

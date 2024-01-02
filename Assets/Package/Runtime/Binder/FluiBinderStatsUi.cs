@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using Flui.Creator;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Flui.Binder
@@ -27,7 +29,10 @@ namespace Flui.Binder
             _root ??= new FluiBinderRoot<FluiBinderStatsUi, VisualElement>();
             _root.BindGui(
                 this, _document.rootVisualElement,
-                x => x.Label(_labelName, ctx => FluiBinderStats.Details()));
+                x => x.Label(_labelName, ctx => 
+                    FluiBinderStats.Describe()+Environment.NewLine+
+                    FluiCreatorStats.Describe()+Environment.NewLine+
+                    ValueBindingStats.Describe()));
         }
     }
 }

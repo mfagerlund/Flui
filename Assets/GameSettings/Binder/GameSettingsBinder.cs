@@ -38,7 +38,6 @@ namespace FluiDemo.GameSettings.Binder
 
         private void Hide()
         {
-            // gameObject.SetActive(false);
             CommonHelper.FadeOut(
                 this,
                 _rootVisualElement,

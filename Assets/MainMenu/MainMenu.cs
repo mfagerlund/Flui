@@ -22,9 +22,11 @@ namespace FluiDemo.MainMenu
 
         [SerializeField] private BootstrapBinderDemo bootstrapBinderDemo;
         [SerializeField] private BootstrapCreatorDemo bootstrapCreatorDemo;
-        
+
         [SerializeField] private ListUi.Binder.ListUi _listUi;
-        
+
+        [SerializeField] private Mixed.Mixed _mixed;
+
         private readonly FluiBinderRoot<MainMenu, VisualElement> _root = new();
 
         private void OnEnable()
@@ -46,6 +48,7 @@ namespace FluiDemo.MainMenu
                 .Group("FluiCreatorDemos", ctx => ctx, g => g
                     .Button("BootstrapDemo", _ => ShowBootstrapCreatorDemo())
                     .Button("GameSettingsMenu", _ => ShowGameSettingsCreator()))
+                .Button("Mixed", _ => ShowMixed())
                 .Label("Time", _ => $"Time: {DateTime.Now:HH:mm:ss}")
             );
         }
@@ -53,33 +56,44 @@ namespace FluiDemo.MainMenu
         private void ShowBootstrapBinderDemo()
         {
             Hide();
-            bootstrapBinderDemo.Show(() => gameObject.SetActive(true));
+            bootstrapBinderDemo.Show(Show);
         }
 
         private void ShowBootstrapCreatorDemo()
         {
             Hide();
-            bootstrapCreatorDemo.Show(() => gameObject.SetActive(true));
+            bootstrapCreatorDemo.Show(Show);
         }
 
         private void ShowGameSettingsBinder()
         {
             Hide();
-            gameSettingsBinder.Show(() => gameObject.SetActive(true));
+            gameSettingsBinder.Show(Show);
         }
 
         private void ShowGameSettingsCreator()
         {
             Hide();
-            gameSettingsCreator.Show(() => gameObject.SetActive(true));
+            gameSettingsCreator.Show(Show);
         }
 
         private void ShowList()
         {
             Hide();
-            _listUi.Show(() => gameObject.SetActive(true));
+            _listUi.Show(Show);
         }
 
+        private void ShowMixed()
+        {
+            Hide();
+            _mixed.Show(Show);
+        }
+
+        private void Show()
+        {
+            gameObject.SetActive(true);
+        }
+        
         private void Hide()
         {
             CommonHelper.FadeOut(

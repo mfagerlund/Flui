@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/CommonUss.uss?fileID=7433441132597879392&amp;guid=c4f9af48e2644a929dd15ba3bd46a469&amp;type=3#CommonUss" />
+    <Style src="project://database/Assets/Package/Resources/Required.uss?fileID=7433441132597879392&amp;guid=554768fa32915df43849a5ff8f29cd04&amp;type=3#Required" />
+    <Style src="project://database/Assets/Package/Resources/BootstrapUss.uss?fileID=7433441132597879392&amp;guid=534b208ba7f75194ebac2458c626ada3&amp;type=3#BootstrapUss" />
+    <ui:VisualElement class="centered-box" style="background-color: rgba(255, 112, 112, 0.34);">
+        <ui:VisualElement name="Header" class="row" style="justify-content: space-between;">
+            <ui:Label tabindex="-1" text="Object Properties:" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+            <ui:Button text="Close" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Close" class="btn-primary" style="align-self: auto;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Properties" style="flex-grow: 1;">
+            <ui:Toggle label="Toggle" />
+            <ui:Slider picking-mode="Ignore" label="Slider" value="42" high-value="100" />
+            <ui:TextField picking-mode="Ignore" label="Text Field" value="filler text" />
+        </ui:VisualElement>
+        <ui:Label tabindex="-1" text="Object Properties Again:" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+        <ui:VisualElement name="PropertiesAgain" style="flex-grow: 1;" />
+    </ui:VisualElement>
+</ui:UXML>

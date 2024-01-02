@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Flui.Binder
 {
@@ -146,6 +147,24 @@ namespace Flui.Binder
             }
 
             throw new InvalidOperationException($"Unable to set value to {memberLamda}");
+        }
+
+        public static string GetPath<T, U>(Expression<Func<T, U>> expr)
+        {
+            var txt = expr.Body.ToString();
+            var resultString = Regex.Match(txt, @"Convert\(value\(.*?\).(.*?), Object\)").Groups[1].Value;
+            if (!string.IsNullOrWhiteSpace(resultString))
+            {
+                return resultString;
+            }
+
+            txt = txt.Substring(txt.IndexOf(".") + 1);
+            if (txt.EndsWith(", Object)"))
+            {
+                txt = txt.Substring(0, txt.Length - ", Object)".Length);
+            }
+
+            return txt;
         }
     }
 }

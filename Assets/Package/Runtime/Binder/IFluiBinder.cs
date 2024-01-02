@@ -6,7 +6,6 @@ namespace Flui.Binder
     public interface IFluiBinder
     {
         bool Visited { get; }
-        
         bool Visible { get; }
         bool Hidden { get; }
         bool Invisible { get; }

@@ -7,7 +7,7 @@
         public static int FluiBinderRemoved { get; set; }
         public static int TotalRebuild { get; set; }
 
-        public static string Details() => $"Fluid Binder: Created={FluiBinderCreated} | Removed={FluiBinderRemoved} | Destroyed={FluidBinderDestroyed} | Rebuild={TotalRebuild}, {ValueBindingStats.Describe()}";
+        public static string Describe() => $"Fluid Binder: Created={FluiBinderCreated} | Removed={FluiBinderRemoved} | Destroyed={FluidBinderDestroyed} | Rebuild={TotalRebuild}";
 
         public static void Reset()
         {

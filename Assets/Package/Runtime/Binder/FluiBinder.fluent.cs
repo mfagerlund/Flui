@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Flui.Creator;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -87,6 +88,26 @@ namespace Flui.Binder
         //     return this;
         // }
 
+        public FluiBinder<TContext, TVisualElement> Create<TChildContext>(
+            string query,
+            Func<TContext, TChildContext> contextFunc,
+            Action<FluiCreator<TChildContext, VisualElement>> createAction = null)
+        {
+            RawBind<TChildContext, VisualElement>(
+                query,
+                contextFunc,
+                flui =>
+                {
+                    flui.Data ??= new FluiCreatorRoot<TChildContext, VisualElement>();
+                    var root = (FluiCreatorRoot<TChildContext, VisualElement>)flui.Data;
+                    root.CreateGui(flui.Context, flui.Element, createAction);
+                },
+                null,
+                null);
+
+            return this;
+        }
+
         public FluiBinder<TContext, TVisualElement> Group<TChildContext>(
             string query,
             Func<TContext, TChildContext> contextFunc,
@@ -103,7 +124,6 @@ namespace Flui.Binder
 
             return this;
         }
-
 
         public FluiBinder<TContext, TVisualElement> Foldout<TChildContext>(
             string query,

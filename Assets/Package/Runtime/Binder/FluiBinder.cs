@@ -58,6 +58,7 @@ namespace Flui.Binder
         public bool Hidden { get; set; } = false;
         public bool Invisible { get; set; } = false;
         public bool IsFocused => Element.focusController?.focusedElement == Element;
+        public object Data { get; set; }
 
         private FluiBinder<TChildContext, TChildVisualElement> RawBind<TChildContext, TChildVisualElement>(
             string query,

@@ -5,14 +5,13 @@ namespace Flui.Creator
 {
     public class FluiCreatorRoot<TContext, TVisualElement>
         where TVisualElement : VisualElement
-        where TContext : class
     {
         private FluiCreator<TContext, TVisualElement> _root;
 
         public void CreateGui(
             TContext context,
             TVisualElement root,
-            Action<FluiCreator<TContext, TVisualElement>> buildAction)
+            Action<FluiCreator<TContext, TVisualElement>> createAction)
         {
             if (root == null)
             {
@@ -28,8 +27,7 @@ namespace Flui.Creator
 
             _root ??= new FluiCreator<TContext, TVisualElement>("root", context, root);
             _root.PrepareVisit();
-            // BuildAction should really be set, otherwise what's the point of all this?
-            buildAction?.Invoke(_root);
+            createAction?.Invoke(_root);
             _root.RemoveUnvisited();
         }
     }

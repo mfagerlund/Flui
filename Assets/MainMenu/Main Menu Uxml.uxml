@@ -19,6 +19,7 @@
                 <ui:Button text="List" display-tooltip-when-elided="true" name="List" class="btn-primary menu-item disabled" />
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:Button text="Mixed" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Mixed" class="btn-primary" style="width: 206px;" />
         <ui:Label tabindex="-1" text="Time: 15:22:11" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Time" class="menu-item" style="-unity-text-align: upper-right;" />
     </ui:VisualElement>
 </ui:UXML>

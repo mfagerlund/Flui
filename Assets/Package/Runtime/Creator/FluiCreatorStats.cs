@@ -17,5 +17,8 @@
         public static int FluisDestroyed { get; set; }
         public static int UnparentedVisualElementsRemoved { get; set; }
         public static int TotalRebuild { get; set; }
+
+        public static string Describe() => 
+            $"Fluid Creator: Created={FluisCreated} | Removed={FluisRemoved} | Destroyed={FluisDestroyed} | Rebuild={TotalRebuild}";
     }
 }
