@@ -429,16 +429,15 @@ namespace Flui.Creator
         }
 
         public FluiCreator<TContext, TVisualElement> TextFieldReadOnly<TValue>(
-            FluiCreator<TContext, TVisualElement> flui,
             Expression<Func<TContext, TValue>> propertyFunc,
             Func<TContext, string> propertyStringFunc)
         {
             var neme = ReflectionHelper.GetPath(propertyFunc);
-            flui.VisualElement(neme, "row", pr => pr
+            VisualElement(neme, "row", pr => pr
                 .Label(neme + "Label", _ => neme, "unity-base-field")
                 .Label(neme + "Value", propertyStringFunc, "value")
             );
-            return flui;
+            return this;
         }
         
         public FluiCreator<TContext, TVisualElement> TextField(
