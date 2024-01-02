@@ -7,7 +7,9 @@ using FluiDemo.Bootstrap.Binder;
 using FluiDemo.Bootstrap.Creator;
 using FluiDemo.GameSettings.Binder;
 using FluiDemo.GameSettings.Creator;
+using FluiDemo.ListUi.Creator;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace FluiDemo.MainMenu
@@ -23,7 +25,8 @@ namespace FluiDemo.MainMenu
         [SerializeField] private BootstrapBinderDemo bootstrapBinderDemo;
         [SerializeField] private BootstrapCreatorDemo bootstrapCreatorDemo;
 
-        [SerializeField] private ListUi.Binder.ListUi _listUi;
+        [SerializeField] private ListUi.Binder.ListUiBinder listUiBinder;
+        [SerializeField] private ListUiCreator listUiCreator;
 
         [SerializeField] private Mixed.Mixed _mixed;
 
@@ -42,12 +45,13 @@ namespace FluiDemo.MainMenu
                 .Group("FluiBinderDemos", ctx => ctx, g => g
                     .Button("BootstrapDemo", _ => ShowBootstrapBinderDemo())
                     .Button("GameSettingsMenu", _ => ShowGameSettingsBinder())
-                    .Button("List", _ => ShowList()
-                    )
+                    .Button("List", _ => ShowListBinder())
                 )
                 .Group("FluiCreatorDemos", ctx => ctx, g => g
                     .Button("BootstrapDemo", _ => ShowBootstrapCreatorDemo())
-                    .Button("GameSettingsMenu", _ => ShowGameSettingsCreator()))
+                    .Button("GameSettingsMenu", _ => ShowGameSettingsCreator())
+                    .Button("List", _ => ShowListCreator())
+                )
                 .Button("Mixed", _ => ShowMixed())
                 .Label("Time", _ => $"Time: {DateTime.Now:HH:mm:ss}")
             );
@@ -77,10 +81,16 @@ namespace FluiDemo.MainMenu
             gameSettingsCreator.Show(Show);
         }
 
-        private void ShowList()
+        private void ShowListBinder()
         {
             Hide();
-            _listUi.Show(Show);
+            listUiBinder.Show(Show);
+        }
+
+        private void ShowListCreator()
+        {
+            Hide();
+            listUiCreator.Show(Show);
         }
 
         private void ShowMixed()
@@ -93,7 +103,7 @@ namespace FluiDemo.MainMenu
         {
             gameObject.SetActive(true);
         }
-        
+
         private void Hide()
         {
             CommonHelper.FadeOut(

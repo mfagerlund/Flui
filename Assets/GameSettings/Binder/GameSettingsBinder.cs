@@ -1,17 +1,14 @@
 // ReSharper disable InconsistentNaming
 
-using System;
 using System.Collections;
 using Flui.Binder;
-using FluiDemo.Bootstrap;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace FluiDemo.GameSettings.Binder
 {
-    public class GameSettingsBinder : MonoBehaviour
+    public class GameSettingsBinder : Fadable
     {
-        private UIDocument _document;
         [SerializeField] public string _hierarchy;
         [SerializeField] private bool _pause;
         [SerializeField] private bool _rebuild;
@@ -20,30 +17,6 @@ namespace FluiDemo.GameSettings.Binder
         public GameSettings GameSettings { get; set; } = new GameSettings();
         public Panel ActivePanel { get; set; } = Panel.ScreenSettings;
 
-        private Action _onHide;
-        private VisualElement _rootVisualElement;
-
-        public void Show(Action onHide)
-        {
-            _onHide = onHide;
-            gameObject.SetActive(true);
-        }
-
-        public void OnEnable()
-        {
-            _document ??= GetComponent<UIDocument>();
-            _rootVisualElement = _document.rootVisualElement;
-            CommonHelper.FadeIn(this, _rootVisualElement);
-        }
-
-        private void Hide()
-        {
-            CommonHelper.FadeOut(
-                this,
-                _rootVisualElement,
-                () => gameObject.SetActive(false));
-            _onHide();
-        }
 
         private void OnValidate()
         {
@@ -85,7 +58,7 @@ namespace FluiDemo.GameSettings.Binder
                 _rebuild = false;
             }
 
-            _root.BindGui(this, _rootVisualElement, x => x
+            _root.BindGui(this, RootVisualElement, x => x
                 .Label("compact-settings", ctx => ctx.GameSettings.CompactString)
                 .EnumButtons(
                     "left-panel",

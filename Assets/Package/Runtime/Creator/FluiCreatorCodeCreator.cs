@@ -1,5 +1,4 @@
-﻿using Flui.Creator;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Flui.Creator

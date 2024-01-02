@@ -7,7 +7,9 @@ namespace Flui.Creator
         string Name { get; }
         bool Visited { get; }
         VisualElement VisualElement { get; }
+        object Context { get; }
         void PrepareVisit();
         void RemoveUnvisited();
+        int GetHierarchyChildCount();
     }
 }

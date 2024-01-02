@@ -9,7 +9,7 @@ namespace FluiDemo.Mixed
     public class Mixed : Fadable
     {
         private FluiBinderRoot<ChildObjectWithProperties, VisualElement> _root = new();
-        private ChildObjectWithProperties _exampleObjectWithProperties = new ChildObjectWithProperties();
+        private ChildObjectWithProperties _exampleObjectWithProperties = new();
         [SerializeField] private bool _triggerOnValidate = false;
 
         private void OnValidate()

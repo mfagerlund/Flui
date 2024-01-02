@@ -1,24 +1,46 @@
 // ReSharper disable InconsistentNaming
+
 using System;
 using System.Collections.Generic;
 using Flui;
 using Flui.Binder;
+using Flui.Creator;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 namespace FluiDemo.ListUi.Binder
 {
-    public class ListUi : Fadable
+    public class ListUiBinder : Fadable
     {
-        private UIDocument _document;
         [SerializeField] private bool _rebuild;
         [SerializeField] private bool _pause;
-        [SerializeField] public string _hierarchy;
 
-        private FluiBinderRoot<ListUi, VisualElement> _root = new();
+        [SerializeField] public bool _generateCode;
 
-        private Action _onHide;
+        [SerializeField] public bool _generateHierarchy;
+
+        // FluiCreatorHelper.GenerateCreatorCode(
+        [SerializeField] public string _code;
+
+        private FluiBinderRoot<ListUiBinder, VisualElement> _root = new();
+
+        public void OnValidate()
+        {
+            if (_generateCode)
+            {
+                _generateCode = false;
+                _code = FluiCreatorHelper.GenerateCreatorCode(RootVisualElement);
+                return;
+            }
+
+            if (_generateHierarchy)
+            {
+                _generateHierarchy = false;
+                _code = _root.HierarchyAsString();
+                return;
+            }
+        }
 
         private void Update()
         {
@@ -29,7 +51,7 @@ namespace FluiDemo.ListUi.Binder
         {
             if (_rebuild)
             {
-                _root = new FluiBinderRoot<ListUi, VisualElement>();
+                _root = new FluiBinderRoot<ListUiBinder, VisualElement>();
                 _rebuild = false;
             }
 
@@ -57,8 +79,6 @@ namespace FluiDemo.ListUi.Binder
                             .Label("Salary", ctx => $"{g.Context.GetSalarySum():0}")
                         ))
             );
-
-            _hierarchy = _root.HierarchyAsString();
         }
 
         private void DeleteOffice(VisualElement officeElement, Office office)

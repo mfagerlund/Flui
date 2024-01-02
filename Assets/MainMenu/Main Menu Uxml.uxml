@@ -16,7 +16,7 @@
                 <ui:Label tabindex="-1" text="FluiCreator Demos" parse-escape-sequences="true" display-tooltip-when-elided="true" />
                 <ui:Button text="Game Settings Menu Demo" display-tooltip-when-elided="true" name="GameSettingsMenu" class="btn-primary menu-item" />
                 <ui:Button text="Bootstrap Demo" display-tooltip-when-elided="true" name="BootstrapDemo" class="btn-primary menu-item" />
-                <ui:Button text="List" display-tooltip-when-elided="true" name="List" class="btn-primary menu-item disabled" />
+                <ui:Button text="List" display-tooltip-when-elided="true" name="List" class="btn-primary menu-item" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:Button text="Mixed" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Mixed" class="btn-primary" style="width: 206px;" />

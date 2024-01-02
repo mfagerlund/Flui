@@ -30,6 +30,9 @@ namespace Flui.Creator
         public string Name { get; }
         public bool Visited => _visited;
         VisualElement IFluiCreator.VisualElement => Element;
+
+        object IFluiCreator.Context => Context;
+
         public TContext Context { get; set; }
         public TVisualElement Element { get; }
         public bool PurgeUnmanagedChildren { get; set; } = true;
@@ -73,6 +76,8 @@ namespace Flui.Creator
                 }
             }
         }
+
+        public int GetHierarchyChildCount() => 1 + _childCreators.Values.Sum(x => x.GetHierarchyChildCount());
 
         public FluiCreator<TContext, TVisualElement> AddClasses(string classes)
         {

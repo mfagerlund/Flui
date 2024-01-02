@@ -1,50 +1,20 @@
 // ReSharper disable InconsistentNaming
-
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Flui.Creator;
-using FluiDemo.Bootstrap;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace FluiDemo.GameSettings.Creator
 {
-    public class GameSettingsCreator : MonoBehaviour
+    public class GameSettingsCreator : Fadable
     {
-        private UIDocument _document;
         [SerializeField] private bool _pause;
         [SerializeField] private bool _rebuild;
 
         private FluiCreatorRoot<GameSettingsCreator, VisualElement> _root = new();
         public GameSettings GameSettings { get; set; } = new GameSettings();
         public Panel ActivePanel { get; set; } = Panel.ScreenSettings;
-
-        private Action _onHide;
-        private VisualElement _rootVisualElement;
-
-        public void Show(Action onHide)
-        {
-            _onHide = onHide;
-            gameObject.SetActive(true);
-        }
-
-        public void OnEnable()
-        {
-            _document ??= GetComponent<UIDocument>();
-            _rootVisualElement = _document.rootVisualElement;
-            CommonHelper.FadeIn(this, _rootVisualElement);
-        }
-
-        private void Hide()
-        {
-            // gameObject.SetActive(false);
-            CommonHelper.FadeOut(
-                this,
-                _rootVisualElement,
-                () => gameObject.SetActive(false));
-            _onHide();
-        }
 
         private void OnValidate()
         {
@@ -86,7 +56,7 @@ namespace FluiDemo.GameSettings.Creator
                 _rebuild = false;
             }
 
-            _root.CreateGui(this, _rootVisualElement, x => x
+            _root.CreateGui(this, RootVisualElement, x => x
                     // CODE
                     .VisualElement("container", "container", container => container
                         .VisualElement("header", "header", header => header
@@ -149,45 +119,6 @@ namespace FluiDemo.GameSettings.Creator
                             .Button("conquer-world", "Conquer World", "btn-primary, disabled", null)
                         )
                     )
-
-                // CODE
-                // .Label("compact-settings", ctx => ctx.GameSettings.CompactString)
-                // .EnumButtons(
-                //     "left-panel",
-                //     ctx => ctx.ActivePanel,
-                //     b => b
-                //         .EnumButton(Panel.ControlSettings)
-                //         .EnumButton(Panel.ScreenSettings)
-                //         .EnumButton(Panel.VolumeSettings)
-                //         .EnumButton(Panel.GraphicSettings)
-                //         .EnumButton(Panel.KeyboardSettings))
-                //
-                // .EnumSwitch(
-                //     "right-panel",
-                //     ctx => ctx.ActivePanel, p => p
-                //         .Case(
-                //             "ControlSettingsPanel", Panel.ControlSettings, ctx => ctx.GameSettings.ControlSettings, c => c
-                //                 .Toggle("SimpleControls", t => t.SimpleControls)
-                //                 .Toggle("Vibration", t => t.Vibration)
-                //                 .Toggle("ButtonConfiguration", t => t.ButtonConfiguration)
-                //                 .Slider("CameraDistance", t => t.CameraDistance, lowValue: 1, highValue: 20)
-                //                 .Toggle("ScreenVibration", t => t.ScreenVibration)
-                //                 .Toggle("ShowSpecialAttack", t => t.ShowSpecialAttack)
-                //                 .TextField("UserName", t => t.UserName)
-                //         )
-                //         .Case("ScreenSettingsPanel", Panel.ScreenSettings, ctx => ctx.GameSettings.ScreenSettings, c => c
-                //             .IntegerField("Width", t => t.Width)
-                //             .IntegerField("Height", t => t.Height)
-                //             .FloatField("PixelDensity", t => t.PixelDensity)
-                //             .DropdownField("ColorMode", t => t.ColorModeId)
-                //             .EnumField("CycleMode", t => t.CycleMode)
-                //         )
-                //         .Case("VolumeSettingsPanel", Panel.VolumeSettings, ctx => ctx)
-                //         .Case("GraphicSettingsPanel", Panel.GraphicSettings, ctx => ctx)
-                //         .Case("KeyboardSettingsPanel", Panel.KeyboardSettings, ctx => ctx)
-                // )
-                // .Button("Ok", ctx => Hide())
-                // .Button("Return", ctx => Hide())
             );
         }
     }

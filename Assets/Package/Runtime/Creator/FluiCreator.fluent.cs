@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using Flui.Binder;
@@ -102,6 +103,32 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, ScrollView>> updateAction = null)
         {
             RawCreate(name, classes, x => x, buildAction, initiateAction, updateAction);
+            return this;
+        }
+
+        public FluiCreator<TContext, TVisualElement> Label(
+            Expression<Func<TContext, string>> propertyFunc,
+            string classes,
+            Action<FluiCreator<TContext, Label>> buildAction = null,
+            Action<FluiCreator<TContext, Label>> initiateAction = null,
+            Action<FluiCreator<TContext, Label>> updateAction = null)
+        {
+            string name = ReflectionHelper.GetPath(propertyFunc);
+            var getter = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            RawCreate(
+                name,
+                classes,
+                x => x,
+                buildAction,
+                b =>
+                {
+                    initiateAction?.Invoke(b);
+                },
+                b =>
+                {
+                    b.Element.text = getter(b.Context);
+                    updateAction?.Invoke(b);
+                });
             return this;
         }
 
@@ -611,6 +638,88 @@ namespace Flui.Creator
                 },
                 b => { updateAction?.Invoke(b); });
             return this;
+        }
+
+        public FluiCreator<TContext, TVisualElement> ForEach<TChildContext>(
+            string name,
+            Func<TContext, IEnumerable<TChildContext>> itemsFunc,
+            string classes,
+            Action<FluiCreator<TChildContext, VisualElement>> bindAction = null,
+            Action<FluiCreator<TChildContext, VisualElement>> initiateAction = null,
+            Action<FluiCreator<TChildContext, VisualElement>> updateAction = null)
+        {
+            RawCreate<TContext, VisualElement>(
+                name,
+                "",
+                x => x,
+                s =>
+                {
+                    // No bind action for the container (?)
+                },
+                s => { },
+                s =>
+                {
+                    s.SynchronizeList(
+                        classes,
+                        itemsFunc,
+                        bindAction,
+                        initiateAction,
+                        updateAction);
+                });
+
+            return this;
+        }
+
+        private void SynchronizeList<TChildContext>(
+            string classes,
+            Func<TContext, IEnumerable<TChildContext>> itemsFunc,
+            Action<FluiCreator<TChildContext, VisualElement>> bindAction,
+            Action<FluiCreator<TChildContext, VisualElement>> initiateAction,
+            Action<FluiCreator<TChildContext, VisualElement>> updateAction)
+        {
+            var children = itemsFunc(Context);
+            HashSet<VisualElement> unvisited = new HashSet<VisualElement>(Element.Children());
+            foreach (var context in children)
+            {
+                // Could be slow - need two way dictionary
+                var rawFlui = _childCreators.Values.SingleOrDefault(x => Equals(x.Context, context));
+                var veName = "";
+                if (rawFlui == null)
+                {
+                    var visualElement = new VisualElement();
+                    veName = visualElement.name = Guid.NewGuid().ToString().Replace("-", "");
+                    Element.Add(visualElement);
+                }
+                else
+                {
+                    veName = rawFlui.Name;
+                }
+
+                var flui = RawCreate<TChildContext, VisualElement>(
+                    veName,
+                    classes,
+                    xy => context,
+                    bindAction,
+                    initiateAction,
+                    updateAction);
+
+                unvisited.Remove(flui.Element);
+            }
+
+            foreach (var visualElement in unvisited)
+            {
+                if (visualElement.parent != null)
+                {
+                    Element.Remove(visualElement);
+                }
+
+                var childCreator = _childCreators.SafeGetValue(visualElement.name);
+                if (childCreator != null)
+                {
+                    FluiCreatorStats.FluisRemoved += childCreator.GetHierarchyChildCount();
+                    _childCreators.Remove(visualElement.name);
+                }
+            }
         }
 
         public FluiCreator<TContext, TVisualElement> EnumButtons<TEnum>(
