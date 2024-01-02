@@ -120,10 +120,7 @@ namespace Flui.Creator
                 classes,
                 x => x,
                 buildAction,
-                b =>
-                {
-                    initiateAction?.Invoke(b);
-                },
+                b => { initiateAction?.Invoke(b); },
                 b =>
                 {
                     b.Element.text = getter(b.Context);
@@ -435,11 +432,11 @@ namespace Flui.Creator
             var neme = ReflectionHelper.GetPath(propertyFunc);
             VisualElement(neme, "row", pr => pr
                 .Label(neme + "Label", _ => neme, "unity-base-field")
-                .Label(neme + "Value", propertyStringFunc, "value")
+                .Label(neme + "Value", y => AddSpacesToSentence(propertyStringFunc(y)), "value")
             );
             return this;
         }
-        
+
         public FluiCreator<TContext, TVisualElement> TextField(
             string name,
             string label,
@@ -664,7 +661,7 @@ namespace Flui.Creator
             ForEach(name, getFunc, classes, bindAction, initiateAction, updateAction);
             return this;
         }
-        
+
         public FluiCreator<TContext, TVisualElement> ForEach<TChildContext>(
             string name,
             Func<TContext, IEnumerable<TChildContext>> itemsFunc,
