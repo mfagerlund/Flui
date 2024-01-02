@@ -14,5 +14,7 @@
         </ui:VisualElement>
         <ui:Label tabindex="-1" text="Object Properties Again:" parse-escape-sequences="true" display-tooltip-when-elided="true" />
         <ui:VisualElement name="PropertiesAgain" style="flex-grow: 1;" />
+        <ui:Label tabindex="-1" text="List:" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+        <ui:VisualElement name="List" style="flex-grow: 1;" />
     </ui:VisualElement>
 </ui:UXML>

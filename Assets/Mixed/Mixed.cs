@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Flui.Binder;
 using Flui.Creator;
 using UnityEngine;
@@ -32,13 +33,14 @@ namespace FluiDemo.Mixed
                 .BindGui(_exampleObjectWithProperties, RootVisualElement, r => r
                     .Button("Close", _ => Hide())
                     .Create("Properties", x => x, r.Context.CreateGui)
-                    .Create("PropertiesAgain", x => x, r.Context.CreateGui));
+                    .Create("PropertiesAgain", x => x, r.Context.CreateGui)
+                    .ForEachCreate("List", ctx => ctx.Items, "row", i => i.Context.CreateGui(i))
+                );
         }
 
         public class ObjectWithGui
         {
             public string StringProperty { get; set; } = "StringProppo";
-
             public ObjectSizeEnum ObjectSize { get; set; } = ObjectSizeEnum.Large;
 
             public void CreateGui<TObjectWithGui>(FluiCreator<TObjectWithGui, VisualElement> flui) where TObjectWithGui : ObjectWithGui
@@ -56,6 +58,14 @@ namespace FluiDemo.Mixed
             public bool ToggleValue { get; set; } = false;
             public int IntValue { get; set; } = 20;
 
+            public List<ListItem> Items { get; } = new List<ListItem>
+            {
+                new ListItem("Alpha", "Alpacka"),
+                new ListItem("Beta", "Betamax"),
+                new ListItem("Zeta", "Jones"),
+                new ListItem("Offside", "Onside"),
+            };
+
             public new void CreateGui<TObjectWithGui>(FluiCreator<TObjectWithGui, VisualElement> flui) where TObjectWithGui : ChildObjectWithProperties
             {
                 base.CreateGui(flui);
@@ -65,6 +75,25 @@ namespace FluiDemo.Mixed
                     .FloatField(x => x.FloatValue, "")
                     .Toggle(x => x.ToggleValue, "")
                     .IntegerField(x => x.IntValue, "");
+            }
+        }
+
+        public class ListItem
+        {
+            public ListItem(string name, string value)
+            {
+                Name = name;
+                Value = value;
+            }
+
+            public string Name { get; set; }
+            public string Value { get; set; }
+
+            public void CreateGui(FluiCreator<ListItem, VisualElement> fluiCreator)
+            {
+                fluiCreator
+                    .TextField(l => l.Name, "")
+                    .TextField(l => l.Value, "");
             }
         }
 

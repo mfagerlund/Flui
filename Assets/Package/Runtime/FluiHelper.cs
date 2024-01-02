@@ -139,5 +139,20 @@ namespace Flui
                 action();
             }
         }
+        
+        public static void SetClasses(VisualElement ve, string classes)
+        {
+            if (classes != null)
+            {
+                foreach (var @class in classes.Split(','))
+                {
+                    var tclass = @class.Trim();
+                    if (!string.IsNullOrWhiteSpace(tclass))
+                    {
+                        ve.AddToClassList(tclass);
+                    }
+                }
+            }
+        }
     }
 }

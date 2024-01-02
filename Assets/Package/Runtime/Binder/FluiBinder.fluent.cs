@@ -88,26 +88,6 @@ namespace Flui.Binder
         //     return this;
         // }
 
-        public FluiBinder<TContext, TVisualElement> Create<TChildContext>(
-            string query,
-            Func<TContext, TChildContext> contextFunc,
-            Action<FluiCreator<TChildContext, VisualElement>> createAction = null)
-        {
-            RawBind<TChildContext, VisualElement>(
-                query,
-                contextFunc,
-                flui =>
-                {
-                    flui.Data ??= new FluiCreatorRoot<TChildContext, VisualElement>();
-                    var root = (FluiCreatorRoot<TChildContext, VisualElement>)flui.Data;
-                    root.CreateGui(flui.Context, flui.Element, createAction);
-                },
-                null,
-                null);
-
-            return this;
-        }
-
         public FluiBinder<TContext, TVisualElement> Group<TChildContext>(
             string query,
             Func<TContext, TChildContext> contextFunc,
@@ -582,6 +562,60 @@ namespace Flui.Binder
             return this;
         }
 
+        public FluiBinder<TContext, TVisualElement> Create<TChildContext>(
+            string query,
+            Func<TContext, TChildContext> contextFunc,
+            Action<FluiCreator<TChildContext, VisualElement>> createAction = null)
+        {
+            RawBind<TChildContext, VisualElement>(
+                query,
+                contextFunc,
+                flui =>
+                {
+                    flui.Data ??= new FluiCreatorRoot<TChildContext, VisualElement>();
+                    var root = (FluiCreatorRoot<TChildContext, VisualElement>)flui.Data;
+                    root.CreateGui(flui.Context, flui.Element, createAction);
+                },
+                null,
+                null);
+
+            return this;
+        }
+        
+        public FluiBinder<TContext, TVisualElement> ForEachCreate<TChildContext>(
+            string query,
+            Func<TContext, IEnumerable<TChildContext>> itemsFunc,
+            string classes,
+            Action<FluiCreator<TChildContext, VisualElement>> createAction = null)
+        {
+            RawBind<TContext, VisualElement>(
+                query,
+                x => x,
+                s => { },
+                s => { },
+                s =>
+                {
+                    s.SynchronizeList(
+                        itemsFunc,
+                        () =>
+                        {
+                            var ve = new VisualElement();
+                            FluiHelper.SetClasses(ve, classes);
+                            return ve;
+                        },
+                        flui =>
+                        {
+                            flui.Data ??= new FluiCreatorRoot<TChildContext, VisualElement>();
+                            var root = (FluiCreatorRoot<TChildContext, VisualElement>)flui.Data;
+                            root.CreateGui(flui.Context, flui.Element, createAction);
+                        },
+                        null,
+                        null);
+                });
+
+            return this;
+        }
+
         public FluiBinder<TContext, TVisualElement> ForEach<TChildContext>(
             string query,
             Func<TContext, IEnumerable<TChildContext>> itemsFunc,
@@ -607,7 +641,6 @@ namespace Flui.Binder
 
             return this;
         }
-
 
         private void SynchronizeList<TChildContext>(
             Func<TContext, IEnumerable<TChildContext>> itemsFunc,

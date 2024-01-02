@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace Flui.Creator
 {
-    public partial class FluiCreator<TContext, TVisualElement> : IFluiCreator 
+    public partial class FluiCreator<TContext, TVisualElement> : IFluiCreator
         where TVisualElement : VisualElement
     {
         private readonly Dictionary<string, IFluiCreator> _childCreators = new();
@@ -21,7 +21,7 @@ namespace Flui.Creator
             Context = context;
             Element = element;
         }
-        
+
         ~FluiCreator()
         {
             FluiCreatorStats.FluisDestroyed++;
@@ -76,7 +76,7 @@ namespace Flui.Creator
 
         public FluiCreator<TContext, TVisualElement> AddClasses(string classes)
         {
-            SetClasses(classes, Element);
+            FluiHelper.SetClasses(Element, classes);
             return this;
         }
 
@@ -92,21 +92,6 @@ namespace Flui.Creator
             }
 
             return this;
-        }
-        
-        private void SetClasses(string classes, VisualElement ve)
-        {
-            if (classes != null)
-            {
-                foreach (var @class in classes.Split(','))
-                {
-                    var tclass = @class.Trim();
-                    if (!string.IsNullOrWhiteSpace(tclass))
-                    {
-                        ve.AddToClassList(tclass);
-                    }
-                }
-            }
         }
     }
 }
