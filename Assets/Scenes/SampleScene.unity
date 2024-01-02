@@ -278,6 +278,67 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &567119798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 567119801}
+  - component: {fileID: 567119800}
+  - component: {fileID: 567119799}
+  m_Layer: 5
+  m_Name: ListUi Creator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &567119799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567119798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 090c37073f6f42c18abe76848ceddcfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &567119800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567119798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 10b99eb857cbde34b9e62642f3bb160c, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 0b00545bbd7b4784392453cdf6fb3b94, type: 3}
+  m_SortingOrder: 0
+--- !u!4 &567119801
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567119798}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &680506817
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,7 +356,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &680506818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,7 +404,8 @@ MonoBehaviour:
   gameSettingsCreator: {fileID: 42804639}
   bootstrapBinderDemo: {fileID: 946848413}
   bootstrapCreatorDemo: {fileID: 1448169389}
-  _listUi: {fileID: 1758358592}
+  listUiBinder: {fileID: 1758358592}
+  listUiCreator: {fileID: 567119799}
   _mixed: {fileID: 1358312519}
 --- !u!1 &946848410
 GameObject:
@@ -558,7 +620,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1358312517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -801,7 +863,7 @@ GameObject:
   - component: {fileID: 1758358593}
   - component: {fileID: 1758358592}
   m_Layer: 5
-  m_Name: ListUi
+  m_Name: ListUi Binder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -821,17 +883,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rebuild: 0
   _pause: 0
-  _hierarchy: "q=root, st=Visible\r\n  q=Close, st=Visible\r\n  q=ExternalTemplateList,
-    st=Visible\r\n    q=Add, st=Visible\r\n    q=Content, st=Visible\r\n      q=02c0d593ba6440d2bf2912f3fc5fc9ad,
-    st=Visible\r\n        q=Name, st=Visible\r\n        q=Title, st=Visible\r\n       
-    q=Salary, st=Visible\r\n        q=Delete, st=Visible\r\n      q=d13030a4ff00406ca5dc113ce9a6a3fe,
-    st=Visible\r\n        q=Name, st=Visible\r\n        q=Title, st=Visible\r\n       
-    q=Salary, st=Visible\r\n        q=Delete, st=Visible\r\n      q=28a366c563ca4eb98d25404b69c2da49,
-    st=Visible\r\n        q=Name, st=Visible\r\n        q=Title, st=Visible\r\n       
-    q=Salary, st=Visible\r\n        q=Delete, st=Visible\r\n      q=feedeace32d747cabad466efac34b52f,
-    st=Visible\r\n        q=Name, st=Visible\r\n        q=Title, st=Visible\r\n       
-    q=Salary, st=Visible\r\n        q=Delete, st=Visible\r\n  q=Footer, st=Visible\r\n   
-    q=Salary, st=Visible\r\n"
+  _generateCode: 0
+  _generateHierarchy: 0
+  _code: 
 --- !u!114 &1758358593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -939,4 +993,5 @@ SceneRoots:
   - {fileID: 1448169388}
   - {fileID: 1711627058}
   - {fileID: 1758358594}
+  - {fileID: 567119801}
   - {fileID: 1358312518}
