@@ -92,8 +92,10 @@ namespace FluiDemo.Mixed
             public void CreateGui(FluiCreator<ListItem, VisualElement> fluiCreator)
             {
                 fluiCreator
-                    .TextField(l => l.Name, "")
-                    .TextField(l => l.Value, "");
+                    .Foldout("foldout", "Foldy", x => x, false, "", f => f
+                        .VisualElement("row", "row", r => r
+                            .TextField(l => l.Name, "")
+                            .TextField(l => l.Value, "")));
             }
         }
 

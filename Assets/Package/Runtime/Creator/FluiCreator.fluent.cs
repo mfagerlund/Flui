@@ -211,6 +211,32 @@ namespace Flui.Creator
                 updateAction);
         }
 
+        public FluiCreator<TContext, TVisualElement> Foldout<TChildContext>(
+            string name,
+            string text,
+            Func<TContext, TChildContext> contextFunc,
+            bool initialOpen,
+            string classes,
+            Action<FluiCreator<TChildContext, Foldout>> bindAction = null,
+            Action<FluiCreator<TChildContext, Foldout>> initiateAction = null,
+            Action<FluiCreator<TChildContext, Foldout>> updateAction = null)
+        {
+            RawCreate<TChildContext, Foldout>(
+                name,
+                classes,
+                contextFunc,
+                bindAction,
+                initiateAction: x =>
+                {
+                    x.Element.value = initialOpen;
+                    x.Element.text = text;
+                    initiateAction?.Invoke(x);
+                },
+                updateAction);
+
+            return this;
+        }
+
         public FluiCreator<TContext, TVisualElement> Toggle(
             Expression<Func<TContext, bool>> propertyFunc,
             string classes,
