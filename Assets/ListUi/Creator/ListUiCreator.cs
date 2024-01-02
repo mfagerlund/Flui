@@ -1,11 +1,8 @@
 // ReSharper disable InconsistentNaming
-
 using System;
 using System.Collections.Generic;
 using Flui;
-using Flui.Binder;
 using Flui.Creator;
-using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
@@ -33,8 +30,7 @@ namespace FluiDemo.ListUi.Creator
                     .VisualElement("Root", "", root => root
                         .VisualElement("Offices", "", offices => offices
                             .VisualElement("b559cdb780fe4b5d8bd26996b3b78fa5", "", b559cdb780fe4b5d8bd26996b3b78fa5 => b559cdb780fe4b5d8bd26996b3b78fa5
-                                .ForEach("Offices",
-                                    x => x._offices,
+                                .ForEach(x => x._offices,
                                     "",
                                     office => office
                                         .VisualElement("unnamed2", "row", unnamed2 => unnamed2
@@ -49,10 +45,15 @@ namespace FluiDemo.ListUi.Creator
                                                     .Label("Title", _ => "Title", "th")
                                                     .Label("Salary", _ => "Salary", "th")
                                                     .VisualElement("unnamed4", "", unnamed4 => unnamed4
-                                                        .Button("Add", "Add", "btn-primary, btn-sm", _ => AddOffice())
+                                                        .Button("Add", "Add", "btn-primary, btn-sm", _ => office.Context.AddRandomEmployee())
                                                     )
                                                 )
-                                                .VisualElement("Content", "")
+                                                .ForEach(x => x.Employees, "tr", employee => employee
+                                                    .Label(x => x.Name, "td")
+                                                    .Label(x => x.Title, "td")
+                                                    .Label("salary", x => $"{x.Salary:0}", "td")
+                                                    .Button("delete", "Delete", "btn-warning", x => DeleteEmployee(x.Element, office.Context, x.Context))
+                                                )
                                                 .VisualElement("Footer", "tr", footer => footer
                                                     .Label("Name", _ => "", "td")
                                                     .Label("Title", _ => "", "td")
@@ -94,15 +95,15 @@ namespace FluiDemo.ListUi.Creator
         }
 
         private void DeleteEmployee(
-            FluiBinder<Employee, VisualElement> row,
+            VisualElement element,
             Office office,
-            FluiBinder<Employee, Button> x)
+            Employee employee)
         {
             FluiHelper.ExecuteAfterClassTransition(
-                row.Element,
+                element,
                 "transparent",
                 "opacity",
-                () => office.Employees.Remove(x.Context));
+                () => office.Employees.Remove(employee));
         }
     }
 }
