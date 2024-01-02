@@ -17,10 +17,15 @@ namespace FluiDemo
             gameObject.SetActive(true);
         }
 
-        public void OnEnable()
+        protected void Connect()
         {
             _document ??= GetComponent<UIDocument>();
             RootVisualElement = _document.rootVisualElement;
+        }
+
+        public void OnEnable()
+        {
+            Connect();
             CommonHelper.FadeIn(this, RootVisualElement);
         }
 

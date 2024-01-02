@@ -1,60 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using Flui.Creator;
+﻿using Flui.Creator;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace FluiDemo.Bootstrap.Creator
 {
-    public class BootstrapCreatorDemo : MonoBehaviour
+    public class BootstrapCreatorDemo : Fadable
     {
         [SerializeField] private StyleSheet[] _styleSheets;
         [SerializeField] private bool _pause;
 
-        private UIDocument _document;
-        private VisualElement _rootVisualElement;
-
         private FluiCreatorRoot<BootstrapCreatorDemo, VisualElement> _root = new();
-        private Action _onHide;
-
-        public void Show(Action onHide)
-        {
-            _onHide = onHide;
-            gameObject.SetActive(true);
-        }
-
-        public void OnEnable()
-        {
-            _document ??= GetComponent<UIDocument>();
-            _rootVisualElement = _document.rootVisualElement;
-            CommonHelper.FadeIn(this, _rootVisualElement);
-        }
 
         private void OnValidate()
         {
             if (Application.isPlaying) return;
-            _document ??= GetComponent<UIDocument>();
-            _rootVisualElement = _document.rootVisualElement;
+            Connect();
             Update();
         }
 
         private void Update()
         {
-            if (_rootVisualElement == null)
+            if (RootVisualElement == null)
+            {
+                Connect();
+            }
+
+            if (RootVisualElement == null)
             {
                 return;
             }
-
+            
             foreach (var styleSheet in _styleSheets)
             {
-                _rootVisualElement.styleSheets.Add(styleSheet);
+                RootVisualElement.styleSheets.Add(styleSheet);
             }
 
             if (!_pause)
             {
                 _root.CreateGui(
                         this,
-                        _rootVisualElement, x => x
+                        RootVisualElement, x => x
                             // CODE
                             .ScrollView("unnamed0", "", unnamed0 => unnamed0
                                 .VisualElement("unnamed1", "row", unnamed1 => unnamed1
@@ -161,18 +146,8 @@ namespace FluiDemo.Bootstrap.Creator
                                     .Button("Close", "Close", "btn-warning", _ => Hide())
                                 ))
                         // CODE
-                    )
-                    ;
+                    );
             }
-        }
-
-        private void Hide()
-        {
-            CommonHelper.FadeOut(
-                this,
-                _rootVisualElement,
-                () => gameObject.SetActive(false));
-            _onHide();
         }
     }
 }

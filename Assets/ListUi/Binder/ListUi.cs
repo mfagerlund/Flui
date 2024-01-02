@@ -1,18 +1,15 @@
 // ReSharper disable InconsistentNaming
-
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Flui;
 using Flui.Binder;
-using FluiDemo.Bootstrap;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 namespace FluiDemo.ListUi.Binder
 {
-    public class ListUi : MonoBehaviour
+    public class ListUi : Fadable
     {
         private UIDocument _document;
         [SerializeField] private bool _rebuild;
@@ -20,37 +17,8 @@ namespace FluiDemo.ListUi.Binder
         [SerializeField] public string _hierarchy;
 
         private FluiBinderRoot<ListUi, VisualElement> _root = new();
-        private VisualElement _rootVisualElement;
 
         private Action _onHide;
-
-        public void Show(Action onHide)
-        {
-            _onHide = onHide;
-            gameObject.SetActive(true);
-        }
-
-        public void OnEnable()
-        {
-            Connect();
-            CommonHelper.FadeIn(this, _rootVisualElement);
-        }
-
-        private void Hide()
-        {
-            // gameObject.SetActive(false);
-            CommonHelper.FadeOut(
-                this,
-                _rootVisualElement,
-                () => gameObject.SetActive(false));
-            _onHide?.Invoke();
-        }
-
-        // private void OnValidate()
-        // {
-        //     if (Application.isPlaying || !gameObject.activeSelf) return;
-        //     Bind();
-        // }
 
         private void Update()
         {
@@ -59,14 +27,13 @@ namespace FluiDemo.ListUi.Binder
 
         private void Bind()
         {
-            Connect();
             if (_rebuild)
             {
                 _root = new FluiBinderRoot<ListUi, VisualElement>();
                 _rebuild = false;
             }
 
-            _root.BindGui(this, _rootVisualElement, r => r
+            _root.BindGui(this, RootVisualElement, r => r
                 .Button("AddOffice", _ => AddOffice())
                 .Button("Close", _ => Hide())
                 .ForEach(
@@ -130,66 +97,6 @@ namespace FluiDemo.ListUi.Binder
                 () => office.Employees.Remove(x.Context));
         }
 
-        private void Connect()
-        {
-            if (_document == null || _rootVisualElement == null)
-            {
-                _document = GetComponent<UIDocument>();
-                _rootVisualElement = _document.rootVisualElement;
-            }
-        }
-
-        private readonly List<Office> _offices = new()
-        {
-            new Office
-            {
-                Name = "Central",
-                Employees = new()
-                {
-                    new Employee { Name = "Arne", Title = "Chimney Sweep", Salary = 7 },
-                    new Employee { Name = "Benny", Title = "Chimney Sweep", Salary = 3 },
-                    new Employee { Name = "Steve", Title = "Stevedore", Salary = 6 },
-                    new Employee { Name = "John", Title = "Yeoman", Salary = 2 }
-                }
-            },
-            new Office
-            {
-                Name = "South",
-                Employees = new()
-                {
-                    new Employee { Name = "Schultz", Title = "Chimney Sweep", Salary = 7 },
-                    new Employee { Name = "Frantz", Title = "Chimney Sweep", Salary = 3 },
-                    new Employee { Name = "Hanz", Title = "Stevedore", Salary = 6 },
-                    new Employee { Name = "Salander", Title = "Yeoman", Salary = 2 }
-                }
-            }
-        };
-
-        private class Employee
-        {
-            public string Name { get; set; }
-            public string Title { get; set; }
-            public float Salary { get; set; }
-        }
-
-        private class Office
-        {
-            public string Name { get; set; }
-            public List<Employee> Employees { get; set; } = new();
-
-            public float GetSalarySum() => Employees.Sum(x => x.Salary);
-
-            private void DeleteEmployee(Employee employee) => Employees.Remove(employee);
-
-            public void AddRandomEmployee()
-            {
-                Employees.Add(new Employee
-                {
-                    Name = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6),
-                    Title = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 3),
-                    Salary = Random.Range(1, 6)
-                });
-            }
-        }
+        private readonly List<Office> _offices = Office.CreateOfficeList();
     }
 }
