@@ -431,14 +431,26 @@ namespace Flui.Creator
             string label = null,
             string labelPrefix = "")
         {
-            var neme = ReflectionHelper.GetPath(propertyFunc);
-            VisualElement(neme, "row", pr => pr
-                .Label(neme + "Label", _ => label ?? (labelPrefix + AddSpacesToSentence(neme)), "unity-base-field")
-                .Label(neme + "Value", y => AddSpacesToSentence(propertyStringFunc(y)), "value")
+             var name = ReflectionHelper.GetPath(propertyFunc);
+            VisualElement(name, "row", pr => pr
+                .Label(name + "Label", _ => label ?? (labelPrefix + AddSpacesToSentence(name)), "unity-base-field")
+                .Label(name + "Value", y => AddSpacesToSentence(propertyStringFunc(y)), "value")
             );
             return this;
         }
 
+        public FluiCreator<TContext, TVisualElement> TextFieldReadOnly<TValue>(
+            string name,
+            string label,
+            string value)
+        {
+            VisualElement(name, "row", pr => pr
+                .Label(name + "Label", _ => label, "unity-base-field")
+                .Label(name + "Value", y => value, "value")
+            );
+            return this;
+        }
+        
         public FluiCreator<TContext, TVisualElement> TextField(
             string name,
             string label,
