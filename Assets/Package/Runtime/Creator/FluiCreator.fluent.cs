@@ -439,7 +439,7 @@ namespace Flui.Creator
             return this;
         }
 
-        public FluiCreator<TContext, TVisualElement> TextFieldReadOnly<TValue>(
+        public FluiCreator<TContext, TVisualElement> TextFieldReadOnly(
             string name,
             string label,
             string value)
