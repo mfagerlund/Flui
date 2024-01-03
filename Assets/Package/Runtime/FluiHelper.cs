@@ -10,7 +10,7 @@ namespace Flui
 {
     public static class FluiHelper
     {
-		public static string AddSpacesToSentence(string text)
+        public static string AddSpacesToSentence(string text)
         {
             if (string.IsNullOrEmpty(text))
                 return text;
@@ -30,7 +30,7 @@ namespace Flui
 
             return newText.ToString();
         }
-		
+
         public static bool IsBaseFieldType(VisualElement obj)
         {
             if (obj == null) return false;
@@ -162,11 +162,13 @@ namespace Flui
             }
         }
         
-        public static void SetClasses(VisualElement ve, string classes)
+        public static void AddClasses(VisualElement ve, string classes)
         {
-            if (classes != null)
+            if (!string.IsNullOrWhiteSpace(classes))
             {
-                foreach (var @class in classes.Split(','))
+                string[] classArray = classes.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var @class in classArray)
                 {
                     var tclass = @class.Trim();
                     if (!string.IsNullOrWhiteSpace(tclass))

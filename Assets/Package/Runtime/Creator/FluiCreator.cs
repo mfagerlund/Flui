@@ -81,7 +81,7 @@ namespace Flui.Creator
 
         public FluiCreator<TContext, TVisualElement> AddClasses(string classes)
         {
-            FluiHelper.SetClasses(Element, classes);
+            FluiHelper.AddClasses(Element, classes);
             return this;
         }
 

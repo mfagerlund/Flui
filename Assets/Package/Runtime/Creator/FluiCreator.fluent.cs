@@ -50,7 +50,7 @@ namespace Flui.Creator
             child._visited = true;
             child._updateAction?.Invoke(child);
             child._valueBinding?.Update();
-            FluiHelper.SetClasses(child.Element, classes);
+            FluiHelper.AddClasses(child.Element, classes);
 
             if (buildAction != null)
             {

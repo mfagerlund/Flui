@@ -600,7 +600,7 @@ namespace Flui.Binder
                         () =>
                         {
                             var ve = new VisualElement();
-                            FluiHelper.SetClasses(ve, classes);
+                            FluiHelper.AddClasses(ve, classes);
                             return ve;
                         },
                         flui =>
