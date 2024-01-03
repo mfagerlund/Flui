@@ -29,7 +29,7 @@ namespace FluiDemo.ListUi.Creator
                 .ScrollView("unnamed1", "", unnamed1 => unnamed1
                     .VisualElement("Root", "", root => root
                         .VisualElement("Offices", "", offices => offices
-                            .VisualElement("b559cdb780fe4b5d8bd26996b3b78fa5", "", b559cdb780fe4b5d8bd26996b3b78fa5 => b559cdb780fe4b5d8bd26996b3b78fa5
+                            .VisualElement("ve", "", ve => ve
                                 .ForEach(x => x._offices,
                                     "",
                                     office => office
