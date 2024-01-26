@@ -29,7 +29,7 @@ namespace Flui.Creator
         public string Name { get; }
         public bool Visited => _visited;
         VisualElement IFluiCreator.VisualElement => Element;
-        public IValueBinding ValueBinding { get; set; }
+        public IValueBinding ValueBinding { get; private set; }
 
         object IFluiCreator.Context => Context;
 
