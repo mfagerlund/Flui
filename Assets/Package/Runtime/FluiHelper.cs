@@ -3,13 +3,68 @@ using System.Collections;
 using System.Reflection;
 using System.Text;
 using Flui.Binder;
+using Flui.Creator;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Flui
 {
     public static class FluiHelper
-    {
+    { 
+        public static FluiBinder<TContext, TVisualElement> VisualElementAction<TContext, TVisualElement>(
+            this FluiBinder<TContext, TVisualElement> visualElement,
+            Action<TVisualElement> action)
+            where TVisualElement : VisualElement
+        {
+            action(visualElement.Element);
+            return visualElement;
+        }
+                
+        public static FluiBinder<TContext, TVisualElement> ContextAction<TContext, TVisualElement>(
+            this FluiBinder<TContext, TVisualElement> visualElement,
+            Action<TContext> action)
+            where TVisualElement : VisualElement
+        {
+            action(visualElement.Context);
+            return visualElement;
+        }
+        
+        public static FluiBinder<TContext, TVisualElement> Action<TContext, TVisualElement>(
+            this FluiBinder<TContext, TVisualElement> visualElement,
+            Action<FluiBinder<TContext, TVisualElement>> action)
+            where TVisualElement : VisualElement
+        {
+            action(visualElement);
+            return visualElement;
+        }
+      
+        public static FluiCreator<TContext, TVisualElement> VisualElementAction<TContext, TVisualElement>(
+            this FluiCreator<TContext, TVisualElement> visualElement,
+            Action<TVisualElement> action)
+            where TVisualElement : VisualElement
+        {
+            action(visualElement.Element);
+            return visualElement;
+        }
+                
+        public static FluiCreator<TContext, TVisualElement> ContextAction<TContext, TVisualElement>(
+            this FluiCreator<TContext, TVisualElement> visualElement,
+            Action<TContext> action)
+            where TVisualElement : VisualElement
+        {
+            action(visualElement.Context);
+            return visualElement;
+        }
+        
+        public static FluiCreator<TContext, TVisualElement> Action<TContext, TVisualElement>(
+            this FluiCreator<TContext, TVisualElement> visualElement,
+            Action<FluiCreator<TContext, TVisualElement>> action)
+            where TVisualElement : VisualElement
+        {
+            action(visualElement);
+            return visualElement;
+        }
+        
         public static string AddSpacesToSentence(string text)
         {
             if (string.IsNullOrEmpty(text))

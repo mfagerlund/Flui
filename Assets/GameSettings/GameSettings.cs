@@ -1,4 +1,6 @@
-﻿namespace FluiDemo.GameSettings
+﻿using System.Collections.Generic;
+
+namespace FluiDemo.GameSettings
 {
     public class GameSettings
     {
@@ -16,6 +18,7 @@
                 text += $"{ControlSettings.CameraDistance:0.0}";
                 if (ControlSettings.ScreenVibration) text += "sv";
                 if (ControlSettings.ShowSpecialAttack) text += "ssa";
+                text += ControlSettings.ControllerType.ControllerTypeName;
                 text += ControlSettings.UserName;
                 text += "|" + ScreenSettings.Width + "x" + ScreenSettings.Height + "@" + ScreenSettings.PixelDensity;
                 text += "|" + ScreenSettings.ColorModeId;
@@ -32,6 +35,33 @@
             public bool ScreenVibration { get; set; }
             public bool ShowSpecialAttack { get; set; }
             public string UserName { get; set; } = "Arnold";
+            public ControllerType ControllerType { get; set; } = ControllerType.DefaultControllerType;
+        }
+
+        public class ControllerType
+        {
+            public int ControllerTypeId { get; set; }
+            public string ControllerTypeName { get; set; }
+
+            public static List<ControllerType> ControllerTypes { get; }
+            public static ControllerType DefaultControllerType { get; }
+
+            static ControllerType()
+            {
+                ControllerTypes = new List<ControllerType>
+                {
+                    new() { ControllerTypeId = 1, ControllerTypeName = "Mouse" },
+                    new() { ControllerTypeId = 2, ControllerTypeName = "Mando" },
+                    new() { ControllerTypeId = 3, ControllerTypeName = "Remote Control" },
+                    new GreenControllerType { ControllerTypeId = 4, ControllerTypeName = "Stick", Material = "Wood" }
+                };
+                DefaultControllerType = ControllerTypes[0];
+            }
+        }
+
+        public class GreenControllerType : ControllerType
+        {
+            public string Material { get; set; }
         }
 
         public class ScreenSettingsC

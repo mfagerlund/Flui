@@ -72,6 +72,27 @@ namespace Flui.Creator
             return this;
         }
 
+        public FluiCreator<TContext, TVisualElement> IfOfType<TWantedContextType>(
+            string classes,
+            Action<FluiCreator<TWantedContextType, VisualElement>> buildAction = null,
+            Action<FluiCreator<TWantedContextType, VisualElement>> initiateAction = null,
+            Action<FluiCreator<TWantedContextType, VisualElement>> updateAction = null) where TWantedContextType : TContext
+        {
+            if (Context is TWantedContextType)
+            {
+                RawCreate(
+                    typeof(TWantedContextType).Name,
+                    classes,
+                    x => (TWantedContextType)x,
+                    buildAction,
+                    initiateAction,
+                    updateAction);
+            }
+
+            return this;
+        }
+
+
         public FluiCreator<TContext, TVisualElement> VisualElement(
             string name,
             string classes,
@@ -342,7 +363,7 @@ namespace Flui.Creator
                         // s.Element.Focus();
                         s._valueBinding = new ValueBinding<int>(
                             () => getValue(Context), v => setValue(Context, v),
-                            () => s.Element.index, v => s.Element.index = v).SetLockedFunc(() => s.IsFocused);
+                            () => s.Element.index, v => s.Element.index = v); //.SetLockedFunc(() => s.IsFocused);
                         initiateAction?.Invoke(s);
                     },
                     updateAction)
@@ -365,6 +386,33 @@ namespace Flui.Creator
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
 
             return DropdownField(name, label, classes, choices, getFunc, setFunc, buildAction, initiateAction, updateAction);
+        }
+
+        public FluiCreator<TContext, TVisualElement> DropdownField<TElement>(
+            Expression<Func<TContext, TElement>> propertyFunc,
+            string classes,
+            List<TElement> choices,
+            Func<TElement, string> labelFunc,
+            Action<FluiCreator<TContext, DropdownField>> buildAction = null,
+            Action<FluiCreator<TContext, DropdownField>> initiateAction = null,
+            Action<FluiCreator<TContext, DropdownField>> updateAction = null)
+        {
+            // It's expensive to call ReflectionHelper.GetPath(propertyFunc) over and over again each frame,
+            // we could try to wrap this in something that keeps track of the data.
+            var name = ReflectionHelper.GetPath(propertyFunc);
+            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+
+            return DropdownField(
+                name,
+                AddSpacesToSentence(name),
+                classes,
+                choices.Select(labelFunc).ToList(),
+                ctx => choices.IndexOf(getFunc(ctx)),
+                (ctx, i) => setFunc(ctx, choices[i]),
+                buildAction,
+                initiateAction,
+                updateAction);
         }
 
         public FluiCreator<TContext, TVisualElement> EnumField<TEnum>(
@@ -425,16 +473,18 @@ namespace Flui.Creator
             return this;
         }
 
-        public FluiCreator<TContext, TVisualElement> TextFieldReadOnly<TValue>(
-            Expression<Func<TContext, TValue>> propertyFunc,
-            Func<TContext, string> propertyStringFunc,
+        public FluiCreator<TContext, TVisualElement> TextFieldReadOnly(
+            Expression<Func<TContext, string>> propertyFunc,
             string label = null,
             string labelPrefix = "")
         {
-             var name = ReflectionHelper.GetPath(propertyFunc);
-            VisualElement(name, "row", pr => pr
-                .Label(name + "Label", _ => label ?? (labelPrefix + AddSpacesToSentence(name)), "unity-base-field")
-                .Label(name + "Value", y => AddSpacesToSentence(propertyStringFunc(y)), "value")
+            var name = ReflectionHelper.GetPath(propertyFunc);
+            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            VisualElement(name, "row,unity-base-field,unity-base-text-field,unity-text-field", pr => pr
+                .Label(name + "Label", _ => label ?? (labelPrefix + AddSpacesToSentence(name)), "unity-text-element,unity-label,unity-base-field__label,unity-base-text-field__label,unity-text-field__label")
+                .VisualElement(name + "Value", "unity-base-text-field__input,unity-base-text-field__input--single-line,unity-base-field__input,unity-text-field__input,readonly", g => g
+                    .Label(name + "Value", x => getFunc(x), "unity-text-element,unity-text-element--inner-input-field-component")
+                )
             );
             return this;
         }
@@ -450,7 +500,7 @@ namespace Flui.Creator
             );
             return this;
         }
-        
+
         public FluiCreator<TContext, TVisualElement> TextField(
             string name,
             string label,
