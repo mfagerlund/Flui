@@ -38,6 +38,25 @@ namespace Flui.Creator
         public bool PurgeUnmanagedChildren { get; set; } = true;
         public bool IsFocused => Element.focusController.focusedElement == Element;
 
+        public bool IsFocusedSelfOrChildren
+        {
+            get
+            {
+                var fe = Element.focusController.focusedElement as VisualElement;
+                while (fe != null)
+                {
+                    if (fe == Element)
+                    {
+                        return true;
+                    }
+
+                    fe = fe.parent;
+                }
+
+                return false;
+            }
+        }
+
         public void PrepareVisit()
         {
             _visited = false;

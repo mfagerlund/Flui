@@ -1,6 +1,6 @@
 {
   "name": "com.grobian.flui",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "displayName": "Flui",
   "description": "Fluid binding and or creating of Toolkit UIs, with hassle free support for two way binding. You may want to include the files placed in the Resources folder of the package.",
   "unity": "2022.2",
