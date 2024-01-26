@@ -127,8 +127,19 @@ namespace Flui.Creator
             return this;
         }
 
-        public FluiCreator<TContext, TVisualElement> Label(
+        public FluiCreator<TContext, TVisualElement> Label<TValue>(
             Expression<Func<TContext, string>> propertyFunc,
+            string classes,
+            Action<FluiCreator<TContext, Label>> buildAction = null,
+            Action<FluiCreator<TContext, Label>> initiateAction = null,
+            Action<FluiCreator<TContext, Label>> updateAction = null)
+        {
+            return Label(propertyFunc, x => x, classes, buildAction, initiateAction, updateAction);
+        }
+
+        public FluiCreator<TContext, TVisualElement> Label<TValue>(
+            Expression<Func<TContext, TValue>> propertyFunc,
+            Func<TValue, string> toStringFunc,
             string classes,
             Action<FluiCreator<TContext, Label>> buildAction = null,
             Action<FluiCreator<TContext, Label>> initiateAction = null,
@@ -144,7 +155,7 @@ namespace Flui.Creator
                 b => { initiateAction?.Invoke(b); },
                 b =>
                 {
-                    b.Element.text = getter(b.Context);
+                    b.Element.text = toStringFunc(getter(b.Context));
                     updateAction?.Invoke(b);
                 });
             return this;
