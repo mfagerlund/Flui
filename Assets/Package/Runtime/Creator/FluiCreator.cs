@@ -29,6 +29,7 @@ namespace Flui.Creator
         public string Name { get; }
         public bool Visited => _visited;
         VisualElement IFluiCreator.VisualElement => Element;
+        // This can be used for noticing when a change has occured the last check.
         public IValueBinding ValueBinding { get; private set; }
 
         object IFluiCreator.Context => Context;
