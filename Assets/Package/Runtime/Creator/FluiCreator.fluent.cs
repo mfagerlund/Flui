@@ -478,12 +478,21 @@ namespace Flui.Creator
             string label = null,
             string labelPrefix = "")
         {
+            return TextFieldReadOnly(propertyFunc, x => x, label, labelPrefix);
+        }
+
+        public FluiCreator<TContext, TVisualElement> TextFieldReadOnly<TType>(
+            Expression<Func<TContext, TType>> propertyFunc,
+            Func<TType, string> toStringFunc,
+            string label = null,
+            string labelPrefix = "")
+        {
             var name = ReflectionHelper.GetPath(propertyFunc);
             var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             VisualElement(name, "row,unity-base-field,unity-base-text-field,unity-text-field", pr => pr
                 .Label(name + "Label", _ => label ?? (labelPrefix + AddSpacesToSentence(name)), "unity-text-element,unity-label,unity-base-field__label,unity-base-text-field__label,unity-text-field__label")
                 .VisualElement(name + "Value", "unity-base-text-field__input,unity-base-text-field__input--single-line,unity-base-field__input,unity-text-field__input,readonly", g => g
-                    .Label(name + "Value", x => getFunc(x), "unity-text-element,unity-text-element--inner-input-field-component")
+                    .Label(name + "Value", x => toStringFunc(getFunc(x)), "unity-text-element,unity-text-element--inner-input-field-component")
                 )
             );
             return this;

@@ -98,6 +98,7 @@ namespace FluiDemo.GameSettings.Creator
                                     .ForEach(ctx => GameSettings.ControllerType.ControllerTypes, "", oct => oct
                                         .VisualElement(oct.Context.ControllerTypeId.ToString(), "right-panel-control-holder", ct => ct
                                             .TextFieldReadOnly(cta => cta.ControllerTypeName)
+                                            .TextFieldReadOnly(cta => cta.Cost, cost => $"{cost:0.00}$")
                                         )
                                         .IfOfType<GameSettings.GreenControllerType>("right-panel-control-holder", g => g
                                             .TextField(g2 => g2.Material, ""))

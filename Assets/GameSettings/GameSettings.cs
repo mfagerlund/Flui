@@ -42,6 +42,7 @@ namespace FluiDemo.GameSettings
         {
             public int ControllerTypeId { get; set; }
             public string ControllerTypeName { get; set; }
+            public float Cost { get; set; }
 
             public static List<ControllerType> ControllerTypes { get; }
             public static ControllerType DefaultControllerType { get; }
@@ -50,10 +51,10 @@ namespace FluiDemo.GameSettings
             {
                 ControllerTypes = new List<ControllerType>
                 {
-                    new() { ControllerTypeId = 1, ControllerTypeName = "Mouse" },
-                    new() { ControllerTypeId = 2, ControllerTypeName = "Mando" },
-                    new() { ControllerTypeId = 3, ControllerTypeName = "Remote Control" },
-                    new GreenControllerType { ControllerTypeId = 4, ControllerTypeName = "Stick", Material = "Wood" }
+                    new() { ControllerTypeId = 1, ControllerTypeName = "Mouse", Cost = 15 },
+                    new() { ControllerTypeId = 2, ControllerTypeName = "Mando", Cost = 22.5f },
+                    new() { ControllerTypeId = 3, ControllerTypeName = "Remote Control", Cost = 50f },
+                    new GreenControllerType { ControllerTypeId = 4, ControllerTypeName = "Stick", Material = "Wood", Cost = 0.5f }
                 };
                 DefaultControllerType = ControllerTypes[0];
             }
