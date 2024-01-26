@@ -49,7 +49,7 @@ namespace Flui.Creator
             var child = (FluiCreator<TChildContext, TChildVisualElement>)rawChild;
             child._visited = true;
             child._updateAction?.Invoke(child);
-            child._valueBinding?.Update();
+            child.ValueBinding?.Update();
             FluiHelper.AddClasses(child.Element, classes);
 
             if (buildAction != null)
@@ -195,7 +195,7 @@ namespace Flui.Creator
                         s.Element.value = getValue(Context);
                         s.Element.lowValue = lowValue;
                         s.Element.highValue = highValue;
-                        s._valueBinding = new ValueBinding<float>(
+                        s.ValueBinding = new ValueBinding<float>(
                             () => getValue(Context), v => setValue(Context, v),
                             () => s.Element.value, v => s.Element.value = v);
                         initiateAction?.Invoke(s);
@@ -327,7 +327,7 @@ namespace Flui.Creator
                     {
                         s.Element.label = label;
                         s.Element.value = getValue(Context);
-                        s._valueBinding = new ValueBinding<bool>(
+                        s.ValueBinding = new ValueBinding<bool>(
                             () => getValue(Context), v => setValue(Context, v),
                             () => s.Element.value, v => s.Element.value = v);
                         initiateAction?.Invoke(s);
@@ -361,7 +361,7 @@ namespace Flui.Creator
                         s.Element.focusable = true;
                         s.Element.choices = choices;
                         // s.Element.Focus();
-                        s._valueBinding = new ValueBinding<int>(
+                        s.ValueBinding = new ValueBinding<int>(
                             () => getValue(Context), v => setValue(Context, v),
                             () => s.Element.index, v => s.Element.index = v); //.SetLockedFunc(() => s.IsFocused);
                         initiateAction?.Invoke(s);
@@ -464,7 +464,7 @@ namespace Flui.Creator
                         var valueBinding = new ValueBinding<TEnum>(
                             () => getValue(Context), v => setValue(Context, v),
                             () => (TEnum)s.Element.value, v => s.Element.value = v);
-                        s._valueBinding = valueBinding;
+                        s.ValueBinding = valueBinding;
                         initiateAction?.Invoke(s);
                     },
                     updateAction)
@@ -546,7 +546,7 @@ namespace Flui.Creator
                                 () => s.Element.value, v => s.Element.value = v));
 
 
-                        s._valueBinding = valueBinding;
+                        s.ValueBinding = valueBinding;
                         initiateAction?.Invoke(s);
                     },
                     updateAction)
@@ -629,7 +629,7 @@ namespace Flui.Creator
                         s.Element.value = getValue(Context);
                         s.Element.focusable = true;
                         // s.Element.Focus();
-                        s._valueBinding = SetUpdateOnReturn(
+                        s.ValueBinding = SetUpdateOnReturn(
                             s,
                             new ValueBinding<int>(
                                 () => getValue(Context), v => setValue(Context, v),
@@ -663,7 +663,7 @@ namespace Flui.Creator
                         s.Element.value = getValue(Context);
                         s.Element.focusable = true;
                         // s.Element.Focus();
-                        s._valueBinding = SetUpdateOnReturn(
+                        s.ValueBinding = SetUpdateOnReturn(
                             s, new ValueBinding<float>(
                                 () => getValue(Context), v => setValue(Context, v),
                                 () => s.Element.value, v => s.Element.value = v));

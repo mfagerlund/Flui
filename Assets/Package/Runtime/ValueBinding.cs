@@ -26,7 +26,8 @@ namespace Flui
             SetViewValue(_modelValueGetter());
         }
 
-        public bool HasError { get; set; }
+        public bool HasError { get; private set; }
+        public ValueBindingChange ChangeOnLastCheck { get; private set; }
 
         public void Update()
         {
@@ -37,9 +38,11 @@ namespace Flui
 
             HasError = false;
             var currentModelValue = _modelValueGetter();
+            ChangeOnLastCheck = ValueBindingChange.None;
             if (!Equals(currentModelValue, _previousModelValue))
             {
                 SetViewValue(currentModelValue);
+                ChangeOnLastCheck = ValueBindingChange.ModelValueChanged;
                 return;
             }
 
@@ -52,6 +55,7 @@ namespace Flui
             if (!Equals(currentViewValue, _previousViewValue))
             {
                 SetModelValue(currentViewValue);
+                ChangeOnLastCheck = ValueBindingChange.ViewValueChanged;
             }
         }
 
@@ -93,19 +97,4 @@ namespace Flui
             return this;
         }
     }
-
-    public static class ValueBindingStats
-    {
-        public static int BindingSetViewValueCount { get; set; }
-        public static int BindingSetModelValueCount { get; set; }
-
-        public static string Describe() => $"Value Binding: View Update={BindingSetViewValueCount} | Model Update={BindingSetModelValueCount}";
-        
-        public static void Reset()
-        {
-            BindingSetViewValueCount = 0;
-            BindingSetModelValueCount = 0;
-        }
-    }
 }
-

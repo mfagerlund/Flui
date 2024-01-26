@@ -12,7 +12,6 @@ namespace Flui.Creator
         private readonly HashSet<VisualElement> _childVisualElements = new();
         private Action<FluiCreator<TContext, TVisualElement>> _updateAction;
         private bool _visited;
-        private IValueBinding _valueBinding;
 
         public FluiCreator(string name, TContext context, TVisualElement element)
         {
@@ -30,6 +29,7 @@ namespace Flui.Creator
         public string Name { get; }
         public bool Visited => _visited;
         VisualElement IFluiCreator.VisualElement => Element;
+        public IValueBinding ValueBinding { get; set; }
 
         object IFluiCreator.Context => Context;
 
