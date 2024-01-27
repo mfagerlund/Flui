@@ -150,6 +150,53 @@ namespace Flui.Binder
             return this;
         }
 
+
+        public FluiBinder<TContext, TVisualElement> SetPickingMode(PickingMode pickingMode)
+        {
+            Element.pickingMode = pickingMode;
+            return this;
+        }
+
+        public FluiBinder<TContext, TVisualElement> SetScreenXy(
+            Vector2 screenPosition,
+            AlignX alignX,
+            AlignY alignY)
+        {
+            var localPosition = RuntimePanelUtils.ScreenToPanel(Element.panel, new Vector2(screenPosition.x, Screen.height - screenPosition.y));
+            switch (alignX)
+            {
+                case AlignX.Left:
+                    break;
+                case AlignX.Mid:
+                    localPosition.x -= Element.resolvedStyle.width / 2;
+                    break;
+                case AlignX.Right:
+                    localPosition.x -= Element.resolvedStyle.width;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(alignX), alignX, null);
+            }
+
+            switch (alignY)
+            {
+                case AlignY.Top:
+                    break;
+                case AlignY.Mid:
+                    localPosition.y -= Element.resolvedStyle.height / 2;
+                    break;
+                case AlignY.Bottom:
+                    localPosition.y -= Element.resolvedStyle.height;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(alignY), alignY, null);
+            }
+
+            Element.style.position = Position.Absolute;
+            Element.style.left = localPosition.x;
+            Element.style.top = localPosition.y;
+            return this;
+        }
+
         public FluiBinder<TContext, TVisualElement> Button(
             string query,
             Action<FluiBinder<TContext, Button>> clicked,
@@ -581,7 +628,7 @@ namespace Flui.Binder
 
             return this;
         }
-        
+
         public FluiBinder<TContext, TVisualElement> ForEachCreate<TChildContext>(
             string query,
             Func<TContext, IEnumerable<TChildContext>> itemsFunc,

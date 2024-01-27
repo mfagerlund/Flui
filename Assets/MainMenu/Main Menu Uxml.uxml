@@ -2,6 +2,7 @@
     <Style src="project://database/Assets/Package/Resources/BootstrapUss.uss?fileID=7433441132597879392&amp;guid=534b208ba7f75194ebac2458c626ada3&amp;type=3#BootstrapUss" />
     <Style src="project://database/Assets/MainMenu/MainMenuUss.uss?fileID=7433441132597879392&amp;guid=7918688154ada1843a1f112b7a379fa9&amp;type=3#MainMenuUss" />
     <Style src="project://database/Assets/CommonUss.uss?fileID=7433441132597879392&amp;guid=c4f9af48e2644a929dd15ba3bd46a469&amp;type=3#CommonUss" />
+    <ui:VisualElement name="CreatedStuff" />
     <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center;">
         <ui:Label tabindex="-1" text="Select Demo" display-tooltip-when-elided="true" class="h3 menu-item" />
         <ui:VisualElement class="row">
@@ -22,4 +23,5 @@
         <ui:Button text="Mixed" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Mixed" class="btn-primary" style="width: 206px;" />
         <ui:Label tabindex="-1" text="Time: 15:22:11" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Time" class="menu-item" style="-unity-text-align: upper-right;" />
     </ui:VisualElement>
+    <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="MouseFollowerBound" style="position: absolute; left: 0; top: 0; background-color: rgba(197, 18, 18, 0.34);" />
 </ui:UXML>
