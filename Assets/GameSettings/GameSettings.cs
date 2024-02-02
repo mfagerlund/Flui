@@ -37,7 +37,7 @@ namespace FluiDemo.GameSettings
             public string UserName { get; set; } = "Arnold";
             public ControllerType ControllerType { get; set; } = ControllerType.DefaultControllerType;
         }
-
+        
         public class ControllerType
         {
             public int ControllerTypeId { get; set; }
@@ -72,8 +72,15 @@ namespace FluiDemo.GameSettings
             public float PixelDensity { get; set; } = 0.3f;
             public int ColorModeId { get; set; }
             public CycleModeEnum CycleMode { get; set; }
+            public AnchorDimensions AnchorDimensions { get; set; } = new AnchorDimensions { Width = 66, Height = 22 };
         }
-
+     
+        public class AnchorDimensions
+        {
+            public float Width { get; set; }
+            public float Height { get; set; }
+        }
+        
         public enum CycleModeEnum
         {
             Forward,

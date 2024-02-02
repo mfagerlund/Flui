@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Flui.Creator;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -107,16 +108,31 @@ namespace FluiDemo.GameSettings.Creator
                             )
                             .Case(Panel.ScreenSettings, "", p => p.GameSettings.ScreenSettings, screenSettingsPanel => screenSettingsPanel
                                 .VisualElement("Width", "right-panel-control-holder", width => width
-                                    .IntegerField("Width", "Width", "", ctx => ctx.Width))
+                                    .IntegerField("Width", "Width", "", ctx => ctx.Width)
+                                )
                                 .VisualElement("Height", "right-panel-control-holder", height => height
-                                    .IntegerField("Height", "Height", "", ctx => ctx.Height))
+                                    .IntegerField("Height", "Height", "", ctx => ctx.Height)
+                                )
                                 .VisualElement("PixelDensity", "right-panel-control-holder", pixelDensity => pixelDensity
-                                    .FloatField("PixelDensity", "Float Field", "", ctx => ctx.PixelDensity))
+                                    .FloatField("PixelDensity", "Float Field", "", ctx => ctx.PixelDensity)
+                                )
                                 .VisualElement("spacer", "panel-right-spacer")
                                 .VisualElement("ColorMode", "right-panel-control-holder", colorMode => colorMode
-                                    .DropdownField("ColorMode", "Color Mode", "", new List<string> { "a", "b" }, ctx => ctx.ColorModeId))
+                                    .DropdownField("ColorMode", "Color Mode", "", new List<string> { "a", "b" }, ctx => ctx.ColorModeId)
+                                )
                                 .VisualElement("CycleMode", "right-panel-control-holder", cycleMode => cycleMode
-                                    .EnumField("CycleMode", "Cycle Mode", "", ctx => ctx.CycleMode)))
+                                    .EnumField("CycleMode", "Cycle Mode", "", ctx => ctx.CycleMode)
+                                )
+                                .VisualElement("spacer2", "panel-right-spacer")
+                                .Group("AnchorDimensions", "", x => x.AnchorDimensions, ad => ad
+                                    .VisualElement("AnchorDimensionsWidth", "right-panel-control-holder", pixelDensity => pixelDensity
+                                        .FloatField(ctx => ctx.Width, "")
+                                    )
+                                    .VisualElement("AnchorDimensionsHeight", "right-panel-control-holder", pixelDensity => pixelDensity
+                                        .FloatField(ctx => ctx.Height, "")
+                                    )
+                                )
+                            )
                             .Case(Panel.VolumeSettings, "", p => p, volumeSettingsPanel => volumeSettingsPanel
                                 .VisualElement("unnamed1", "right-panel-control-holder", unnamed1 => unnamed1
                                     .Label("VolumeSettings-NOTIMPLEMENTED", _ => "Volume Settings - NOT IMPLEMENTED", "not-implemented")))

@@ -1,68 +1,84 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text.RegularExpressions;
+using System.Runtime.CompilerServices;
 
 namespace Flui.Binder
 {
     internal static class ReflectionHelper
     {
-        public static Func<T, TValue> GetPropertyValueFunc<T, TValue>(Expression<Func<T, TValue>> memberLamda)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Func<T, TValue> GetPropertyValueFunc<T, TValue>(Expression<Func<T, TValue>> expr)
         {
-            if (memberLamda.Body is MemberExpression memberSelectorExpression)
+            if (expr.Body is MemberExpression memberExpression)
             {
-                var property = memberSelectorExpression.Member as PropertyInfo;
-                if (property != null)
+                var propertyInfo = memberExpression.Member as PropertyInfo;
+                if (propertyInfo != null)
                 {
-                    return x => (TValue)property.GetValue(x);
+                    if (propertyInfo.DeclaringType != typeof(T))
+                    {
+                        throw new InvalidOperationException($"Unhandled expression:{expr}");
+                    }
+
+                    return x => (TValue)propertyInfo.GetValue(x);
                 }
 
-                var field = memberSelectorExpression.Member as FieldInfo;
-                if (field != null)
+                var fieldInfo = memberExpression.Member as FieldInfo;
+                if (fieldInfo != null)
                 {
-                    return x => (TValue)field.GetValue(x);
+                    if (fieldInfo.DeclaringType != typeof(T))
+                    {
+                        throw new InvalidOperationException($"Unhandled expression:{expr}");
+                    }
+
+                    return x => (TValue)fieldInfo.GetValue(x);
                 }
             }
 
-            throw new InvalidOperationException($"Unable to set value to {memberLamda}");
+            throw new InvalidOperationException($"Unable to get property getter for {expr}");
         }
 
-        public static Action<T, TValue> SetPropertyValueFunc<T, TValue>(Expression<Func<T, TValue>> memberLamda)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Action<T, TValue> SetPropertyValueFunc<T, TValue>(Expression<Func<T, TValue>> expr)
         {
-            if (memberLamda.Body is MemberExpression memberSelectorExpression)
+            if (expr.Body is MemberExpression memberExpression)
             {
-                var property = memberSelectorExpression.Member as PropertyInfo;
-                if (property != null)
+                var propertyInfo = memberExpression.Member as PropertyInfo;
+                if (propertyInfo != null)
                 {
-                    return (t, v) => property.SetValue(t, v, null);
+                    if (propertyInfo.DeclaringType != typeof(T))
+                    {
+                        throw new InvalidOperationException($"Unhandled expression:{expr}");
+                    }
+
+                    return (t, v) => propertyInfo.SetValue(t, v);
                 }
 
-                var field = memberSelectorExpression.Member as FieldInfo;
-                if (field != null)
+                var fieldInfo = memberExpression.Member as FieldInfo;
+                if (fieldInfo != null)
                 {
-                    return (t, v) => field.SetValue(t, v);
+                    if (fieldInfo.DeclaringType != typeof(T))
+                    {
+                        throw new InvalidOperationException($"Unhandled expression:{expr}");
+                    }
+
+                    return (t, v) => fieldInfo.SetValue(t, v);
                 }
             }
 
-            throw new InvalidOperationException($"Unable to set value to {memberLamda}");
+            throw new InvalidOperationException($"Unable to get property setter for {expr}");
         }
 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetPath<T, U>(Expression<Func<T, U>> expr)
         {
-            var txt = expr.Body.ToString();
-            var resultString = Regex.Match(txt, @"Convert\(value\(.*?\).(.*?), Object\)").Groups[1].Value;
-            if (!string.IsNullOrWhiteSpace(resultString))
+            if (expr.Body is MemberExpression me)
             {
-                return resultString;
+                return me.Member.Name;
             }
 
-            txt = txt.Substring(txt.IndexOf(".") + 1);
-            if (txt.EndsWith(", Object)"))
-            {
-                txt = txt.Substring(0, txt.Length - ", Object)".Length);
-            }
-
-            return txt;
+            throw new InvalidOperationException($"Expected a member expression of the type {typeof(U).Name}, but received {expr.Body.ToString()}");
         }
     }
 }
