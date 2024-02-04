@@ -124,7 +124,7 @@ namespace FluiDemo.GameSettings.Creator
                                     .EnumField("CycleMode", "Cycle Mode", "", ctx => ctx.CycleMode)
                                 )
                                 .VisualElement("spacer2", "panel-right-spacer")
-                                .Group("AnchorDimensions", "", x => x.AnchorDimensions, ad => ad
+                                .Group(x => x.AnchorDimensions,"" , ad => ad
                                     .VisualElement("AnchorDimensionsWidth", "right-panel-control-holder", pixelDensity => pixelDensity
                                         .FloatField(ctx => ctx.Width, "")
                                     )

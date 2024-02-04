@@ -116,6 +116,19 @@ namespace Flui.Creator
             return this;
         }
 
+        public FluiCreator<TContext, TVisualElement> Group<TChildContext>(
+            Expression<Func<TContext, TChildContext>> contextFunc,
+            string classes,
+            Action<FluiCreator<TChildContext, VisualElement>> buildAction = null,
+            Action<FluiCreator<TChildContext, VisualElement>> initiateAction = null,
+            Action<FluiCreator<TChildContext, VisualElement>> updateAction = null) where TChildContext : class
+        {
+            string name = ReflectionHelper.GetPath(contextFunc);
+            var getter = ReflectionHelper.GetPropertyValueFunc(contextFunc);
+            RawCreate(name, classes, getter, buildAction, initiateAction, updateAction);
+            return this;
+        }
+        
         public FluiCreator<TContext, TVisualElement> ScrollView(
             string name,
             string classes,
