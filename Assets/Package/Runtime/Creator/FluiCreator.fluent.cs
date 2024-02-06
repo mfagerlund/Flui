@@ -865,23 +865,7 @@ namespace Flui.Creator
             }
 
             RemoveUnused<TChildContext>(unvisited);
-
             SortChildren<TChildContext>(properSort);
-        }
-
-        private void SortChildren<TChildContext>(List<VisualElement> properSort)
-        {
-            for (int correctIndex = 0; correctIndex < properSort.Count; correctIndex++)
-            {
-                VisualElement elementToSort = properSort[correctIndex];
-                int currentIndex = Element.IndexOf(elementToSort);
-                if (currentIndex != correctIndex)
-                {
-                    FluiCreatorStats.FluisMoved++;
-                    Element.RemoveAt(currentIndex);
-                    Element.Insert(correctIndex, elementToSort);
-                }
-            }
         }
 
         private void RemoveUnused<TChildContext>(HashSet<VisualElement> unvisited)
@@ -898,6 +882,21 @@ namespace Flui.Creator
                 {
                     FluiCreatorStats.FluisRemoved += childCreator.GetHierarchyChildCount();
                     _childCreators.Remove(visualElement.name);
+                }
+            }
+        }
+
+        private void SortChildren<TChildContext>(List<VisualElement> properSort)
+        {
+            for (int correctIndex = 0; correctIndex < properSort.Count; correctIndex++)
+            {
+                VisualElement elementToSort = properSort[correctIndex];
+                int currentIndex = Element.IndexOf(elementToSort);
+                if (currentIndex != correctIndex)
+                {
+                    FluiCreatorStats.FluisMoved++;
+                    Element.RemoveAt(currentIndex);
+                    Element.Insert(correctIndex, elementToSort);
                 }
             }
         }

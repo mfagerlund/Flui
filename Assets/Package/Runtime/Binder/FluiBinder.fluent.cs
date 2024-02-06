@@ -696,8 +696,9 @@ namespace Flui.Binder
             Action<FluiBinder<TChildContext, VisualElement>> initiateAction,
             Action<FluiBinder<TChildContext, VisualElement>> updateAction)
         {
-            var children = itemsFunc(Context);
+            var children = itemsFunc(Context).ToList();
             HashSet<VisualElement> unvisited = new HashSet<VisualElement>(Element.Children());
+            List<VisualElement> properSort = new();
             foreach (var context in children)
             {
                 // Could be slow - need two way dictionary
@@ -720,10 +721,17 @@ namespace Flui.Binder
                     bindAction,
                     initiateAction,
                     updateAction);
-
+                
+                properSort.Add(flui.Element);
                 unvisited.Remove(flui.Element);
             }
 
+            RemoveUnused<TChildContext>(unvisited);
+            SortChildren<TChildContext>(properSort);
+        }
+
+        private void RemoveUnused<TChildContext>(HashSet<VisualElement> unvisited)
+        {
             foreach (var visualElement in unvisited)
             {
                 if (visualElement.parent != null)
@@ -731,12 +739,26 @@ namespace Flui.Binder
                     Element.Remove(visualElement);
                 }
 
-
                 var childBinder = _childBinders.SafeGetValue(visualElement);
                 if (childBinder != null)
                 {
                     FluiBinderStats.FluiBinderRemoved += childBinder.GetHierarchyChildCount();
                     _childBinders.Remove(visualElement);
+                }
+            }
+        }
+        
+        private void SortChildren<TChildContext>(List<VisualElement> properSort)
+        {
+            for (int correctIndex = 0; correctIndex < properSort.Count; correctIndex++)
+            {
+                VisualElement elementToSort = properSort[correctIndex];
+                int currentIndex = Element.IndexOf(elementToSort);
+                if (currentIndex != correctIndex)
+                {
+                    FluiCreatorStats.FluisMoved++;
+                    Element.RemoveAt(currentIndex);
+                    Element.Insert(correctIndex, elementToSort);
                 }
             }
         }
