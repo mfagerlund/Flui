@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using Flui.Creator;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static Flui.FluiHelper;
 
 namespace Flui.Binder
 {
@@ -194,6 +195,30 @@ namespace Flui.Binder
             Element.style.position = Position.Absolute;
             Element.style.left = localPosition.x;
             Element.style.top = localPosition.y;
+            return this;
+        }
+
+        // var name = ReflectionHelper.GetMethodName(onClick);
+
+        public FluiBinder<TContext, TVisualElement> Button(
+            Expression<Action<TContext>> clicked,
+            Action<FluiBinder<TContext, Button>> bindAction = null,
+            Action<FluiBinder<TContext, Button>> initiateAction = null,
+            Action<FluiBinder<TContext, Button>> updateAction = null)
+        {
+            var name = ReflectionHelper.GetMethodName(clicked);
+            RawBind<TContext, Button>(
+                name,
+                x => x,
+                bindAction,
+                s =>
+                {
+                    var compiled = clicked.Compile();
+                    s.Element.clicked += () => compiled(s.Context);
+                    initiateAction?.Invoke(s);
+                },
+                updateAction);
+
             return this;
         }
 
@@ -647,7 +672,7 @@ namespace Flui.Binder
                         () =>
                         {
                             var ve = new VisualElement();
-                            FluiHelper.AddClasses(ve, classes);
+                            AddClasses(ve, classes);
                             return ve;
                         },
                         flui =>
@@ -721,7 +746,7 @@ namespace Flui.Binder
                     bindAction,
                     initiateAction,
                     updateAction);
-                
+
                 properSort.Add(flui.Element);
                 unvisited.Remove(flui.Element);
             }
@@ -747,7 +772,7 @@ namespace Flui.Binder
                 }
             }
         }
-        
+
         private void SortChildren<TChildContext>(List<VisualElement> properSort)
         {
             for (int correctIndex = 0; correctIndex < properSort.Count; correctIndex++)

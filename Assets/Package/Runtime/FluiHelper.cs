@@ -67,25 +67,28 @@ namespace Flui
         
         public static string AddSpacesToSentence(string text)
         {
+            text = text.Replace("_", "");
             if (string.IsNullOrEmpty(text))
+            {
                 return text;
-
+            }
+        
             StringBuilder newText = new StringBuilder(text.Length * 2);
-            newText.Append(text[0]);
-
+            newText.Append(char.ToUpper(text[0]));
+        
             for (int i = 1; i < text.Length; i++)
             {
                 if (char.IsUpper(text[i]) && char.IsLower(text[i - 1]))
                 {
                     newText.Append(' ');
                 }
-
+        
                 newText.Append(text[i]);
             }
-
+        
             return newText.ToString();
         }
-
+        
         public static bool IsBaseFieldType(VisualElement obj)
         {
             if (obj == null) return false;

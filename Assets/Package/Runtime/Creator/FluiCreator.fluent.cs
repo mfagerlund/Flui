@@ -6,6 +6,7 @@ using System.Text;
 using Flui.Binder;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static Flui.FluiHelper;
 
 namespace Flui.Creator
 {
@@ -1024,30 +1025,6 @@ namespace Flui.Creator
         {
             setAction(this);
             return this;
-        }
-
-        public static string AddSpacesToSentence(string text)
-        {
-            text = text.Replace("_", "");
-            if (string.IsNullOrEmpty(text))
-            {
-                return text;
-            }
-
-            StringBuilder newText = new StringBuilder(text.Length * 2);
-            newText.Append(char.ToUpper(text[0]));
-
-            for (int i = 1; i < text.Length; i++)
-            {
-                if (char.IsUpper(text[i]) && char.IsLower(text[i - 1]))
-                {
-                    newText.Append(' ');
-                }
-
-                newText.Append(text[i]);
-            }
-
-            return newText.ToString();
         }
 
         private IValueBinding SetUpdateOnReturn<T, TVE>(FluiCreator<TContext, TVE> fluiCreator, ValueBinding<T> valueBinding)
