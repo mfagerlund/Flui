@@ -2,7 +2,7 @@
     "name": "Flui.Editor",
     "rootNamespace": "Flui.Editor",
     "references": ["GUID:f7541c9d3dfbbcf418de5b4730108f47"],
-    "includePlatforms": [],
+    "includePlatforms": ["Editor"],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
