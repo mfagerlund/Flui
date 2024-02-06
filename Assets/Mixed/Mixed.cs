@@ -31,7 +31,7 @@ namespace FluiDemo.Mixed
         {
             _root
                 .BindGui(_exampleObjectWithProperties, RootVisualElement, r => r
-                    .Button("Close", _ => Hide())
+                    .Button("Close", _ => Close())
                     .Create("Properties", x => x, r.Context.CreateGui)
                     .Create("PropertiesAgain", x => x, r.Context.CreateGui)
                     .ForEachCreate("List", ctx => ctx.Items, "row", i => i.Context.CreateGui(i))

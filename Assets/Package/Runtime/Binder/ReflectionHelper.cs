@@ -80,5 +80,16 @@ namespace Flui.Binder
 
             throw new InvalidOperationException($"Expected a member expression of the type {typeof(U).Name}, but received {expr.Body.ToString()}");
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetMethodName<T>(Expression<Action<T>> func)
+        {
+            if (func.Body is MethodCallExpression methodCall)
+            {
+                return methodCall.Method.Name;
+            }
+
+            throw new ArgumentException("Expression does not represent a method call.");
+        }
     }
 }

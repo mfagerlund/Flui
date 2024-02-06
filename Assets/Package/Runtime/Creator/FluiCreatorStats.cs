@@ -9,6 +9,7 @@
             FluisDestroyed = 0;
             UnparentedVisualElementsRemoved = 0;
             TotalRebuild = 0;
+            FluisMoved = 0;
             ValueBindingStats.Reset();
         }
 
@@ -17,8 +18,9 @@
         public static int FluisDestroyed { get; set; }
         public static int UnparentedVisualElementsRemoved { get; set; }
         public static int TotalRebuild { get; set; }
+        public static int FluisMoved { get; set; }
 
-        public static string Describe() => 
-            $"Fluid Creator: Created={FluisCreated} | Removed={FluisRemoved} | Destroyed={FluisDestroyed} | Rebuild={TotalRebuild}";
+        public static string Describe() =>
+            $"Fluid Creator: Created={FluisCreated} | Removed={FluisRemoved} | Destroyed={FluisDestroyed} | Rebuild={TotalRebuild} | Moved={FluisMoved}";
     }
 }

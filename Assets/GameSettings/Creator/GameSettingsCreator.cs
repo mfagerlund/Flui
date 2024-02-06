@@ -144,8 +144,8 @@ namespace FluiDemo.GameSettings.Creator
                                     .Label("KeyboardSettings-NOTIMPLEMENTED", _ => "Keyboard Settings - NOT IMPLEMENTED", "not-implemented")))
                         ))
                     .VisualElement("footer", "row, footer", footer => footer
-                        .Button("Ok", "OK", "btn-primary", _ => Hide())
-                        .Button("Return", "Return", "btn-primary", _ => Hide())
+                        .Button("Ok", "OK", "btn-primary", _ => Close())
+                        .Button("Return", "Return", "btn-primary", _ => Close())
                         .Button("conquer-world", "Conquer World", "btn-primary, disabled", null)
                     )
                 )

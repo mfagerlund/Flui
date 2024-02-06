@@ -57,7 +57,7 @@ namespace FluiDemo.ListUi.Binder
 
             _root.BindGui(this, RootVisualElement, r => r
                 .Button("AddOffice", _ => AddOffice())
-                .Button("Close", _ => Hide())
+                .Button("Close", _ => Close())
                 .ForEach(
                     "Offices",
                     x => x._offices,

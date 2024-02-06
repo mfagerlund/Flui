@@ -1,6 +1,8 @@
 // ReSharper disable InconsistentNaming
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Flui;
 using Flui.Creator;
 using UnityEngine.UIElements;
@@ -23,8 +25,9 @@ namespace FluiDemo.ListUi.Creator
             _root.CreateGui(this, RootVisualElement, r => r
                 .VisualElement("unnamed0", "row", unnamed0 => unnamed0
                     .Label("ListExamples", _ => "List Examples", "h2")
-                    .Button("AddOffice", "Add Office", "btn-primary", _ => AddOffice())
-                    .Button("Close", "Close", "btn-danger", _ => Hide())
+                    .Button(_ => AddOffice(), "btn-primary")
+                    .Button(_ => RandomizeSalaries(), "btn-primary")
+                    .Button(_ => Close(), "btn-danger")
                 )
                 .ScrollView("unnamed1", "", unnamed1 => unnamed1
                     .VisualElement("Root", "", root => root
@@ -68,6 +71,19 @@ namespace FluiDemo.ListUi.Creator
                     )
                 )
             );
+        }
+
+        private void RandomizeSalaries()
+        {
+            _offices.ForEach(office =>
+            {
+                foreach (var employee in office.Employees)
+                {
+                    employee.Salary = Random.Range(1, 6);
+                }
+
+                office.Employees = office.Employees.OrderBy(x => x.Salary).ToList();
+            });
         }
 
         private void DeleteOffice(VisualElement officeElement, Office office)

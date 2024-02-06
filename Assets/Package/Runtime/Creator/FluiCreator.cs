@@ -57,7 +57,7 @@ namespace Flui.Creator
                 return false;
             }
         }
-
+        
         public void PrepareVisit()
         {
             _visited = false;

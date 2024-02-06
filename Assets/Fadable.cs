@@ -29,7 +29,7 @@ namespace FluiDemo
             CommonHelper.FadeIn(this, RootVisualElement);
         }
 
-        public void Hide()
+        public void Close()
         {
             // gameObject.SetActive(false);
             CommonHelper.FadeOut(

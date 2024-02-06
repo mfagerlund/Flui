@@ -128,7 +128,7 @@ namespace Flui.Creator
             RawCreate(name, classes, getter, buildAction, initiateAction, updateAction);
             return this;
         }
-        
+
         public FluiCreator<TContext, TVisualElement> ScrollView(
             string name,
             string classes,
@@ -727,6 +727,34 @@ namespace Flui.Creator
         }
 
         public FluiCreator<TContext, TVisualElement> Button(
+            Expression<Action<TContext>> onClick,
+            string classes,
+            Action<FluiCreator<TContext, Button>> buildAction = null,
+            Action<FluiCreator<TContext, Button>> initiateAction = null,
+            Action<FluiCreator<TContext, Button>> updateAction = null)
+        {
+            var name = ReflectionHelper.GetMethodName(onClick);
+            RawCreate(
+                name,
+                classes,
+                x => x,
+                buildAction,
+                b =>
+                {
+                    b.Element.text = AddSpacesToSentence(name);
+                    if (onClick != null)
+                    {
+                        var compiled = onClick.Compile();
+                        b.Element.clicked += () => compiled(b.Context);
+                    }
+
+                    initiateAction?.Invoke(b);
+                },
+                b => { updateAction?.Invoke(b); });
+            return this;
+        }
+
+        public FluiCreator<TContext, TVisualElement> Button(
             string name,
             string text,
             string classes,
@@ -804,10 +832,12 @@ namespace Flui.Creator
             Action<FluiCreator<TChildContext, VisualElement>> initiateAction,
             Action<FluiCreator<TChildContext, VisualElement>> updateAction)
         {
-            var children = itemsFunc(Context);
+            var children = itemsFunc(Context).ToList();
             HashSet<VisualElement> unvisited = new HashSet<VisualElement>(Element.Children());
-            foreach (var context in children)
+            List<VisualElement> properSort = new();
+            for (var index = 0; index < children.Count; index++)
             {
+                var context = children[index];
                 // Could be slow - need two way dictionary
                 var rawFlui = _childCreators.Values.SingleOrDefault(x => Equals(x.Context, context));
                 var veName = "";
@@ -830,9 +860,32 @@ namespace Flui.Creator
                     initiateAction,
                     updateAction);
 
+                properSort.Add(flui.Element);
                 unvisited.Remove(flui.Element);
             }
 
+            RemoveUnused<TChildContext>(unvisited);
+
+            SortChildren<TChildContext>(properSort);
+        }
+
+        private void SortChildren<TChildContext>(List<VisualElement> properSort)
+        {
+            for (int correctIndex = 0; correctIndex < properSort.Count; correctIndex++)
+            {
+                VisualElement elementToSort = properSort[correctIndex];
+                int currentIndex = Element.IndexOf(elementToSort);
+                if (currentIndex != correctIndex)
+                {
+                    FluiCreatorStats.FluisMoved++;
+                    Element.RemoveAt(currentIndex);
+                    Element.Insert(correctIndex, elementToSort);
+                }
+            }
+        }
+
+        private void RemoveUnused<TChildContext>(HashSet<VisualElement> unvisited)
+        {
             foreach (var visualElement in unvisited)
             {
                 if (visualElement.parent != null)

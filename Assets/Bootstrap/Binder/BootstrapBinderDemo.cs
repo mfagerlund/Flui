@@ -15,8 +15,8 @@ namespace FluiDemo.Bootstrap.Binder
                 this,
                 RootVisualElement,
                 x => x
-                    .Button("TopClose", ctx => Hide())
-                    .Button("Close", ctx => Hide())
+                    .Button("TopClose", ctx => Close())
+                    .Button("Close", ctx => Close())
             );
         }
     }

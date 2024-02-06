@@ -43,7 +43,7 @@ namespace FluiDemo.Bootstrap.Creator
                             // CODE
                             .ScrollView("unnamed0", "", unnamed0 => unnamed0
                                 .VisualElement("unnamed1", "row", unnamed1 => unnamed1
-                                    .Button("TopClose", "Close", "btn-warning", _ => Hide())
+                                    .Button("TopClose", "Close", "btn-warning", _ => Close())
                                 ).VisualElement("unnamed2", "row", unnamed2 => unnamed2
                                     .Button("Button", "Primary", "btn-primary", null)
                                     .Button("Button2", "Secondary", "btn-secondary", null)
@@ -143,7 +143,7 @@ namespace FluiDemo.Bootstrap.Creator
                                         ).VisualElement("unnamed44", "td, danger", unnamed44 => unnamed44
                                             .Label("Columncontent", _ => "Column content", "")
                                         ))).VisualElement("unnamed45", "row", unnamed45 => unnamed45
-                                    .Button("Close", "Close", "btn-warning", _ => Hide())
+                                    .Button("Close", "Close", "btn-warning", _ => Close())
                                 ))
                         // CODE
                     );

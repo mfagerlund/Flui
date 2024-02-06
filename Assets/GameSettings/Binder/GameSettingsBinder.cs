@@ -94,8 +94,8 @@ namespace FluiDemo.GameSettings.Binder
                         .Case("GraphicSettingsPanel", Panel.GraphicSettings, ctx => ctx)
                         .Case("KeyboardSettingsPanel", Panel.KeyboardSettings, ctx => ctx)
                 )
-                .Button("Ok", ctx => Hide())
-                .Button("Return", ctx => Hide())
+                .Button("Ok", ctx => Close())
+                .Button("Return", ctx => Close())
             );
 
             _hierarchy = _root.HierarchyAsString();
