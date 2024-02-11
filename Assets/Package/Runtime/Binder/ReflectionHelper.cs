@@ -15,7 +15,7 @@ namespace Flui.Binder
                 var propertyInfo = memberExpression.Member as PropertyInfo;
                 if (propertyInfo != null)
                 {
-                    if (propertyInfo.DeclaringType.IsAssignableFrom(typeof(T)))
+                    if (!propertyInfo.DeclaringType.IsAssignableFrom(typeof(T)))
                     {
                         throw new InvalidOperationException($"Unhandled expression:{expr}");
                     }
@@ -26,7 +26,7 @@ namespace Flui.Binder
                 var fieldInfo = memberExpression.Member as FieldInfo;
                 if (fieldInfo != null)
                 {
-                    if (fieldInfo.DeclaringType.IsAssignableFrom(typeof(T)))
+                    if (!fieldInfo.DeclaringType.IsAssignableFrom(typeof(T)))
                     {
                         throw new InvalidOperationException($"Unhandled expression:{expr}");
                     }
@@ -46,7 +46,7 @@ namespace Flui.Binder
                 var propertyInfo = memberExpression.Member as PropertyInfo;
                 if (propertyInfo != null)
                 {
-                    if (propertyInfo.DeclaringType.IsAssignableFrom(typeof(T)))
+                    if (!propertyInfo.DeclaringType.IsAssignableFrom(typeof(T)))
                     {
                         throw new InvalidOperationException($"Unhandled expression:{expr}");
                     }
@@ -57,7 +57,7 @@ namespace Flui.Binder
                 var fieldInfo = memberExpression.Member as FieldInfo;
                 if (fieldInfo != null)
                 {
-                    if (fieldInfo.DeclaringType.IsAssignableFrom(typeof(T)))
+                    if (!fieldInfo.DeclaringType.IsAssignableFrom(typeof(T)))
                     {
                         throw new InvalidOperationException($"Unhandled expression:{expr}");
                     }
