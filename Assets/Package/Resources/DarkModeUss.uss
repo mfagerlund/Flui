@@ -1,0 +1,407 @@
+/* Flui DarkModeUss.uss 1.0.0 */
+
+VisualElement {
+    --primary-color: rgb(53, 116, 240);
+    --secondary-color: rgb(53, 116, 240);
+
+    /* PRIMARY */
+    --btn-primary-default-color: rgb(53, 116, 240);
+    --btn-primary-active-color: rgb(73, 159, 329);
+    /* SECONDARY */
+    --btn-secondary-default-color: rgb(125, 125, 125);
+    --btn-secondary-active-color: rgb(189, 189, 189);
+    /* WARNING */
+    --btn-warning-default-color: rgb(137, 137, 33);
+    --btn-warning-active-color: rgb(188, 188, 45);
+    /* DANGER */
+    --btn-danger-default-color: rgb(193, 19, 45);
+    --btn-danger-active-color: rgb(244, 24, 57);
+}
+
+.row {
+    flex-direction: row;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.w50 {
+    width: 50%;
+}
+
+.left-label {
+    width: 40%;
+    align-self: auto;
+    -unity-text-align: upper-right;
+    padding: 0;
+    margin: 2px;
+}
+
+.right-label {
+    width: 60%;
+    padding: 0;
+    margin: 2px;
+}
+
+.rounded-xl {
+    border-radius: 8px;
+}
+
+.rounded-lg {
+    border-radius: 4px;
+}
+
+.rounded-sm {
+    border-radius: 2px;
+}
+
+.panel-layer-1 {
+    background-color: rgb(15, 23, 42);
+    border-radius: 8px;
+    margin: 8px;
+    padding: 8px;
+    align-self: flex-start;
+    height: 100%;
+}
+
+.panel-layer-2 {
+    background-color: rgb(30, 41, 59);
+    border-radius: 4px;
+    padding-bottom: 4px;
+}
+
+.unity-toggle__input:hover > #unity-checkmark {
+    border-color: var(--primary-color);
+    border-width: 3px;
+    transition: 0.175s all;
+}
+
+.unity-toggle__input:active > #unity-checkmark {
+    border-color: var(--primary-color);
+    border-width: 3px;
+    transition: 0.175s all;
+}
+
+.unity-toggle__input:focus > #unity-checkmark {
+    border-color: var(--primary-color);
+    border-width: 3px;
+    transition: 0.175s all;
+}
+
+#unity-checkmark {
+    background-color: rgb(29, 41, 59);
+    -unity-background-image-tint-color: rgb(221, 221, 221);
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+}
+
+.unity-base-field {
+    color: rgb(221, 221, 221);
+    -unity-font-style: bold;
+    font-size: 13px;
+}
+
+.unity_label {
+    color: rgb(221, 221, 221);
+    -unity-font-style: bold;
+    font-size: 13px;
+}
+
+.unity-text-element {
+    color: rgb(221, 221, 221);
+    -unity-font-style: bold;
+    font-size: 13px;
+}
+
+.unity_label:hover {
+    color: rgb(238, 238, 238);
+}
+
+.unity-base-field:hover {
+    color: rgb(238, 238, 238);
+}
+
+.unity-base-field:active {
+    color: rgb(255, 255, 255);
+}
+
+.unity-base-field:checked {
+    color: rgb(255, 255, 255);
+}
+
+.unity-base-field:focus {
+    color: rgb(255, 255, 255);
+}
+
+.unity-base-field:hover {
+    color: rgb(255, 255, 255);
+}
+
+.unity-label:checked {
+    color: rgb(255, 255, 255);
+}
+
+.unity-label:active {
+    color: rgb(255, 255, 255);
+}
+
+.unity-label:focus {
+    color: rgb(255, 255, 255);
+}
+
+.unity-label:hover {
+    color: rgb(255, 255, 255);
+}
+
+.unity-base-field:focus:enabled > .unity-base-field__label {
+    color: rgb(255, 255, 255);
+}
+
+.unity-base-field:checked:enabled > .unity-base-field__label {
+    color: rgb(255, 255, 255);
+}
+
+.unity-foldout__toggle > .unity-toggle__input:focus:enabled > .unity-label {
+    color: rgb(255, 255, 255);
+}
+
+#unity-dragger {
+    width: 16px;
+    height: 16px;
+    border-width: 0;
+    border-radius: 8px;
+    margin-top: -8px;
+}
+
+#unity-dragger:hover {
+    border-width: 3px;
+    border-color: var(--primary-color);
+}
+
+#unity-dragger:active {
+    border-width: 3px;
+    border-color: var(--primary-color);
+}
+
+#unity-dragger:checked {
+    border-width: 3px;
+    border-color: var(--primary-color);
+}
+
+#unity-dragger:focus {
+    border-width: 3px;
+    border-color: var(--primary-color);
+}
+
+#unity-tracker:hover {
+    background-color: var(--primary-color);
+    transition: 0.175s all;
+}
+
+#unity-tracker:active {
+    background-color: var(--primary-color);
+    transition: 0.175s all;
+}
+
+#unity-tracker:checked {
+    background-color: var(--primary-color);
+    transition: 0.175s all;
+}
+
+.btn {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 3px;
+    border-width: 2px;
+    -unity-font-style: normal;
+    font-size: 14px;
+    height: 24px;
+    transition: 0.175s all;
+}
+
+.btn:active {
+    color: white;
+}
+
+/* *** btn-btn-primary *** */
+.btn-primary {
+    border-color: var(--btn-primary-default-color);
+    transition: 0.175s all;
+}
+
+.btn-primary:hover {
+    background-color: var(--btn-primary-default-color);
+    border-color: var(--btn-primary-default-color);
+}
+
+.btn-primary:active {
+    background-color: var(--btn-primary-default-color);
+    border-color: var(--btn-primary-active-color);
+}
+
+/* *** btn-secondary *** */
+.btn-secondary {
+    border-color: var(--btn-secondary-default-color);
+    transition: 0.175s all;
+}
+
+.btn-secondary:hover {
+    background-color: var(--btn-secondary-default-color);
+    border-color: var(--btn-secondary-default-color);
+}
+
+.btn-secondary:active {
+    background-color: var(--btn-secondary-default-color);
+    border-color: var(--btn-secondary-active-color);
+}
+
+/* *** btn-warning *** */
+.btn-warning {
+    border-color: var(--btn-warning-default-color);
+    transition: 0.175s all;
+}
+
+.btn-warning:hover {
+    background-color: var(--btn-warning-default-color);
+    border-color: var(--btn-warning-default-color);
+}
+
+.btn-warning:active {
+    background-color: var(--btn-warning-default-color);
+    border-color: var(--btn-warning-active-color);
+}
+
+/* *** btn-danger *** */
+.btn-danger {
+    border-color: var(--btn-danger-default-color);
+    transition: 0.175s all;
+}
+
+.btn-danger:hover {
+    background-color: var(--btn-danger-default-color);
+    border-color: var(--btn-danger-default-color);
+}
+
+.btn-danger:active {
+    background-color: var(--btn-danger-default-color);
+    border-color: var(--btn-danger-active-color);
+}
+
+.property-field .unity-label {
+    margin: 0;
+    margin-right: 8px;
+    padding: 0;
+    -unity-font-style: normal;
+    align-self: center;
+    -unity-text-align: middle-right;
+    min-width: 200px;
+}
+
+.properties-panel #unity-content {
+    margin-left: 7px;
+}
+
+.property-field .unity-base-text-field__input {
+    background-color: rgb(53, 79, 130);
+    border-color: rgb(29, 44, 70);
+}
+
+.property-field .unity-base-popup-field__input {
+    background-color: rgb(53, 79, 130);
+    border-color: rgb(29, 44, 70);
+}
+
+.property-field .unity-base-popup-field__input {
+    margin: 0;
+    padding: 3px;
+}
+
+.property-field .unity-base-popup-field__text {
+    margin-right: 5px;
+}
+
+.property-field .unity-base-popup-field__arrow {
+    -unity-background-image-tint-color: rgb(221, 221, 221);
+}
+
+.property-field #unity-text-input {
+    --unity-cursor-color: rgb(255, 255, 255);
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.property-field .unity-text-field__input {
+    padding: 4px;
+}
+
+.property-field .unity-base-text-field__input:hover {
+    background-color: rgb(69, 95, 146);
+}
+
+.property-field .unity-base-text-field__input:focus {
+    background-color: rgb(69, 95, 146);
+}
+
+.property-field .unity-base-text-field__input:active {
+    background-color: rgb(69, 95, 146);
+}
+
+.properties-panel {
+}
+
+.property-field .value {
+    margin-left: 2px;
+    margin-bottom: 2px;
+    padding-left: 6px;
+    padding-top: 2px;
+    padding-bottom: 3px;
+    -unity-text-align: middle-left;
+    background-color: rgb(51, 51, 51);
+}
+
+.unity-text-element.unity-label.unity-text-element--inner-input-field-component {
+    -unity-text-align: middle-left;
+    margin-left: 4px;
+    -unity-font-style: bold;
+}
+
+.separator {
+    background-color: rgb(69, 95, 146);
+    margin: 2px 4px 6px;
+    height: 2px;
+}
+
+.btn-panel .btn {
+    height: 18px;
+    padding: 8px;
+}
+
+#details {
+    border-radius: 4px;
+    background-color: rgb(30, 41, 59);
+}
+
+.shortest-distance {
+    padding: 4px;
+    -unity-font-style: normal;
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.light-red {
+    color: #FF5E5E;
+}
+
+.has-warnings .unity-toggle__text {
+    color: red;
+}
+
+.selected .unity-toggle__text {
+    color: white;
+    background-color: rgba(1, 1, 1, 0.1);
+}
+
+.hovered .unity-toggle__text {
+    color: var(--primary-color);
+    background-color: rgba(1, 1, 1, 0.5);
+}
