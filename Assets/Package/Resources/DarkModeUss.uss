@@ -1,4 +1,5 @@
 /* Flui DarkModeUss.uss 1.0.0 */
+/* Located in xxx\Flui\Assets\Package\Resources\DarkModeUss.uss */
 
 VisualElement {
     --primary-color: rgb(53, 116, 240);
