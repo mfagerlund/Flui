@@ -119,7 +119,7 @@ Here's an example where the entire ui is created in code instead of just being b
 
         private void Bind()
         {
-			_document ??= GetComponent<UIDocument>();
+            _document ??= GetComponent<UIDocument>();
             _root.CreateGui(this, _document.rootVisualElement, r => r
                 .VisualElement("unnamed0", "row", unnamed0 => unnamed0
                     .Label("ListExamples", _ => "List Examples", "h2")
