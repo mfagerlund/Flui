@@ -111,7 +111,8 @@ Here's an example where the entire ui is created in code instead of just being b
     {
         private readonly List<Office> _offices = Office.CreateOfficeList();
         private FluiCreatorRoot<ListUiCreator, VisualElement> _root = new();
-
+		private UIDocument _document;
+		
         private void Update()
         {
             Bind();
