@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using Flui.Binder;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -245,7 +244,8 @@ namespace Flui.Creator
             Action<TContext, float> setValue,
             Action<FluiCreator<TContext, Slider>> buildAction = null,
             Action<FluiCreator<TContext, Slider>> initiateAction = null,
-            Action<FluiCreator<TContext, Slider>> updateAction = null)
+            Action<FluiCreator<TContext, Slider>> updateAction = null,
+            Action onModelChanged = null)
         {
             RawCreate(
                     name,
@@ -260,7 +260,8 @@ namespace Flui.Creator
                         s.Element.highValue = highValue;
                         s.ValueBinding = new ValueBinding<float>(
                             () => getValue(Context), v => setValue(Context, v),
-                            () => s.Element.value, v => s.Element.value = v);
+                            () => s.Element.value, v => s.Element.value = v,
+                            onModelChanged);
                         initiateAction?.Invoke(s);
                     },
                     updateAction)
@@ -278,7 +279,8 @@ namespace Flui.Creator
             Expression<Func<TContext, float>> propertyFunc,
             Action<FluiCreator<TContext, Slider>> buildAction = null,
             Action<FluiCreator<TContext, Slider>> initiateAction = null,
-            Action<FluiCreator<TContext, Slider>> updateAction = null)
+            Action<FluiCreator<TContext, Slider>> updateAction = null,
+            Action onModelChanged = null)
         {
             var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
@@ -293,7 +295,8 @@ namespace Flui.Creator
                 setFunc,
                 buildAction,
                 initiateAction,
-                updateAction);
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> Slider(
@@ -303,7 +306,8 @@ namespace Flui.Creator
             float highValue,
             Action<FluiCreator<TContext, Slider>> buildAction = null,
             Action<FluiCreator<TContext, Slider>> initiateAction = null,
-            Action<FluiCreator<TContext, Slider>> updateAction = null)
+            Action<FluiCreator<TContext, Slider>> updateAction = null,
+            Action onModelChanged = null)
         {
             var name = ReflectionHelper.GetPath(propertyFunc);
 
@@ -316,7 +320,8 @@ namespace Flui.Creator
                 propertyFunc,
                 buildAction,
                 initiateAction,
-                updateAction);
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> SliderInt(
@@ -440,10 +445,19 @@ namespace Flui.Creator
             string classes,
             Action<FluiCreator<TContext, Toggle>> buildAction = null,
             Action<FluiCreator<TContext, Toggle>> initiateAction = null,
-            Action<FluiCreator<TContext, Toggle>> updateAction = null)
+            Action<FluiCreator<TContext, Toggle>> updateAction = null,
+            Action onModelChanged = null)
         {
             var name = ReflectionHelper.GetPath(propertyFunc);
-            return Toggle(name, AddSpacesToSentence(name), classes, propertyFunc, buildAction, initiateAction, updateAction);
+            return Toggle(
+                name, 
+                AddSpacesToSentence(name),
+                classes,
+                propertyFunc, 
+                buildAction, 
+                initiateAction,
+                updateAction,
+                onModelChanged:onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> Toggle(
@@ -453,12 +467,13 @@ namespace Flui.Creator
             Expression<Func<TContext, bool>> propertyFunc,
             Action<FluiCreator<TContext, Toggle>> buildAction = null,
             Action<FluiCreator<TContext, Toggle>> initiateAction = null,
-            Action<FluiCreator<TContext, Toggle>> updateAction = null)
+            Action<FluiCreator<TContext, Toggle>> updateAction = null,
+            Action onModelChanged = null)
         {
             var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
 
-            return Toggle(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction);
+            return Toggle(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction, onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> Toggle(
@@ -469,7 +484,8 @@ namespace Flui.Creator
             Action<TContext, bool> setValue,
             Action<FluiCreator<TContext, Toggle>> buildAction = null,
             Action<FluiCreator<TContext, Toggle>> initiateAction = null,
-            Action<FluiCreator<TContext, Toggle>> updateAction = null)
+            Action<FluiCreator<TContext, Toggle>> updateAction = null,
+            Action onModelChanged = null)
         {
             RawCreate(
                     name,
@@ -482,7 +498,8 @@ namespace Flui.Creator
                         s.Element.value = getValue(Context);
                         s.ValueBinding = new ValueBinding<bool>(
                             () => getValue(Context), v => setValue(Context, v),
-                            () => s.Element.value, v => s.Element.value = v);
+                            () => s.Element.value, v => s.Element.value = v, 
+                            onModelChanged);
                         initiateAction?.Invoke(s);
                     },
                     updateAction)
@@ -500,7 +517,8 @@ namespace Flui.Creator
             Action<TContext, int> setValue,
             Action<FluiCreator<TContext, DropdownField>> buildAction = null,
             Action<FluiCreator<TContext, DropdownField>> initiateAction = null,
-            Action<FluiCreator<TContext, DropdownField>> updateAction = null)
+            Action<FluiCreator<TContext, DropdownField>> updateAction = null,
+            Action onModelChanged = null)
         {
             RawCreate(
                     name,
@@ -516,7 +534,8 @@ namespace Flui.Creator
                         // s.Element.Focus();
                         s.ValueBinding = new ValueBinding<int>(
                             () => getValue(Context), v => setValue(Context, v),
-                            () => s.Element.index, v => s.Element.index = v); //.SetLockedFunc(() => s.IsFocused);
+                            () => s.Element.index, v => s.Element.index = v,
+                            onModelChanged); //.SetLockedFunc(() => s.IsFocused);
                         initiateAction?.Invoke(s);
                     },
                     updateAction)
@@ -533,12 +552,23 @@ namespace Flui.Creator
             Expression<Func<TContext, int>> propertyFunc,
             Action<FluiCreator<TContext, DropdownField>> buildAction = null,
             Action<FluiCreator<TContext, DropdownField>> initiateAction = null,
-            Action<FluiCreator<TContext, DropdownField>> updateAction = null)
+            Action<FluiCreator<TContext, DropdownField>> updateAction = null,
+            Action onModelChanged = null)
         {
             var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
 
-            return DropdownField(name, label, classes, choices, getFunc, setFunc, buildAction, initiateAction, updateAction);
+            return DropdownField(
+                name, 
+                label, 
+                classes, 
+                choices,
+                getFunc,
+                setFunc,
+                buildAction,
+                initiateAction,
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> DropdownField<TElement>(
@@ -548,7 +578,8 @@ namespace Flui.Creator
             Func<TElement, string> labelFunc,
             Action<FluiCreator<TContext, DropdownField>> buildAction = null,
             Action<FluiCreator<TContext, DropdownField>> initiateAction = null,
-            Action<FluiCreator<TContext, DropdownField>> updateAction = null)
+            Action<FluiCreator<TContext, DropdownField>> updateAction = null,
+            Action onModelChanged = null)
         {
             // It's expensive to call ReflectionHelper.GetPath(propertyFunc) over and over again each frame,
             // we could try to wrap this in something that keeps track of the data.
@@ -565,7 +596,8 @@ namespace Flui.Creator
                 (ctx, i) => setFunc(ctx, choices[i]),
                 buildAction,
                 initiateAction,
-                updateAction);
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> EnumField<TEnum>(
@@ -573,10 +605,19 @@ namespace Flui.Creator
             string classes,
             Action<FluiCreator<TContext, EnumField>> buildAction = null,
             Action<FluiCreator<TContext, EnumField>> initiateAction = null,
-            Action<FluiCreator<TContext, EnumField>> updateAction = null) where TEnum : Enum
+            Action<FluiCreator<TContext, EnumField>> updateAction = null,
+            Action onModelChanged = null) where TEnum : Enum
         {
             var name = ReflectionHelper.GetPath(propertyFunc);
-            return EnumField(name, AddSpacesToSentence(name), classes, propertyFunc, buildAction, initiateAction, updateAction);
+            return EnumField(
+                name,
+                AddSpacesToSentence(name),
+                classes,
+                propertyFunc,
+                buildAction,
+                initiateAction,
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> EnumField<TEnum>(
@@ -586,12 +627,22 @@ namespace Flui.Creator
             Expression<Func<TContext, TEnum>> propertyFunc,
             Action<FluiCreator<TContext, EnumField>> buildAction = null,
             Action<FluiCreator<TContext, EnumField>> initiateAction = null,
-            Action<FluiCreator<TContext, EnumField>> updateAction = null) where TEnum : Enum
+            Action<FluiCreator<TContext, EnumField>> updateAction = null,
+            Action onModelChanged = null) where TEnum : Enum
         {
             var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
 
-            return EnumField(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction);
+            return EnumField(
+                name,
+                label,
+                classes,
+                getFunc,
+                setFunc,
+                buildAction,
+                initiateAction,
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> EnumField<TEnum>(
@@ -602,7 +653,8 @@ namespace Flui.Creator
             Action<TContext, TEnum> setValue,
             Action<FluiCreator<TContext, EnumField>> buildAction = null,
             Action<FluiCreator<TContext, EnumField>> initiateAction = null,
-            Action<FluiCreator<TContext, EnumField>> updateAction = null) where TEnum : Enum
+            Action<FluiCreator<TContext, EnumField>> updateAction = null,
+            Action onModelChanged = null) where TEnum : Enum
         {
             RawCreate(
                     name,
@@ -616,7 +668,8 @@ namespace Flui.Creator
                         s.Element.Init(getValue(Context));
                         var valueBinding = new ValueBinding<TEnum>(
                             () => getValue(Context), v => setValue(Context, v),
-                            () => (TEnum)s.Element.value, v => s.Element.value = v);
+                            () => (TEnum)s.Element.value, v => s.Element.value = v,
+                            onModelChanged);
                         s.ValueBinding = valueBinding;
                         initiateAction?.Invoke(s);
                     },
@@ -679,7 +732,8 @@ namespace Flui.Creator
             Action<TContext, string> setValue,
             Action<FluiCreator<TContext, TextField>> buildAction = null,
             Action<FluiCreator<TContext, TextField>> initiateAction = null,
-            Action<FluiCreator<TContext, TextField>> updateAction = null)
+            Action<FluiCreator<TContext, TextField>> updateAction = null,
+            Action onModelChanged = null)
         {
             RawCreate(
                     name,
@@ -696,7 +750,8 @@ namespace Flui.Creator
                             s,
                             new ValueBinding<string>(
                                 () => getValue(Context), v => setValue(Context, v),
-                                () => s.Element.value, v => s.Element.value = v));
+                                () => s.Element.value, v => s.Element.value = v,
+                                onModelChanged));
 
 
                         s.ValueBinding = valueBinding;
@@ -713,11 +768,20 @@ namespace Flui.Creator
             string classes,
             Action<FluiCreator<TContext, TextField>> buildAction = null,
             Action<FluiCreator<TContext, TextField>> initiateAction = null,
-            Action<FluiCreator<TContext, TextField>> updateAction = null)
+            Action<FluiCreator<TContext, TextField>> updateAction = null,
+            Action onModelChanged = null)
         {
             var name = ReflectionHelper.GetPath(propertyFunc);
 
-            return TextField(name, AddSpacesToSentence(name), classes, propertyFunc, buildAction, initiateAction, updateAction);
+            return TextField(
+                name,
+                AddSpacesToSentence(name),
+                classes,
+                propertyFunc,
+                buildAction,
+                initiateAction,
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> TextField(
@@ -727,12 +791,22 @@ namespace Flui.Creator
             Expression<Func<TContext, string>> propertyFunc,
             Action<FluiCreator<TContext, TextField>> buildAction = null,
             Action<FluiCreator<TContext, TextField>> initiateAction = null,
-            Action<FluiCreator<TContext, TextField>> updateAction = null)
+            Action<FluiCreator<TContext, TextField>> updateAction = null,
+            Action onModelChanged = null)
         {
             var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
 
-            return TextField(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction);
+            return TextField(
+                name,
+                label,
+                classes,
+                getFunc,
+                setFunc,
+                buildAction,
+                initiateAction,
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> IntegerField(
@@ -740,10 +814,19 @@ namespace Flui.Creator
             string classes,
             Action<FluiCreator<TContext, IntegerField>> buildAction = null,
             Action<FluiCreator<TContext, IntegerField>> initiateAction = null,
-            Action<FluiCreator<TContext, IntegerField>> updateAction = null)
+            Action<FluiCreator<TContext, IntegerField>> updateAction = null,
+            Action onModelChanged = null)
         {
             var name = ReflectionHelper.GetPath(propertyFunc);
-            return IntegerField(name, AddSpacesToSentence(name), classes, propertyFunc, buildAction, initiateAction, updateAction);
+            return IntegerField(
+                name,
+                AddSpacesToSentence(name),
+                classes,
+                propertyFunc,
+                buildAction,
+                initiateAction,
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> IntegerField(
@@ -753,12 +836,22 @@ namespace Flui.Creator
             Expression<Func<TContext, int>> propertyFunc,
             Action<FluiCreator<TContext, IntegerField>> buildAction = null,
             Action<FluiCreator<TContext, IntegerField>> initiateAction = null,
-            Action<FluiCreator<TContext, IntegerField>> updateAction = null)
+            Action<FluiCreator<TContext, IntegerField>> updateAction = null,
+            Action onModelChanged = null)
         {
             var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
 
-            return IntegerField(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction);
+            return IntegerField(
+                name,
+                label,
+                classes,
+                getFunc,
+                setFunc,
+                buildAction,
+                initiateAction,
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> IntegerField(
@@ -769,7 +862,8 @@ namespace Flui.Creator
             Action<TContext, int> setValue,
             Action<FluiCreator<TContext, IntegerField>> buildAction = null,
             Action<FluiCreator<TContext, IntegerField>> initiateAction = null,
-            Action<FluiCreator<TContext, IntegerField>> updateAction = null)
+            Action<FluiCreator<TContext, IntegerField>> updateAction = null,
+            Action onModelChanged = null)
         {
             RawCreate(
                     name,
@@ -786,7 +880,8 @@ namespace Flui.Creator
                             s,
                             new ValueBinding<int>(
                                 () => getValue(Context), v => setValue(Context, v),
-                                () => s.Element.value, v => s.Element.value = v));
+                                () => s.Element.value, v => s.Element.value = v,
+                                onModelChanged));
                         initiateAction?.Invoke(s);
                     },
                     updateAction)
@@ -803,7 +898,8 @@ namespace Flui.Creator
             Action<TContext, float> setValue,
             Action<FluiCreator<TContext, FloatField>> buildAction = null,
             Action<FluiCreator<TContext, FloatField>> initiateAction = null,
-            Action<FluiCreator<TContext, FloatField>> updateAction = null)
+            Action<FluiCreator<TContext, FloatField>> updateAction = null,
+            Action onModelChanged = null)
         {
             RawCreate(
                     name,
@@ -819,7 +915,8 @@ namespace Flui.Creator
                         s.ValueBinding = SetUpdateOnReturn(
                             s, new ValueBinding<float>(
                                 () => getValue(Context), v => setValue(Context, v),
-                                () => s.Element.value, v => s.Element.value = v));
+                                () => s.Element.value, v => s.Element.value = v,
+                                onModelChanged));
                         initiateAction?.Invoke(s);
                     },
                     updateAction)
@@ -833,11 +930,20 @@ namespace Flui.Creator
             string classes,
             Action<FluiCreator<TContext, FloatField>> buildAction = null,
             Action<FluiCreator<TContext, FloatField>> initiateAction = null,
-            Action<FluiCreator<TContext, FloatField>> updateAction = null)
+            Action<FluiCreator<TContext, FloatField>> updateAction = null,
+            Action onModelChanged = null)
         {
             var name = ReflectionHelper.GetPath(propertyFunc);
 
-            return FloatField(name, AddSpacesToSentence(name), classes, propertyFunc, buildAction, initiateAction, updateAction);
+            return FloatField(
+                name, 
+                AddSpacesToSentence(name),
+                classes,
+                propertyFunc,
+                buildAction,
+                initiateAction,
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> FloatField(
@@ -847,12 +953,22 @@ namespace Flui.Creator
             Expression<Func<TContext, float>> propertyFunc,
             Action<FluiCreator<TContext, FloatField>> buildAction = null,
             Action<FluiCreator<TContext, FloatField>> initiateAction = null,
-            Action<FluiCreator<TContext, FloatField>> updateAction = null)
+            Action<FluiCreator<TContext, FloatField>> updateAction = null,
+            Action onModelChanged = null)
         {
             var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
 
-            return FloatField(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction);
+            return FloatField(
+                name,
+                label,
+                classes,
+                getFunc,
+                setFunc,
+                buildAction,
+                initiateAction,
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> Button(
