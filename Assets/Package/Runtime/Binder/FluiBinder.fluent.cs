@@ -668,6 +668,21 @@ namespace Flui.Binder
         }
 
         public FluiBinder<TContext, TVisualElement> ForEachCreate<TChildContext>(
+            Expression<Func<TContext, IEnumerable<TChildContext>>> itemsFunc,
+            string classes,
+            Action<FluiCreator<TChildContext, VisualElement>> createAction = null)
+        {
+            var getFunc = ReflectionHelper.GetPropertyValueFunc(itemsFunc);
+            var name = ReflectionHelper.GetPath(itemsFunc);
+
+            return ForEachCreate(
+                name,
+                getFunc,
+                classes,
+                createAction);
+        }
+
+        public FluiBinder<TContext, TVisualElement> ForEachCreate<TChildContext>(
             string query,
             Func<TContext, IEnumerable<TChildContext>> itemsFunc,
             string classes,
