@@ -450,14 +450,14 @@ namespace Flui.Creator
         {
             var name = ReflectionHelper.GetPath(propertyFunc);
             return Toggle(
-                name, 
+                name,
                 AddSpacesToSentence(name),
                 classes,
-                propertyFunc, 
-                buildAction, 
+                propertyFunc,
+                buildAction,
                 initiateAction,
                 updateAction,
-                onModelChanged:onModelChanged);
+                onModelChanged: onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> Toggle(
@@ -498,7 +498,7 @@ namespace Flui.Creator
                         s.Element.value = getValue(Context);
                         s.ValueBinding = new ValueBinding<bool>(
                             () => getValue(Context), v => setValue(Context, v),
-                            () => s.Element.value, v => s.Element.value = v, 
+                            () => s.Element.value, v => s.Element.value = v,
                             onModelChanged);
                         initiateAction?.Invoke(s);
                     },
@@ -559,9 +559,9 @@ namespace Flui.Creator
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
 
             return DropdownField(
-                name, 
-                label, 
-                classes, 
+                name,
+                label,
+                classes,
                 choices,
                 getFunc,
                 setFunc,
@@ -936,7 +936,7 @@ namespace Flui.Creator
             var name = ReflectionHelper.GetPath(propertyFunc);
 
             return FloatField(
-                name, 
+                name,
                 AddSpacesToSentence(name),
                 classes,
                 propertyFunc,
@@ -974,6 +974,7 @@ namespace Flui.Creator
         public FluiCreator<TContext, TVisualElement> Button(
             Expression<Action<TContext>> onClick,
             string classes,
+            string text = null,
             Action<FluiCreator<TContext, Button>> buildAction = null,
             Action<FluiCreator<TContext, Button>> initiateAction = null,
             Action<FluiCreator<TContext, Button>> updateAction = null)
@@ -986,7 +987,7 @@ namespace Flui.Creator
                 buildAction,
                 b =>
                 {
-                    b.Element.text = AddSpacesToSentence(name);
+                    b.Element.text = text ?? AddSpacesToSentence(name);
                     if (onClick != null)
                     {
                         var compiled = onClick.Compile();
