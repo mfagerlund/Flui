@@ -175,7 +175,7 @@ namespace Flui.Creator
             return this;
         }
         
-        public FluiCreator<TContext, TVisualElement> Label<TValue>(
+        public FluiCreator<TContext, TVisualElement> Label(
             string name,
             string text,
             string classes,
