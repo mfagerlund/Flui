@@ -183,11 +183,11 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, Label>> updateAction = null)
         {
             return Label(
-                nameAndText, 
+                nameAndText,
                 AddSpacesToSentence(nameAndText),
                 classes,
                 buildAction,
-                initiateAction, 
+                initiateAction,
                 updateAction);
         }
 
@@ -318,9 +318,8 @@ namespace Flui.Creator
                 initiateAction,
                 updateAction);
         }
-//
 
- public FluiCreator<TContext, TVisualElement> SliderInt(
+        public FluiCreator<TContext, TVisualElement> SliderInt(
             string name,
             string label,
             string classes,
@@ -343,7 +342,7 @@ namespace Flui.Creator
                         s.Element.value = getValue(Context);
                         s.Element.lowValue = lowValue;
                         s.Element.highValue = highValue;
-                        s.ValueBinding = new ValueBinding<float>(
+                        s.ValueBinding = new ValueBinding<int>(
                             () => getValue(Context), v => setValue(Context, v),
                             () => s.Element.value, v => s.Element.value = v);
                         initiateAction?.Invoke(s);
@@ -403,7 +402,7 @@ namespace Flui.Creator
                 initiateAction,
                 updateAction);
         }
-        
+
         public FluiCreator<TContext, TVisualElement> Foldout<TChildContext>(
             string name,
             string text,
