@@ -472,6 +472,19 @@ namespace Flui.Binder
         }
 
         public FluiBinder<TContext, TVisualElement> TextField(
+            Expression<Func<TContext, string>> propertyFunc,
+            bool updateOnExit = true,
+            Action<FluiBinder<TContext, TextField>> bindAction = null,
+            Action<FluiBinder<TContext, TextField>> initiateAction = null,
+            Action<FluiBinder<TContext, TextField>> updateAction = null)
+        {
+            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            var query = ReflectionHelper.GetPath(propertyFunc);
+            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            return TextField(query, getFunc, setFunc, updateOnExit, bindAction, initiateAction, updateAction);
+        }
+        
+        public FluiBinder<TContext, TVisualElement> TextField(
             string query,
             Expression<Func<TContext, string>> propertyFunc,
             bool updateOnExit = true,
