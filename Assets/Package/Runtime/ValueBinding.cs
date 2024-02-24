@@ -8,6 +8,7 @@ namespace Flui
         private readonly Action<TDataType> _modelValueSetter;
         private readonly Func<TDataType> _viewValueGetter;
         private readonly Action<TDataType> _viewValueSetter;
+        private readonly Action _onModelChanged;
         private TDataType _previousModelValue;
         private TDataType _previousViewValue;
         private Func<bool> _lockedFunc;
@@ -16,12 +17,14 @@ namespace Flui
             Func<TDataType> modelValueGetter,
             Action<TDataType> modelValueSetter,
             Func<TDataType> viewValueGetter,
-            Action<TDataType> viewValueSetter)
+            Action<TDataType> viewValueSetter,
+            Action onModelChanged = null)
         {
             _modelValueGetter = modelValueGetter;
             _modelValueSetter = modelValueSetter;
             _viewValueGetter = viewValueGetter;
             _viewValueSetter = viewValueSetter;
+            _onModelChanged = onModelChanged;
 
             SetViewValue(_modelValueGetter());
         }
@@ -84,6 +87,7 @@ namespace Flui
                 _previousViewValue = viewValue;
                 _previousModelValue = viewValue;
                 _modelValueSetter(_previousModelValue);
+                _onModelChanged?.Invoke();
             }
             catch
             {

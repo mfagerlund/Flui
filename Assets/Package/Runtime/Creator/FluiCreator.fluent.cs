@@ -329,7 +329,8 @@ namespace Flui.Creator
             Action<TContext, int> setValue,
             Action<FluiCreator<TContext, SliderInt>> buildAction = null,
             Action<FluiCreator<TContext, SliderInt>> initiateAction = null,
-            Action<FluiCreator<TContext, SliderInt>> updateAction = null)
+            Action<FluiCreator<TContext, SliderInt>> updateAction = null,
+            Action onModelChanged = null)
         {
             RawCreate(
                     name,
@@ -344,7 +345,8 @@ namespace Flui.Creator
                         s.Element.highValue = highValue;
                         s.ValueBinding = new ValueBinding<int>(
                             () => getValue(Context), v => setValue(Context, v),
-                            () => s.Element.value, v => s.Element.value = v);
+                            () => s.Element.value, v => s.Element.value = v,
+                            onModelChanged);
                         initiateAction?.Invoke(s);
                     },
                     updateAction)
@@ -362,7 +364,8 @@ namespace Flui.Creator
             Expression<Func<TContext, int>> propertyFunc,
             Action<FluiCreator<TContext, SliderInt>> buildAction = null,
             Action<FluiCreator<TContext, SliderInt>> initiateAction = null,
-            Action<FluiCreator<TContext, SliderInt>> updateAction = null)
+            Action<FluiCreator<TContext, SliderInt>> updateAction = null,
+            Action onModelChanged = null)
         {
             var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
@@ -377,7 +380,8 @@ namespace Flui.Creator
                 setFunc,
                 buildAction,
                 initiateAction,
-                updateAction);
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> SliderInt(
@@ -387,7 +391,8 @@ namespace Flui.Creator
             int highValue,
             Action<FluiCreator<TContext, SliderInt>> buildAction = null,
             Action<FluiCreator<TContext, SliderInt>> initiateAction = null,
-            Action<FluiCreator<TContext, SliderInt>> updateAction = null)
+            Action<FluiCreator<TContext, SliderInt>> updateAction = null,
+            Action onModelChanged = null)
         {
             var name = ReflectionHelper.GetPath(propertyFunc);
 
@@ -400,7 +405,8 @@ namespace Flui.Creator
                 propertyFunc,
                 buildAction,
                 initiateAction,
-                updateAction);
+                updateAction,
+                onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> Foldout<TChildContext>(
