@@ -174,6 +174,28 @@ namespace Flui.Creator
                 });
             return this;
         }
+        
+        public FluiCreator<TContext, TVisualElement> Label<TValue>(
+            string name,
+            string text,
+            string classes,
+            Action<FluiCreator<TContext, Label>> buildAction = null,
+            Action<FluiCreator<TContext, Label>> initiateAction = null,
+            Action<FluiCreator<TContext, Label>> updateAction = null)
+        {
+            RawCreate(
+                name,
+                classes,
+                x => x,
+                buildAction,
+                b =>
+                {
+                    initiateAction?.Invoke(b);
+                    b.Element.text = text;
+                },
+                updateAction);
+            return this;
+        }
 
         public FluiCreator<TContext, TVisualElement> Label(
             string name,
