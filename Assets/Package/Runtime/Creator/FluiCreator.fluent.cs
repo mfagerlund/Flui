@@ -318,7 +318,92 @@ namespace Flui.Creator
                 initiateAction,
                 updateAction);
         }
+//
 
+ public FluiCreator<TContext, TVisualElement> SliderInt(
+            string name,
+            string label,
+            string classes,
+            int lowValue,
+            int highValue,
+            Func<TContext, int> getValue,
+            Action<TContext, int> setValue,
+            Action<FluiCreator<TContext, SliderInt>> buildAction = null,
+            Action<FluiCreator<TContext, SliderInt>> initiateAction = null,
+            Action<FluiCreator<TContext, SliderInt>> updateAction = null)
+        {
+            RawCreate(
+                    name,
+                    classes,
+                    x => x,
+                    buildAction,
+                    s =>
+                    {
+                        s.Element.label = label;
+                        s.Element.value = getValue(Context);
+                        s.Element.lowValue = lowValue;
+                        s.Element.highValue = highValue;
+                        s.ValueBinding = new ValueBinding<float>(
+                            () => getValue(Context), v => setValue(Context, v),
+                            () => s.Element.value, v => s.Element.value = v);
+                        initiateAction?.Invoke(s);
+                    },
+                    updateAction)
+                .Set(x => x.PurgeUnmanagedChildren = false);
+
+            return this;
+        }
+
+        public FluiCreator<TContext, TVisualElement> SliderInt(
+            string name,
+            string label,
+            string classes,
+            int lowValue,
+            int highValue,
+            Expression<Func<TContext, int>> propertyFunc,
+            Action<FluiCreator<TContext, SliderInt>> buildAction = null,
+            Action<FluiCreator<TContext, SliderInt>> initiateAction = null,
+            Action<FluiCreator<TContext, SliderInt>> updateAction = null)
+        {
+            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+
+            return SliderInt(
+                name,
+                label,
+                classes,
+                lowValue,
+                highValue,
+                getFunc,
+                setFunc,
+                buildAction,
+                initiateAction,
+                updateAction);
+        }
+
+        public FluiCreator<TContext, TVisualElement> SliderInt(
+            Expression<Func<TContext, int>> propertyFunc,
+            string classes,
+            int lowValue,
+            int highValue,
+            Action<FluiCreator<TContext, SliderInt>> buildAction = null,
+            Action<FluiCreator<TContext, SliderInt>> initiateAction = null,
+            Action<FluiCreator<TContext, SliderInt>> updateAction = null)
+        {
+            var name = ReflectionHelper.GetPath(propertyFunc);
+
+            return SliderInt(
+                name,
+                AddSpacesToSentence(name),
+                classes,
+                lowValue,
+                highValue,
+                propertyFunc,
+                buildAction,
+                initiateAction,
+                updateAction);
+        }
+        
         public FluiCreator<TContext, TVisualElement> Foldout<TChildContext>(
             string name,
             string text,
