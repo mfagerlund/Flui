@@ -35,6 +35,7 @@ namespace FluiDemo.ListUi.Creator
                             .VisualElement("ve", "", ve => ve
                                 .ForEach(x => x._offices,
                                     "",
+                                    "",
                                     office => office
                                         .VisualElement("unnamed2", "row", unnamed2 => unnamed2
                                             .Label("Label", _ => "Office: ", "h3")
@@ -51,7 +52,7 @@ namespace FluiDemo.ListUi.Creator
                                                         .Button("Add", "Add", "btn-primary, btn-sm", _ => office.Context.AddRandomEmployee())
                                                     )
                                                 )
-                                                .ForEach(x => x.Employees, "tr", employee => employee
+                                                .ForEach(x => x.Employees, "", "tr", employee => employee
                                                     .Label(x => x.Name, "td")
                                                     .Label(x => x.Title, "td")
                                                     .Label("salary", x => $"{x.Salary:0}", "td")

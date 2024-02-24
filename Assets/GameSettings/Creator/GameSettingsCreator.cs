@@ -96,7 +96,7 @@ namespace FluiDemo.GameSettings.Creator
                                     .VisualElement("UserName", "right-panel-control-holder", userName => userName
                                         .TextField(ctx => ctx.UserName, ""))
                                     .VisualElement("spacer3", "panel-right-spacer")
-                                    .ForEach(ctx => GameSettings.ControllerType.ControllerTypes, "", oct => oct
+                                    .ForEach(ctx => GameSettings.ControllerType.ControllerTypes, "","", oct => oct
                                         .VisualElement(oct.Context.ControllerTypeId.ToString(), "right-panel-control-holder", ct => ct
                                             .TextFieldReadOnly(cta => cta.ControllerTypeName, "")
                                             .TextFieldReadOnly(cta => cta.Cost, cost => $"{cost:0.00}$", "")

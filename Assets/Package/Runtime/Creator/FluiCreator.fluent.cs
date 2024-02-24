@@ -1030,28 +1030,30 @@ namespace Flui.Creator
 
         public FluiCreator<TContext, TVisualElement> ForEach<TChildContext>(
             Expression<Func<TContext, IEnumerable<TChildContext>>> itemsFunc,
-            string classes,
+            string groupClasses,
+            string childClasses,
             Action<FluiCreator<TChildContext, VisualElement>> bindAction = null,
             Action<FluiCreator<TChildContext, VisualElement>> initiateAction = null,
             Action<FluiCreator<TChildContext, VisualElement>> updateAction = null)
         {
             var name = ReflectionHelper.GetPath(itemsFunc);
             var getFunc = ReflectionHelper.GetPropertyValueFunc(itemsFunc);
-            ForEach(name, getFunc, classes, bindAction, initiateAction, updateAction);
+            ForEach(name, getFunc, groupClasses,childClasses, bindAction, initiateAction, updateAction);
             return this;
         }
 
         public FluiCreator<TContext, TVisualElement> ForEach<TChildContext>(
             string name,
             Func<TContext, IEnumerable<TChildContext>> itemsFunc,
-            string classes,
+            string groupClasses,
+            string childClasses,
             Action<FluiCreator<TChildContext, VisualElement>> bindAction = null,
             Action<FluiCreator<TChildContext, VisualElement>> initiateAction = null,
             Action<FluiCreator<TChildContext, VisualElement>> updateAction = null)
         {
             RawCreate<TContext, VisualElement>(
                 name,
-                "",
+                groupClasses,
                 x => x,
                 s =>
                 {
@@ -1061,7 +1063,7 @@ namespace Flui.Creator
                 s =>
                 {
                     s.SynchronizeList(
-                        classes,
+                        childClasses,
                         itemsFunc,
                         bindAction,
                         initiateAction,

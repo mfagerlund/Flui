@@ -88,7 +88,7 @@ namespace FluiDemo.MainMenu
                 .Create("CreatedStuff", x => x
                     , c => c
                         .SetPosition(Position.Absolute)
-                        .ForEach(fe => fe._randomPositions, "", rpo => rpo
+                        .ForEach(fe => fe._randomPositions, "","", rpo => rpo
                             .Label("label", rp => $"[{rp.Id}]: ({rp.Position.x:0}, {rp.Position.y:0})", "", l => l
                                 .Action(x => x.Element.style.unityFontStyleAndWeight = FontStyle.Bold)
                                 .SetScreenXy(l.Context.Position, AlignX.Mid, AlignY.Mid)
