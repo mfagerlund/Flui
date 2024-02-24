@@ -174,7 +174,23 @@ namespace Flui.Creator
                 });
             return this;
         }
-        
+
+        public FluiCreator<TContext, TVisualElement> Label(
+            string nameAndText,
+            string classes,
+            Action<FluiCreator<TContext, Label>> buildAction = null,
+            Action<FluiCreator<TContext, Label>> initiateAction = null,
+            Action<FluiCreator<TContext, Label>> updateAction = null)
+        {
+            return Label(
+                nameAndText, 
+                AddSpacesToSentence(nameAndText),
+                classes,
+                buildAction,
+                initiateAction, 
+                updateAction);
+        }
+
         public FluiCreator<TContext, TVisualElement> Label(
             string name,
             string text,
