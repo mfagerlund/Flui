@@ -448,6 +448,30 @@ namespace Flui.Creator
             return this;
         }
 
+        public FluiCreator<TContext, TVisualElement> Image(
+            string name,
+            string classes,
+            Sprite sprite,
+            Action<FluiCreator<TContext, Image>> buildAction = null,
+            Action<FluiCreator<TContext, Image>> initiateAction = null,
+            Action<FluiCreator<TContext, Image>> updateAction = null)
+        {
+            RawCreate(
+                    name,
+                    classes,
+                    x => x,
+                    buildAction,
+                    s =>
+                    {
+                        s.Element.sprite = sprite;
+                        initiateAction?.Invoke(s);
+                    },
+                    updateAction)
+                .Set(x => x.PurgeUnmanagedChildren = false);
+
+            return this;
+        }
+        
         public FluiCreator<TContext, TVisualElement> Toggle(
             Expression<Func<TContext, bool>> propertyFunc,
             string classes,
