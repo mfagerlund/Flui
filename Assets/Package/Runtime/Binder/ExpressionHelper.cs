@@ -23,7 +23,7 @@ namespace Flui.Binder
         public static CachedExpression<TSource, TValue> GetCachedExpression<TSource, TValue>(Expression<Func<TSource, TValue>> expression, long code)
         {
             return (CachedExpression<TSource, TValue>)
-                CachedExpressions.GetOrCreate(code, _ => new CachedExpression<TSource, TValue>
+                CachedExpressions.GetOrCreate(code, () => new CachedExpression<TSource, TValue>
                 {
                     Code = code,
                     Path = GetPath(expression),
