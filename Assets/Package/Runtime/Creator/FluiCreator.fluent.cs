@@ -287,7 +287,7 @@ namespace Flui.Creator
         {
             // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-            
+
             var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
             return Slider(
@@ -451,7 +451,7 @@ namespace Flui.Creator
         public FluiCreator<TContext, TVisualElement> Image(
             string name,
             string classes,
-            Sprite sprite,
+            Func<TContext, Sprite> spriteFunc,
             Action<FluiCreator<TContext, Image>> buildAction = null,
             Action<FluiCreator<TContext, Image>> initiateAction = null,
             Action<FluiCreator<TContext, Image>> updateAction = null)
@@ -463,7 +463,7 @@ namespace Flui.Creator
                     buildAction,
                     s =>
                     {
-                        s.Element.sprite = sprite;
+                        s.Element.sprite = spriteFunc(Context);
                         initiateAction?.Invoke(s);
                     },
                     updateAction)
@@ -471,7 +471,7 @@ namespace Flui.Creator
 
             return this;
         }
-        
+
         public FluiCreator<TContext, TVisualElement> Toggle(
             Expression<Func<TContext, bool>> propertyFunc,
             string classes,
@@ -735,16 +735,16 @@ namespace Flui.Creator
         {
             // var name = ReflectionHelper.GetPath(propertyFunc);
             // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            
+
             var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
             var name = expc.Path;
-            
+
             var topClasses = "row,unity-base-field,unity-base-text-field,unity-text-field";
             if (classes != null)
             {
                 topClasses = topClasses + "," + classes;
             }
-            
+
             VisualElement(name, topClasses, pr => pr
                 .Label(name + "Label", _ => label ?? (labelPrefix + AddSpacesToSentence(name)), "unity-text-element,unity-label,unity-base-field__label,unity-base-text-field__label,unity-text-field__label")
                 .VisualElement(name + "Value", "unity-base-text-field__input,unity-base-text-field__input--single-line,unity-base-field__input,unity-text-field__input,readonly", g => g
@@ -839,7 +839,7 @@ namespace Flui.Creator
         {
             // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
             // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-            
+
             var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
             return TextField(
@@ -981,7 +981,7 @@ namespace Flui.Creator
             Action onModelChanged = null)
         {
             // var name = ReflectionHelper.GetPath(propertyFunc);
-            var name= CachedExpressionHelper.GetCachedExpression(propertyFunc).Path;
+            var name = CachedExpressionHelper.GetCachedExpression(propertyFunc).Path;
             return FloatField(
                 name,
                 AddSpacesToSentence(name),
@@ -1088,7 +1088,7 @@ namespace Flui.Creator
             // var name = ReflectionHelper.GetPath(itemsFunc);
             // var getFunc = ReflectionHelper.GetPropertyValueFunc(itemsFunc);
             var expc = CachedExpressionHelper.GetCachedExpression(itemsFunc);
-            ForEach(expc.Path, expc.Getter, groupClasses,childClasses, bindAction, initiateAction, updateAction);
+            ForEach(expc.Path, expc.Getter, groupClasses, childClasses, bindAction, initiateAction, updateAction);
             return this;
         }
 
