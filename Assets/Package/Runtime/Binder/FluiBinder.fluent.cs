@@ -201,19 +201,20 @@ namespace Flui.Binder
         // var name = ReflectionHelper.GetMethodName(onClick);
 
         public FluiBinder<TContext, TVisualElement> Button(
-            Expression<Action<TContext>> clicked,
+            Expression<Action<TContext>> onClicked,
             Action<FluiBinder<TContext, Button>> bindAction = null,
             Action<FluiBinder<TContext, Button>> initiateAction = null,
             Action<FluiBinder<TContext, Button>> updateAction = null)
         {
-            var name = ReflectionHelper.GetMethodName(clicked);
+            // var name = ReflectionHelper.GetMethodName(clicked);
+            var name = CachedExpressionHelper.GetMethodName(onClicked);
             RawBind<TContext, Button>(
                 name,
                 x => x,
                 bindAction,
                 s =>
                 {
-                    var compiled = clicked.Compile();
+                    var compiled = onClicked.Compile();
                     s.Element.clicked += () => compiled(s.Context);
                     initiateAction?.Invoke(s);
                 },
@@ -275,9 +276,10 @@ namespace Flui.Binder
             Action<FluiBinder<TContext, Toggle>> initiateAction = null,
             Action<FluiBinder<TContext, Toggle>> updateAction = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-            return Toggle(query, getFunc, setFunc, bindAction, initiateAction, updateAction);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
+            return Toggle(query, expc.Getter, expc.Setter, bindAction, initiateAction, updateAction);
         }
 
         public FluiBinder<TContext, TVisualElement> EnumButtons<TEnum>(
@@ -289,8 +291,9 @@ namespace Flui.Binder
             Action<FluiBinder<TContext, VisualElement>> initiateAction = null,
             Action<FluiBinder<TContext, VisualElement>> updateAction = null) where TEnum : Enum
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
             var bb = new EnumButtonBinder<TEnum>();
             buttonsAction(bb);
             var buttons = bb.Buttons;
@@ -303,9 +306,9 @@ namespace Flui.Binder
                     {
                         f.Button(
                             button.Query,
-                            f => setFunc(f.Context, button.Value),
+                            f => expc.Setter(f.Context, button.Value),
                             bindAction: b => b
-                                .OptionalClass(activeClass, ctx => Equals(getFunc(ctx), button.Value)));
+                                .OptionalClass(activeClass, ctx => Equals(expc.Getter(ctx), button.Value)));
                     }
 
                     bindAction?.Invoke(f);
@@ -381,9 +384,10 @@ namespace Flui.Binder
             Action<FluiBinder<TContext, FloatField>> initiateAction = null,
             Action<FluiBinder<TContext, FloatField>> updateAction = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-            return FloatField(query, getFunc, setFunc, bindAction, initiateAction, updateAction);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
+            return FloatField(query, expc.Getter, expc.Setter, bindAction, initiateAction, updateAction);
         }
 
         public FluiBinder<TContext, TVisualElement> IntegerField(
@@ -419,9 +423,10 @@ namespace Flui.Binder
             Action<FluiBinder<TContext, IntegerField>> initiateAction = null,
             Action<FluiBinder<TContext, IntegerField>> updateAction = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-            return IntegerField(query, getFunc, setFunc, bindAction, initiateAction, updateAction);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
+            return IntegerField(query, expc.Getter, expc.Setter, bindAction, initiateAction, updateAction);
         }
 
         public FluiBinder<TContext, TVisualElement> TextField(
@@ -478,10 +483,11 @@ namespace Flui.Binder
             Action<FluiBinder<TContext, TextField>> initiateAction = null,
             Action<FluiBinder<TContext, TextField>> updateAction = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var query = ReflectionHelper.GetPath(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-            return TextField(query, getFunc, setFunc, updateOnExit, bindAction, initiateAction, updateAction);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var query = ReflectionHelper.GetPath(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
+            return TextField(expc.Path, expc.Getter, expc.Setter, updateOnExit, bindAction, initiateAction, updateAction);
         }
         
         public FluiBinder<TContext, TVisualElement> TextField(
@@ -492,9 +498,10 @@ namespace Flui.Binder
             Action<FluiBinder<TContext, TextField>> initiateAction = null,
             Action<FluiBinder<TContext, TextField>> updateAction = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-            return TextField(query, getFunc, setFunc, updateOnExit, bindAction, initiateAction, updateAction);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
+            return TextField(query, expc.Getter, expc.Setter, updateOnExit, bindAction, initiateAction, updateAction);
         }
 
         public FluiBinder<TContext, TVisualElement> EnumField<TEnum>(
@@ -530,9 +537,10 @@ namespace Flui.Binder
             Action<FluiBinder<TContext, EnumField>> initiateAction = null,
             Action<FluiBinder<TContext, EnumField>> updateAction = null) where TEnum : Enum
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-            return EnumField(query, getFunc, setFunc, bindAction, initiateAction, updateAction);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
+            return EnumField(query, expc.Getter, expc.Setter, bindAction, initiateAction, updateAction);
         }
 
         public FluiBinder<TContext, TVisualElement> DropdownField(
@@ -568,9 +576,10 @@ namespace Flui.Binder
             Action<FluiBinder<TContext, DropdownField>> initiateAction = null,
             Action<FluiBinder<TContext, DropdownField>> updateAction = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-            return DropdownField(query, getFunc, setFunc, bindAction, initiateAction, updateAction);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
+            return DropdownField(query, expc.Getter, expc.Setter, bindAction, initiateAction, updateAction);
         }
 
         public FluiBinder<TContext, TVisualElement> Slider(
@@ -613,9 +622,10 @@ namespace Flui.Binder
             Action<FluiBinder<TContext, Slider>> initiateAction = null,
             Action<FluiBinder<TContext, Slider>> updateAction = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
-            return Slider(query, getFunc, setFunc, lowValue, highValue, bindAction, initiateAction, updateAction);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
+            return Slider(query, expc.Getter, expc.Setter, lowValue, highValue, bindAction, initiateAction, updateAction);
         }
 
         public FluiBinder<TContext, TVisualElement> ForEach<TChildContext>(
@@ -672,12 +682,13 @@ namespace Flui.Binder
             string classes,
             Action<FluiCreator<TChildContext, VisualElement>> createAction = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(itemsFunc);
-            var name = ReflectionHelper.GetPath(itemsFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(itemsFunc);
+            // var name = ReflectionHelper.GetPath(itemsFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(itemsFunc);
 
             return ForEachCreate(
-                name,
-                getFunc,
+                expc.Path,
+                expc.Getter,
                 classes,
                 createAction);
         }

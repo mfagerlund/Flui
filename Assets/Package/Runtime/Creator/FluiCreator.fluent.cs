@@ -123,9 +123,10 @@ namespace Flui.Creator
             Action<FluiCreator<TChildContext, VisualElement>> initiateAction = null,
             Action<FluiCreator<TChildContext, VisualElement>> updateAction = null) where TChildContext : class
         {
-            string name = ReflectionHelper.GetPath(contextFunc);
-            var getter = ReflectionHelper.GetPropertyValueFunc(contextFunc);
-            RawCreate(name, classes, getter, buildAction, initiateAction, updateAction);
+            // string name = ReflectionHelper.GetPath(contextFunc);
+            // var getter = ReflectionHelper.GetPropertyValueFunc(contextFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(contextFunc);
+            RawCreate(expc.Path, classes, expc.Getter, buildAction, initiateAction, updateAction);
             return this;
         }
 
@@ -158,17 +159,19 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, Label>> initiateAction = null,
             Action<FluiCreator<TContext, Label>> updateAction = null)
         {
-            string name = ReflectionHelper.GetPath(propertyFunc);
-            var getter = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // string name = ReflectionHelper.GetPath(propertyFunc);
+            // var getter = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
+
             RawCreate(
-                name,
+                expc.Path,
                 classes,
                 x => x,
                 buildAction,
                 b => { initiateAction?.Invoke(b); },
                 b =>
                 {
-                    b.Element.text = toStringFunc(getter(b.Context));
+                    b.Element.text = toStringFunc(expc.Getter(b.Context));
                     updateAction?.Invoke(b);
                 });
             return this;
@@ -282,8 +285,10 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, Slider>> updateAction = null,
             Action onModelChanged = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
             return Slider(
                 name,
@@ -291,8 +296,8 @@ namespace Flui.Creator
                 classes,
                 lowValue,
                 highValue,
-                getFunc,
-                setFunc,
+                expc.Getter,
+                expc.Setter,
                 buildAction,
                 initiateAction,
                 updateAction,
@@ -309,11 +314,12 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, Slider>> updateAction = null,
             Action onModelChanged = null)
         {
-            var name = ReflectionHelper.GetPath(propertyFunc);
+            // var name = ReflectionHelper.GetPath(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
             return Slider(
-                name,
-                AddSpacesToSentence(name),
+                expc.Path,
+                AddSpacesToSentence(expc.Path),
                 classes,
                 lowValue,
                 highValue,
@@ -372,8 +378,9 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, SliderInt>> updateAction = null,
             Action onModelChanged = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
             return SliderInt(
                 name,
@@ -381,8 +388,8 @@ namespace Flui.Creator
                 classes,
                 lowValue,
                 highValue,
-                getFunc,
-                setFunc,
+                expc.Getter,
+                expc.Setter,
                 buildAction,
                 initiateAction,
                 updateAction,
@@ -399,11 +406,12 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, SliderInt>> updateAction = null,
             Action onModelChanged = null)
         {
-            var name = ReflectionHelper.GetPath(propertyFunc);
+            // var name = ReflectionHelper.GetPath(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
             return SliderInt(
-                name,
-                AddSpacesToSentence(name),
+                expc.Path,
+                AddSpacesToSentence(expc.Path),
                 classes,
                 lowValue,
                 highValue,
@@ -448,10 +456,11 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, Toggle>> updateAction = null,
             Action onModelChanged = null)
         {
-            var name = ReflectionHelper.GetPath(propertyFunc);
+            //var name = ReflectionHelper.GetPath(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
             return Toggle(
-                name,
-                AddSpacesToSentence(name),
+                expc.Path,
+                AddSpacesToSentence(expc.Path),
                 classes,
                 propertyFunc,
                 buildAction,
@@ -470,10 +479,11 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, Toggle>> updateAction = null,
             Action onModelChanged = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
-            return Toggle(name, label, classes, getFunc, setFunc, buildAction, initiateAction, updateAction, onModelChanged);
+            return Toggle(name, label, classes, expc.Getter, expc.Setter, buildAction, initiateAction, updateAction, onModelChanged);
         }
 
         public FluiCreator<TContext, TVisualElement> Toggle(
@@ -555,16 +565,17 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, DropdownField>> updateAction = null,
             Action onModelChanged = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
             return DropdownField(
                 name,
                 label,
                 classes,
                 choices,
-                getFunc,
-                setFunc,
+                expc.Getter,
+                expc.Setter,
                 buildAction,
                 initiateAction,
                 updateAction,
@@ -583,17 +594,18 @@ namespace Flui.Creator
         {
             // It's expensive to call ReflectionHelper.GetPath(propertyFunc) over and over again each frame,
             // we could try to wrap this in something that keeps track of the data.
-            var name = ReflectionHelper.GetPath(propertyFunc);
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            // var name = ReflectionHelper.GetPath(propertyFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
             return DropdownField(
-                name,
-                AddSpacesToSentence(name),
+                expc.Path,
+                AddSpacesToSentence(expc.Path),
                 classes,
                 choices.Select(labelFunc).ToList(),
-                ctx => choices.IndexOf(getFunc(ctx)),
-                (ctx, i) => setFunc(ctx, choices[i]),
+                ctx => choices.IndexOf(expc.Getter(ctx)),
+                (ctx, i) => expc.Setter(ctx, choices[i]),
                 buildAction,
                 initiateAction,
                 updateAction,
@@ -608,10 +620,11 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, EnumField>> updateAction = null,
             Action onModelChanged = null) where TEnum : Enum
         {
-            var name = ReflectionHelper.GetPath(propertyFunc);
+            // var name = ReflectionHelper.GetPath(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
             return EnumField(
-                name,
-                AddSpacesToSentence(name),
+                expc.Path,
+                AddSpacesToSentence(expc.Path),
                 classes,
                 propertyFunc,
                 buildAction,
@@ -630,15 +643,16 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, EnumField>> updateAction = null,
             Action onModelChanged = null) where TEnum : Enum
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
             return EnumField(
                 name,
                 label,
                 classes,
-                getFunc,
-                setFunc,
+                expc.Getter,
+                expc.Setter,
                 buildAction,
                 initiateAction,
                 updateAction,
@@ -695,18 +709,22 @@ namespace Flui.Creator
             string label = null,
             string labelPrefix = "")
         {
-            var name = ReflectionHelper.GetPath(propertyFunc);
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var name = ReflectionHelper.GetPath(propertyFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
+            var name = expc.Path;
+            
             var topClasses = "row,unity-base-field,unity-base-text-field,unity-text-field";
             if (classes != null)
             {
                 topClasses = topClasses + "," + classes;
             }
-
+            
             VisualElement(name, topClasses, pr => pr
                 .Label(name + "Label", _ => label ?? (labelPrefix + AddSpacesToSentence(name)), "unity-text-element,unity-label,unity-base-field__label,unity-base-text-field__label,unity-text-field__label")
                 .VisualElement(name + "Value", "unity-base-text-field__input,unity-base-text-field__input--single-line,unity-base-field__input,unity-text-field__input,readonly", g => g
-                    .Label(name + "Value", x => toStringFunc(getFunc(x)), "unity-text-element,unity-text-element--inner-input-field-component")
+                    .Label(name + "Value", x => toStringFunc(expc.Getter(x)), "unity-text-element,unity-text-element--inner-input-field-component")
                 )
             );
             return this;
@@ -771,11 +789,12 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, TextField>> updateAction = null,
             Action onModelChanged = null)
         {
-            var name = ReflectionHelper.GetPath(propertyFunc);
+            // var name = ReflectionHelper.GetPath(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
             return TextField(
-                name,
-                AddSpacesToSentence(name),
+                expc.Path,
+                AddSpacesToSentence(expc.Path),
                 classes,
                 propertyFunc,
                 buildAction,
@@ -794,15 +813,17 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, TextField>> updateAction = null,
             Action onModelChanged = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
             return TextField(
                 name,
                 label,
                 classes,
-                getFunc,
-                setFunc,
+                expc.Getter,
+                expc.Setter,
                 buildAction,
                 initiateAction,
                 updateAction,
@@ -817,10 +838,11 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, IntegerField>> updateAction = null,
             Action onModelChanged = null)
         {
-            var name = ReflectionHelper.GetPath(propertyFunc);
+            // var name = ReflectionHelper.GetPath(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
             return IntegerField(
-                name,
-                AddSpacesToSentence(name),
+                expc.Path,
+                AddSpacesToSentence(expc.Path),
                 classes,
                 propertyFunc,
                 buildAction,
@@ -839,15 +861,16 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, IntegerField>> updateAction = null,
             Action onModelChanged = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
             return IntegerField(
                 name,
                 label,
                 classes,
-                getFunc,
-                setFunc,
+                expc.Getter,
+                expc.Setter,
                 buildAction,
                 initiateAction,
                 updateAction,
@@ -933,8 +956,8 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, FloatField>> updateAction = null,
             Action onModelChanged = null)
         {
-            var name = ReflectionHelper.GetPath(propertyFunc);
-
+            // var name = ReflectionHelper.GetPath(propertyFunc);
+            var name= CachedExpressionHelper.GetCachedExpression(propertyFunc).Path;
             return FloatField(
                 name,
                 AddSpacesToSentence(name),
@@ -956,15 +979,16 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, FloatField>> updateAction = null,
             Action onModelChanged = null)
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
 
             return FloatField(
                 name,
                 label,
                 classes,
-                getFunc,
-                setFunc,
+                expc.Getter,
+                expc.Setter,
                 buildAction,
                 initiateAction,
                 updateAction,
@@ -979,7 +1003,8 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, Button>> initiateAction = null,
             Action<FluiCreator<TContext, Button>> updateAction = null)
         {
-            var name = ReflectionHelper.GetMethodName(onClick);
+            // var name = ReflectionHelper.GetMethodName(onClick);
+            var name = CachedExpressionHelper.GetMethodName(onClick);
             RawCreate(
                 name,
                 classes,
@@ -1036,9 +1061,10 @@ namespace Flui.Creator
             Action<FluiCreator<TChildContext, VisualElement>> initiateAction = null,
             Action<FluiCreator<TChildContext, VisualElement>> updateAction = null)
         {
-            var name = ReflectionHelper.GetPath(itemsFunc);
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(itemsFunc);
-            ForEach(name, getFunc, groupClasses,childClasses, bindAction, initiateAction, updateAction);
+            // var name = ReflectionHelper.GetPath(itemsFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(itemsFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(itemsFunc);
+            ForEach(expc.Path, expc.Getter, groupClasses,childClasses, bindAction, initiateAction, updateAction);
             return this;
         }
 
@@ -1159,8 +1185,9 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, VisualElement>> initiateAction = null,
             Action<FluiCreator<TContext, VisualElement>> updateAction = null) where TEnum : Enum
         {
-            var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
+            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
             var bb = new EnumButtonBinder<TEnum>();
             buttonsAction(bb);
             var buttons = bb.Buttons;
@@ -1176,9 +1203,9 @@ namespace Flui.Creator
                             button.Value.ToString(),
                             button.Label,
                             button.Classes,
-                            b => setFunc(b.Context, button.Value),
+                            b => expc.Setter(b.Context, button.Value),
                             buildAction: b => b
-                                .OptionalClass(activeClass, ctx => Equals(getFunc(ctx), button.Value)));
+                                .OptionalClass(activeClass, ctx => Equals(expc.Getter(ctx), button.Value)));
                     }
 
                     bindAction?.Invoke(f);
