@@ -23,7 +23,7 @@ namespace Flui.Binder
         public static CachedExpression<TSource, TValue> GetCachedExpression<TSource, TValue>(Expression<Func<TSource, TValue>> expression, long code)
         {
             return (CachedExpression<TSource, TValue>)
-                CachedExpressions.GetOrCreate(code, () => new CachedExpression<TSource, TValue>
+                CachedExpressions.GetOrCreate(code, _ => new CachedExpression<TSource, TValue>
                 {
                     Code = code,
                     Path = GetPath(expression),
@@ -41,41 +41,6 @@ namespace Flui.Binder
             catch
             {
                 return null;
-            }
-        }
-
-        public static long GetExpressionCode<TSource, TValue>(Expression<Func<TSource, TValue>> expression)
-        {
-            unchecked
-            {
-                const int prime1 = 486187739;
-                const int prime2 = 16777619;
-
-                long hash = prime1;
-                hash = hash * prime2 + typeof(TSource).GetHashCode();
-                var current = expression.Body;
-                while (current != null)
-                {
-                    switch (current.NodeType)
-                    {
-                        case ExpressionType.MemberAccess:
-
-                            var memberExpression = (MemberExpression)current;
-                            hash = hash * prime2 + memberExpression.Member.Name.GetHashCode();
-                            current = memberExpression.Expression;
-                            break;
-                        case ExpressionType.Call:
-                            var methodCallExpression = (MethodCallExpression)current;
-                            hash = hash * prime2 + methodCallExpression.Method.Name.GetHashCode();
-                            current = methodCallExpression.Object;
-                            break;
-                        case ExpressionType.Parameter:
-                            current = null;
-                            break;
-                    }
-                }
-
-                return hash;
             }
         }
 
@@ -120,6 +85,46 @@ namespace Flui.Binder
             throw new ArgumentException("Expression does not represent a method call.");
         }
 
+        public static long GetExpressionCode<TSource, TValue>(Expression<Func<TSource, TValue>> expression)
+        {
+            unchecked
+            {
+                const int prime1 = 486187739;
+                const int prime2 = 16777619;
+                long hash = prime1;
+                hash = hash * prime2 + typeof(TSource).GetHashCode();
+                var current = expression.Body;
+                while (current != null)
+                {
+                    switch (current.NodeType)
+                    {
+                        case ExpressionType.MemberAccess:
+
+                            var memberExpression = (MemberExpression)current;
+                            hash = hash * prime2 + memberExpression.Member.Name.GetHashCode();
+                            current = memberExpression.Expression;
+                            break;
+                        case ExpressionType.Call:
+                            var methodCallExpression = (MethodCallExpression)current;
+                            hash = hash * prime2 + methodCallExpression.Method.Name.GetHashCode();
+                            current = methodCallExpression.Object;
+                            break;
+                        case ExpressionType.Constant:
+                            // var constantExpression = (ConstantExpression)current;
+                            current = null;
+                            break;
+                        case ExpressionType.Parameter:
+                            current = null;
+                            break;
+                        default:
+                            throw new InvalidOperationException($"Unhandled ExpressionType: {current.NodeType}");
+                    }
+                }
+
+                return hash;
+            }
+        }
+
         public static string GetPath<TSource, TValue>(Expression<Func<TSource, TValue>> expression)
         {
             Stack.Clear();
@@ -130,7 +135,6 @@ namespace Flui.Binder
                 switch (current.NodeType)
                 {
                     case ExpressionType.MemberAccess:
-
                         var memberExpression = (MemberExpression)current;
                         Stack.Push(memberExpression.Member.Name);
                         current = memberExpression.Expression;
@@ -140,9 +144,14 @@ namespace Flui.Binder
                         Stack.Push(methodCallExpression.Method.Name + "()");
                         current = methodCallExpression.Object;
                         break;
+                    case ExpressionType.Constant:
+                        current = null;
+                        break;
                     case ExpressionType.Parameter:
                         current = null;
                         break;
+                    default:
+                        throw new InvalidOperationException($"Unhandled ExpressionType: {current.NodeType}");
                 }
             }
 
@@ -201,6 +210,7 @@ namespace Flui.Binder
             public string Path { get; set; }
             public Func<TSource, TValue> Getter { get; set; }
             public Action<TSource, TValue> Setter { get; set; }
+            public override string ToString() => $"Code={Code}, Path={Path}";
         }
     }
 }
