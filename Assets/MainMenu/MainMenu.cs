@@ -8,6 +8,7 @@ using Flui.Binder;
 using FluiDemo.Bootstrap;
 using FluiDemo.Bootstrap.Binder;
 using FluiDemo.Bootstrap.Creator;
+using FluiDemo.DarkMode.Binder;
 using FluiDemo.GameSettings.Binder;
 using FluiDemo.GameSettings.Creator;
 using FluiDemo.ListUi.Creator;
@@ -31,6 +32,8 @@ namespace FluiDemo.MainMenu
 
         [SerializeField] private ListUi.Binder.ListUiBinder listUiBinder;
         [SerializeField] private ListUiCreator listUiCreator;
+        
+        [SerializeField] private DarkModeBinder darkModeBinder;
 
         [SerializeField] private Mixed.Mixed _mixed;
 
@@ -73,6 +76,7 @@ namespace FluiDemo.MainMenu
                     .Button("BootstrapDemo", _ => ShowBootstrapBinderDemo())
                     .Button("GameSettingsMenu", _ => ShowGameSettingsBinder())
                     .Button("List", _ => ShowListBinder())
+                    .Button("DarkMode", _=>ShowDarkModeBinder())
                 )
                 .Group("FluiCreatorDemos", ctx => ctx, g => g
                     .Button("BootstrapDemo", _ => ShowBootstrapCreatorDemo())
@@ -102,7 +106,7 @@ namespace FluiDemo.MainMenu
                 )
             );
         }
-
+        
         private void ShowBootstrapBinderDemo()
         {
             Hide();
@@ -139,6 +143,12 @@ namespace FluiDemo.MainMenu
             listUiCreator.Show(Show);
         }
 
+        private void ShowDarkModeBinder()
+        {
+            Hide();
+            darkModeBinder.Show(Show);
+        }
+        
         private void ShowMixed()
         {
             Hide();

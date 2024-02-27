@@ -1,4 +1,5 @@
 // ReSharper disable InconsistentNaming
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace FluiDemo.ListUi.Creator
                                         .VisualElement("unnamed2", "row", unnamed2 => unnamed2
                                             .Label("Label", _ => "Office: ", "h3")
                                             .Label(x => x.Name, "h3")
-                                            .Button("DeleteOffice", "Delete Office", "btn-warning", x => DeleteOffice(x.Element, x.Context))
+                                            .Button(x => DeleteOffice(x.Element, x.Context), "btn-warning")
                                         )
                                         .VisualElement("unnamed3", "", unnamed3 => unnamed3
                                             .VisualElement("List", "table", list => list
@@ -48,14 +49,14 @@ namespace FluiDemo.ListUi.Creator
                                                     .Label("Title", _ => "Title", "th")
                                                     .Label("Salary", _ => "Salary", "th")
                                                     .VisualElement("unnamed4", "", unnamed4 => unnamed4
-                                                        .Button("Add", "Add", "btn-primary, btn-sm", _ => office.Context.AddRandomEmployee())
+                                                        .Button(_ => office.Context.AddRandomEmployee(), "btn-sm, btn-primary", "Add")
                                                     )
                                                 )
                                                 .ForEach(x => x.Employees, "", "tr", employee => employee
                                                     .Label(x => x.Name, "td")
                                                     .Label(x => x.Title, "td")
                                                     .Label("salary", x => $"{x.Salary:0}", "td")
-                                                    .Button("delete", "Delete", "btn-warning", x => DeleteEmployee(x.Element, office.Context, x.Context))
+                                                    .Button(x => DeleteEmployee(x.Element, office.Context, x.Context) ,"btn-sm, btn-warning")
                                                 )
                                                 .VisualElement("Footer", "tr", footer => footer
                                                     .Label("Name", _ => "", "td")

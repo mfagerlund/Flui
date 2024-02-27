@@ -1020,15 +1020,29 @@ namespace Flui.Creator
         }
 
         public FluiCreator<TContext, TVisualElement> Button(
-            Expression<Action<TContext>> onClick,
+            Expression<Action<FluiCreator<TContext, Button>>> onClick,
             string classes,
             string text = null,
+            string name = null,
+            Func<TContext, bool> enabledFunc = null,
             Action<FluiCreator<TContext, Button>> buildAction = null,
             Action<FluiCreator<TContext, Button>> initiateAction = null,
             Action<FluiCreator<TContext, Button>> updateAction = null)
         {
-            // var name = ReflectionHelper.GetMethodName(onClick);
-            var name = CachedExpressionHelper.GetMethodName(onClick);
+            name ??= CachedExpressionHelper.GetMethodName(onClick);
+            return Button(name, onClick, classes, text, enabledFunc, buildAction, initiateAction, updateAction);
+        }
+
+        public FluiCreator<TContext, TVisualElement> Button(
+            string name,
+            Expression<Action<FluiCreator<TContext, Button>>> onClick,
+            string classes,
+            string text = null,
+            Func<TContext, bool> enabledFunc = null,
+            Action<FluiCreator<TContext, Button>> buildAction = null,
+            Action<FluiCreator<TContext, Button>> initiateAction = null,
+            Action<FluiCreator<TContext, Button>> updateAction = null)
+        {
             RawCreate(
                 name,
                 classes,
@@ -1040,7 +1054,13 @@ namespace Flui.Creator
                     if (onClick != null)
                     {
                         var compiled = onClick.Compile();
-                        b.Element.clicked += () => compiled(b.Context);
+                        b.Element.clicked += () =>
+                        {
+                            if (enabledFunc == null || enabledFunc(b.Context))
+                            {
+                                compiled(b);
+                            }
+                        };
                     }
 
                     initiateAction?.Invoke(b);
@@ -1049,33 +1069,33 @@ namespace Flui.Creator
             return this;
         }
 
-        public FluiCreator<TContext, TVisualElement> Button(
-            string name,
-            string text,
-            string classes,
-            Action<FluiCreator<TContext, Button>> onClick,
-            Action<FluiCreator<TContext, Button>> buildAction = null,
-            Action<FluiCreator<TContext, Button>> initiateAction = null,
-            Action<FluiCreator<TContext, Button>> updateAction = null)
-        {
-            RawCreate(
-                name,
-                classes,
-                x => x,
-                buildAction,
-                b =>
-                {
-                    b.Element.text = text;
-                    if (onClick != null)
-                    {
-                        b.Element.clicked += () => onClick(b);
-                    }
-
-                    initiateAction?.Invoke(b);
-                },
-                b => { updateAction?.Invoke(b); });
-            return this;
-        }
+        // public FluiCreator<TContext, TVisualElement> Button(
+        //     string name,
+        //     string text,
+        //     string classes,
+        //     Expression<Action<TContext>> onClick,
+        //     Action<FluiCreator<TContext, Button>> buildAction = null,
+        //     Action<FluiCreator<TContext, Button>> initiateAction = null,
+        //     Action<FluiCreator<TContext, Button>> updateAction = null)
+        // {
+        //     RawCreate(
+        //         name,
+        //         classes,
+        //         x => x,
+        //         buildAction,
+        //         b =>
+        //         {
+        //             b.Element.text = text;
+        //             if (onClick != null)
+        //             {
+        //                 b.Element.clicked += () => onClick(b);
+        //             }
+        //
+        //             initiateAction?.Invoke(b);
+        //         },
+        //         b => { updateAction?.Invoke(b); });
+        //     return this;
+        // }
 
         public FluiCreator<TContext, TVisualElement> ForEach<TChildContext>(
             Expression<Func<TContext, IEnumerable<TChildContext>>> itemsFunc,
@@ -1225,9 +1245,9 @@ namespace Flui.Creator
                     {
                         f.Button(
                             button.Value.ToString(),
-                            button.Label,
+                            onClick: b => expc.Setter(b.Context, button.Value),
                             button.Classes,
-                            b => expc.Setter(b.Context, button.Value),
+                            button.Label,
                             buildAction: b => b
                                 .OptionalClass(activeClass, ctx => Equals(expc.Getter(ctx), button.Value)));
                     }

@@ -16,8 +16,7 @@ namespace FluiDemo.GameSettings.Binder
         private FluiBinderRoot<GameSettingsBinder, VisualElement> _root = new();
         public GameSettings GameSettings { get; set; } = new GameSettings();
         public Panel ActivePanel { get; set; } = Panel.ScreenSettings;
-
-
+        
         private void OnValidate()
         {
             if (Application.isPlaying || !gameObject.activeSelf) return;

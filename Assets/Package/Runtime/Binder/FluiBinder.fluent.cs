@@ -198,34 +198,21 @@ namespace Flui.Binder
             return this;
         }
 
-        // var name = ReflectionHelper.GetMethodName(onClick);
-
         public FluiBinder<TContext, TVisualElement> Button(
             Expression<Action<TContext>> onClicked,
+            Func<TContext, bool> enabledFunc = null,
             Action<FluiBinder<TContext, Button>> bindAction = null,
             Action<FluiBinder<TContext, Button>> initiateAction = null,
             Action<FluiBinder<TContext, Button>> updateAction = null)
         {
-            // var name = ReflectionHelper.GetMethodName(clicked);
-            var name = CachedExpressionHelper.GetMethodName(onClicked);
-            RawBind<TContext, Button>(
-                name,
-                x => x,
-                bindAction,
-                s =>
-                {
-                    var compiled = onClicked.Compile();
-                    s.Element.clicked += () => compiled(s.Context);
-                    initiateAction?.Invoke(s);
-                },
-                updateAction);
-
-            return this;
+            var query = CachedExpressionHelper.GetMethodName(onClicked);
+            return Button(query, onClicked, enabledFunc, bindAction, initiateAction, updateAction);
         }
 
         public FluiBinder<TContext, TVisualElement> Button(
             string query,
-            Action<FluiBinder<TContext, Button>> clicked,
+            Expression<Action<TContext>> onClicked,
+            Func<TContext, bool> enabledFunc = null,
             Action<FluiBinder<TContext, Button>> bindAction = null,
             Action<FluiBinder<TContext, Button>> initiateAction = null,
             Action<FluiBinder<TContext, Button>> updateAction = null)
@@ -236,10 +223,31 @@ namespace Flui.Binder
                 bindAction,
                 s =>
                 {
-                    s.Element.clicked += () => clicked(s);
+                    var compiled = onClicked.Compile();
+                    s.Element.clicked += () =>
+                    {
+                        if (enabledFunc == null || enabledFunc(s.Context))
+                        {
+                            compiled(s.Context);
+                        }
+                    };
                     initiateAction?.Invoke(s);
                 },
-                updateAction);
+                s =>
+                {
+                    updateAction?.Invoke(s);
+                    if (enabledFunc != null)
+                    {
+                        if (enabledFunc(s.Context))
+                        {
+                            s.Element.RemoveFromClassList("disabled");
+                        }
+                        else
+                        {
+                            s.Element.AddToClassList("disabled");
+                        }
+                    }
+                });
 
             return this;
         }
@@ -270,14 +278,22 @@ namespace Flui.Binder
         }
 
         public FluiBinder<TContext, TVisualElement> Toggle(
+            Expression<Func<TContext, bool>> propertyFunc,
+            Action<FluiBinder<TContext, Toggle>> bindAction = null,
+            Action<FluiBinder<TContext, Toggle>> initiateAction = null,
+            Action<FluiBinder<TContext, Toggle>> updateAction = null)
+        {
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
+            return Toggle(expc.Path, expc.Getter, expc.Setter, bindAction, initiateAction, updateAction);
+        }
+
+        public FluiBinder<TContext, TVisualElement> Toggle(
             string query,
             Expression<Func<TContext, bool>> propertyFunc,
             Action<FluiBinder<TContext, Toggle>> bindAction = null,
             Action<FluiBinder<TContext, Toggle>> initiateAction = null,
             Action<FluiBinder<TContext, Toggle>> updateAction = null)
         {
-            // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
-            // var setFunc = ReflectionHelper.SetPropertyValueFunc(propertyFunc);
             var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
             return Toggle(query, expc.Getter, expc.Setter, bindAction, initiateAction, updateAction);
         }
@@ -306,7 +322,7 @@ namespace Flui.Binder
                     {
                         f.Button(
                             button.Query,
-                            f => expc.Setter(f.Context, button.Value),
+                            ctx => expc.Setter(ctx, button.Value),
                             bindAction: b => b
                                 .OptionalClass(activeClass, ctx => Equals(expc.Getter(ctx), button.Value)));
                     }
@@ -489,7 +505,7 @@ namespace Flui.Binder
             var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
             return TextField(expc.Path, expc.Getter, expc.Setter, updateOnExit, bindAction, initiateAction, updateAction);
         }
-        
+
         public FluiBinder<TContext, TVisualElement> TextField(
             string query,
             Expression<Func<TContext, string>> propertyFunc,

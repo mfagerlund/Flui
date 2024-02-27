@@ -1,22 +1,26 @@
-/* Flui DarkModeUss.uss 1.0.0 */
-/* Located in xxx\Flui\Assets\Package\Resources\DarkModeUss.uss */
-
 VisualElement {
     --primary-color: rgb(53, 116, 240);
     --secondary-color: rgb(53, 116, 240);
-
+    /* PRIMARY */
+    --btn-success-default-color: rgb(53, 188, 11);
+    --btn-success-active-color: rgb(78, 277, 16);
+    --btn-success-disabled-color: rgb(28, 99, 6);
     /* PRIMARY */
     --btn-primary-default-color: rgb(53, 116, 240);
     --btn-primary-active-color: rgb(73, 159, 329);
+    --btn-primary-disabled-color: rgb(33, 73, 151);
     /* SECONDARY */
     --btn-secondary-default-color: rgb(125, 125, 125);
     --btn-secondary-active-color: rgb(189, 189, 189);
+    --btn-secondary-disabled-color: rgb(61, 61, 61);
     /* WARNING */
     --btn-warning-default-color: rgb(137, 137, 33);
     --btn-warning-active-color: rgb(188, 188, 45);
+    --btn-warning-disabled-color: rgb(61, 61, 61);
     /* DANGER */
     --btn-danger-default-color: rgb(193, 19, 45);
     --btn-danger-active-color: rgb(244, 24, 57);
+    --btn-danger-disabled-color: rgb(74, 74, 74);
 }
 
 .row {
@@ -221,11 +225,37 @@ VisualElement {
     transition: 0.175s all;
 }
 
+.btn.disabled,
+.btn.disabled:hover,
+.btn.disabled:active{
+    color: rgb(128,128,128);
+    background-color: rgba(0, 0, 0, 0);
+}
+
 .btn:active {
     color: white;
 }
 
-/* *** btn-btn-primary *** */
+.btn-success {
+    border-color: var(--btn-success-default-color);
+    transition: 0.175s all;
+}
+
+.btn-success:hover {
+    background-color: var(--btn-success-default-color);
+    border-color: var(--btn-success-default-color);
+}
+
+.btn-success:active {
+    background-color: var(--btn-success-default-color);
+    border-color: var(--btn-success-active-color);
+}
+
+.btn-success.disabled {
+    border-color: var(--btn-success-disabled-color);
+    transition: 0.175s all;
+}
+
 .btn-primary {
     border-color: var(--btn-primary-default-color);
     transition: 0.175s all;
@@ -241,7 +271,11 @@ VisualElement {
     border-color: var(--btn-primary-active-color);
 }
 
-/* *** btn-secondary *** */
+.btn-primary.disabled {
+    border-color: var(--btn-primary-disabled-color);
+    transition: 0.175s all;
+}
+
 .btn-secondary {
     border-color: var(--btn-secondary-default-color);
     transition: 0.175s all;
@@ -257,7 +291,11 @@ VisualElement {
     border-color: var(--btn-secondary-active-color);
 }
 
-/* *** btn-warning *** */
+.btn-secondary.disabled {
+    border-color: var(--btn-secondary-disabled-color);
+    transition: 0.175s all;
+}
+
 .btn-warning {
     border-color: var(--btn-warning-default-color);
     transition: 0.175s all;
@@ -273,7 +311,11 @@ VisualElement {
     border-color: var(--btn-warning-active-color);
 }
 
-/* *** btn-danger *** */
+.btn-warning.disabled {
+    border-color: var(--btn-warning-disabled-color);
+    transition: 0.175s all;
+}
+
 .btn-danger {
     border-color: var(--btn-danger-default-color);
     transition: 0.175s all;
@@ -287,6 +329,11 @@ VisualElement {
 .btn-danger:active {
     background-color: var(--btn-danger-default-color);
     border-color: var(--btn-danger-active-color);
+}
+
+.btn-danger.disabled {
+    border-color: var(--btn-danger-disabled-color);
+    transition: 0.175s all;
 }
 
 .property-field .unity-label {
@@ -390,7 +437,7 @@ VisualElement {
 }
 
 .light-red {
-    color: #FF5E5E;
+    color: rgb(255, 94, 94);
 }
 
 .has-warnings .unity-toggle__text {

@@ -20,10 +20,7 @@ namespace FluiDemo.Bootstrap
                     visualElement,
                     "fade-in",
                     "opacity",
-                    () =>
-                    {
-                        ResetInteratability(visualElement, wasPickable);
-                    });
+                    () => { ResetInteratability(visualElement, wasPickable); });
             });
         }
 

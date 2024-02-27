@@ -25,8 +25,8 @@ namespace FluiDemo
 
         public virtual void OnEnable()
         {
-            Connect();
-            CommonHelper.FadeIn(this, RootVisualElement);
+             Connect();
+             CommonHelper.FadeIn(this, RootVisualElement);
         }
 
         public void Close()

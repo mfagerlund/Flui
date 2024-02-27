@@ -186,6 +186,69 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &76362662
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 76362665}
+  - component: {fileID: 76362664}
+  - component: {fileID: 76362663}
+  m_Layer: 5
+  m_Name: Dark Mode Binder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &76362663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76362662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55f0a932999f1e46af239d77b7119c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Message>k__BackingField: (coming soon)
+  <ButtonsEnabled>k__BackingField: 1
+--- !u!114 &76362664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76362662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 10b99eb857cbde34b9e62642f3bb160c, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 9e84b84ed9e743b4dbc553c57ef6f819, type: 3}
+  m_SortingOrder: 0
+--- !u!4 &76362665
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76362662}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,6 +469,7 @@ MonoBehaviour:
   bootstrapCreatorDemo: {fileID: 1448169389}
   listUiBinder: {fileID: 1758358592}
   listUiCreator: {fileID: 567119799}
+  darkModeBinder: {fileID: 76362663}
   _mixed: {fileID: 1358312519}
 --- !u!1 &946848410
 GameObject:
@@ -552,7 +616,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1097064371}
   - component: {fileID: 1097064370}
-  - component: {fileID: 1097064369}
   m_Layer: 5
   m_Name: CloneTests
   m_TagString: Untagged
@@ -560,18 +623,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &1097064369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1097064368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3906944d74165cb4396710a624ed2109, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1097064370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -963,7 +1014,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: 10b99eb857cbde34b9e62642f3bb160c, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: a26b40df7ea85dd4fa83eb2f1f605ce4, type: 3}
-  m_SortingOrder: 0
+  m_SortingOrder: -100
 --- !u!4 &1788866581
 Transform:
   m_ObjectHideFlags: 0
@@ -987,6 +1038,7 @@ SceneRoots:
   - {fileID: 1788866581}
   - {fileID: 1097064371}
   - {fileID: 680506819}
+  - {fileID: 76362665}
   - {fileID: 981760930}
   - {fileID: 42804641}
   - {fileID: 946848412}

@@ -11,6 +11,7 @@
                 <ui:Button text="Game Settings Menu Demo" display-tooltip-when-elided="true" name="GameSettingsMenu" class="btn-primary menu-item" />
                 <ui:Button text="Bootstrap Demo" display-tooltip-when-elided="true" name="BootstrapDemo" class="btn-primary menu-item" />
                 <ui:Button text="List" display-tooltip-when-elided="true" name="List" class="btn-primary menu-item" />
+                <ui:Button text="Dark Mode" display-tooltip-when-elided="true" name="DarkMode" class="btn-primary menu-item" />
             </ui:VisualElement>
             <ui:VisualElement name="Spacer" style="width: 24px;" />
             <ui:VisualElement name="FluiCreatorDemos">

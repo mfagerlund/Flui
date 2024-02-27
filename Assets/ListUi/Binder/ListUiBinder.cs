@@ -73,7 +73,7 @@ namespace FluiDemo.ListUi.Binder
                                     .Label("Name", x => x.Name)
                                     .Label("Title", x => x.Title)
                                     .Label("Salary", x => $"{x.Salary:0}")
-                                    .Button("Delete", x => { DeleteEmployee(row, office.Context, x); })
+                                    .Button("Delete", x => DeleteEmployee(row, office.Context, x))
                             ))
                         .Group("Footer", x => x, g => g
                             .Label("Salary", ctx => $"{g.Context.GetSalarySum():0}")
@@ -108,13 +108,13 @@ namespace FluiDemo.ListUi.Binder
         private void DeleteEmployee(
             FluiBinder<Employee, VisualElement> row,
             Office office,
-            FluiBinder<Employee, Button> x)
+            Employee x)
         {
             FluiHelper.ExecuteAfterClassTransition(
                 row.Element,
                 "transparent",
                 "opacity",
-                () => office.Employees.Remove(x.Context));
+                () => office.Employees.Remove(x));
         }
 
         private readonly List<Office> _offices = Office.CreateOfficeList();

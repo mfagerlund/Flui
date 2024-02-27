@@ -1,0 +1,29 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Package/Resources/DarkModeUss.uss?fileID=7433441132597879392&amp;guid=907658f9abdf1eb49aebb87616366a9d&amp;type=3#DarkModeUss" />
+    <Style src="project://database/Assets/Package/Resources/Required.uss?fileID=7433441132597879392&amp;guid=554768fa32915df43849a5ff8f29cd04&amp;type=3#Required" />
+    <Style src="project://database/Assets/CommonUss.uss?fileID=7433441132597879392&amp;guid=c4f9af48e2644a929dd15ba3bd46a469&amp;type=3#CommonUss" />
+    <ui:VisualElement name="LeftPanel" class="panel-layer-1 rounded-xl" style="flex-grow: 1; width: 603px; height: auto; align-items: auto;">
+        <ui:VisualElement name="Buttons" class="row">
+            <ui:Button text="Primary" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Primary" class="btn btn-primary" />
+            <ui:Button text="Success" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Success" class="btn btn-success" />
+            <ui:Button text="Secondary" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Secondary" class="btn btn-secondary" />
+            <ui:Button text="Warning" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Warning" class="btn btn-warning" />
+            <ui:Button text="Danger" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Danger" class="btn btn-danger" />
+        </ui:VisualElement>
+        <ui:VisualElement name="InnerPanel" class="panel-layer-2 rounded-lg" style="flex-grow: 1; flex-shrink: 1; flex-direction: column; width: 100%; margin-top: 5px;">
+            <ui:Toggle label="Buttons Enabled" name="ButtonsEnabled" value="true" class="property-field" />
+            <ui:Toggle label="Toggle" class="property-field" />
+            <ui:TextField picking-mode="Ignore" label="Text Field" value="filler text" class="property-field" />
+            <ui:DropdownField label="Dropdown" index="0" choices="a,b,c,d" class="property-field" />
+            <ui:IntegerField label="Integer Field" value="42" class="property-field" />
+            <ui:FloatField label="Float Field" value="42,2" class="property-field" />
+        </ui:VisualElement>
+        <ui:VisualElement name="MessageHolder" class="row" style="flex-grow: 0;">
+            <ui:Label tabindex="-1" text="Message:" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+            <ui:Label tabindex="-1" text="(coming soon)" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Message" />
+        </ui:VisualElement>
+        <ui:VisualElement name="BottomButtons" class="row">
+            <ui:Button text="Close" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Close" class="btn btn-danger" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

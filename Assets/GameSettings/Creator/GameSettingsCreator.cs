@@ -96,7 +96,7 @@ namespace FluiDemo.GameSettings.Creator
                                     .VisualElement("UserName", "right-panel-control-holder", userName => userName
                                         .TextField(ctx => ctx.UserName, ""))
                                     .VisualElement("spacer3", "panel-right-spacer")
-                                    .ForEach(ctx => GameSettings.ControllerType.ControllerTypes, "","", oct => oct
+                                    .ForEach(ctx => GameSettings.ControllerType.ControllerTypes, "", "", oct => oct
                                         .VisualElement(oct.Context.ControllerTypeId.ToString(), "right-panel-control-holder", ct => ct
                                             .TextFieldReadOnly(cta => cta.ControllerTypeName, "")
                                             .TextFieldReadOnly(cta => cta.Cost, cost => $"{cost:0.00}$", "")
@@ -124,7 +124,7 @@ namespace FluiDemo.GameSettings.Creator
                                     .EnumField("CycleMode", "Cycle Mode", "", ctx => ctx.CycleMode)
                                 )
                                 .VisualElement("spacer2", "panel-right-spacer")
-                                .Group(x => x.AnchorDimensions,"" , ad => ad
+                                .Group(x => x.AnchorDimensions, "", ad => ad
                                     .VisualElement("AnchorDimensionsWidth", "right-panel-control-holder", pixelDensity => pixelDensity
                                         .FloatField(ctx => ctx.Width, "")
                                     )
@@ -144,12 +144,16 @@ namespace FluiDemo.GameSettings.Creator
                                     .Label("KeyboardSettings-NOTIMPLEMENTED", _ => "Keyboard Settings - NOT IMPLEMENTED", "not-implemented")))
                         ))
                     .VisualElement("footer", "row, footer", footer => footer
-                        .Button("Ok", "OK", "btn-primary", _ => Close())
-                        .Button("Return", "Return", "btn-primary", _ => Close())
-                        .Button("conquer-world", "Conquer World", "btn-primary, disabled", null)
+                        .Button(_ => Close(), "btn-primary", "Ok", "Close1")
+                        .Button(_ => Close(), "btn-primary", "Return", "Close2")
+                        .Button(_ => ConquerTheWorld(), "btn-primary, disabled")
                     )
                 )
             );
+        }
+
+        private void ConquerTheWorld()
+        {
         }
     }
 }
