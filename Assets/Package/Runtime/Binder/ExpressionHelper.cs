@@ -7,74 +7,47 @@ using System.Text;
 
 namespace Flui.Binder
 {
-    public static class CachedExpressionHelper
+    public class ExpressionHelper
     {
         private static readonly StringBuilder Sb = new();
         private static readonly Stack<string> Stack = new();
 
-        public static Dictionary<long, ICachedExpression> CachedExpressions { get; } = new();
-
-        public static CachedExpression<TSource, TValue> GetCachedExpression<TSource, TValue>(Expression<Func<TSource, TValue>> expression)
-        {
-            var code = GetExpressionCode(expression);
-            return GetCachedExpression(expression, code);
-        }
-
-        public static CachedExpression<TSource, TValue> GetCachedExpression<TSource, TValue>(Expression<Func<TSource, TValue>> expression, long code)
-        {
-            return (CachedExpression<TSource, TValue>)
-                CachedExpressions.GetOrCreate(code, () => new CachedExpression<TSource, TValue>
-                {
-                    Code = code,
-                    Path = GetPath(expression),
-                    Getter = expression.Compile(),
-                    Setter = CreateSetterOrNull(expression)
-                });
-        }
-
-        public static Action<TSource, TValue> CreateSetterOrNull<TSource, TValue>(Expression<Func<TSource, TValue>> getterExpression)
-        {
-            try
-            {
-                return CreateSetter(getterExpression);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public static Action<TSource, TValue> CreateSetter<TSource, TValue>(Expression<Func<TSource, TValue>> getterExpression)
-        {
-            if (getterExpression.Body is MemberExpression memberExpression)
-            {
-                ParameterExpression sourceParameter = Expression.Parameter(typeof(TSource), "source");
-                ParameterExpression valueParameter = Expression.Parameter(typeof(TValue), "value");
-
-                // Build the expression chain to access the final member
-                Expression targetExpression = BuildMemberAccessExpression(sourceParameter, memberExpression);
-
-                // Ensure that the member is writable
-                if (memberExpression.Member is PropertyInfo property && !property.CanWrite)
-                {
-                    throw new ArgumentException("The target property is read-only.", nameof(getterExpression));
-                }
-
-                // Create an expression to represent assigning the value to the property/field
-                BinaryExpression assignExpression = Expression.Assign(targetExpression, valueParameter);
-
-                // Create a lambda expression representing the whole assignment operation
-                var lambdaExpression = Expression.Lambda<Action<TSource, TValue>>(assignExpression, sourceParameter, valueParameter);
-
-                // Compile the lambda expression into a delegate and return it
-                return lambdaExpression.Compile();
-            }
-            else
-            {
-                throw new ArgumentException("The expression does not specify a property or field.", nameof(getterExpression));
-            }
-        }
-
+        // public static Action<TSource, TValue> CreateSetter<TSource, TValue>(Expression<Func<TSource, TValue>> getterExpression)
+        // {
+        //     // Get the member expression (e.g., x => x.Property)
+        //     if (getterExpression.Body is MemberExpression memberExpression)
+        //     {
+        //         // Ensure that the member is a property or field that can be set
+        //         if (memberExpression.Member is PropertyInfo propertyInfo && propertyInfo.CanWrite || memberExpression.Member is FieldInfo)
+        //         {
+        //             // Create a parameter expression for the source object (x)
+        //             ParameterExpression sourceParameter = Expression.Parameter(typeof(TSource), "source");
+        //             // Create a parameter expression for the value to be set
+        //             ParameterExpression valueParameter = Expression.Parameter(typeof(TValue), "value");
+        //
+        //             // Create an expression to represent assigning the value to the property/field
+        //             Expression assignExpression = Expression.Assign(
+        //                 Expression.MakeMemberAccess(sourceParameter, memberExpression.Member),
+        //                 valueParameter);
+        //
+        //             // Create a lambda expression representing the whole assignment operation
+        //             var lambdaExpression = Expression.Lambda<Action<TSource, TValue>>(
+        //                 assignExpression, sourceParameter, valueParameter);
+        //
+        //             // Compile the lambda expression into a delegate and return it
+        //             return lambdaExpression.Compile();
+        //         }
+        //         else
+        //         {
+        //             throw new ArgumentException("The member selected by the getter expression is not writable.");
+        //         }
+        //     }
+        //     else
+        //     {
+        //         throw new ArgumentException("The expression does not specify a property or field.");
+        //     }
+        // }
+        
         public static string GetMethodName<T>(Expression<Action<T>> func)
         {
             if (func.Body is MethodCallExpression methodCall)
@@ -83,46 +56,6 @@ namespace Flui.Binder
             }
 
             throw new ArgumentException("Expression does not represent a method call.");
-        }
-
-        public static long GetExpressionCode<TSource, TValue>(Expression<Func<TSource, TValue>> expression)
-        {
-            unchecked
-            {
-                const int prime1 = 486187739;
-                const int prime2 = 16777619;
-                long hash = prime1;
-                hash = hash * prime2 + typeof(TSource).GetHashCode();
-                var current = expression.Body;
-                while (current != null)
-                {
-                    switch (current.NodeType)
-                    {
-                        case ExpressionType.MemberAccess:
-
-                            var memberExpression = (MemberExpression)current;
-                            hash = hash * prime2 + memberExpression.Member.Name.GetHashCode();
-                            current = memberExpression.Expression;
-                            break;
-                        case ExpressionType.Call:
-                            var methodCallExpression = (MethodCallExpression)current;
-                            hash = hash * prime2 + methodCallExpression.Method.Name.GetHashCode();
-                            current = methodCallExpression.Object;
-                            break;
-                        case ExpressionType.Constant:
-                            // var constantExpression = (ConstantExpression)current;
-                            current = null;
-                            break;
-                        case ExpressionType.Parameter:
-                            current = null;
-                            break;
-                        default:
-                            throw new InvalidOperationException($"Unhandled ExpressionType: {current.NodeType}");
-                    }
-                }
-
-                return hash;
-            }
         }
 
         public static string GetPath<TSource, TValue>(Expression<Func<TSource, TValue>> expression)
@@ -135,6 +68,7 @@ namespace Flui.Binder
                 switch (current.NodeType)
                 {
                     case ExpressionType.MemberAccess:
+
                         var memberExpression = (MemberExpression)current;
                         Stack.Push(memberExpression.Member.Name);
                         current = memberExpression.Expression;
@@ -144,48 +78,113 @@ namespace Flui.Binder
                         Stack.Push(methodCallExpression.Method.Name + "()");
                         current = methodCallExpression.Object;
                         break;
-                    case ExpressionType.Constant:
-                        current = null;
-                        break;
                     case ExpressionType.Parameter:
                         current = null;
                         break;
-                    default:
-                        throw new InvalidOperationException($"Unhandled ExpressionType: {current.NodeType}");
                 }
             }
 
             return CombineStrings();
         }
 
-        private static Expression BuildMemberAccessExpression(Expression sourceParameter, MemberExpression memberExpression)
+        public static TValue GetPropertyValue<TSource, TValue>(Expression<Func<TSource, TValue>> expression, TSource source) =>
+            (TValue)GetPropertyValue(expression.Body, source);
+
+        public static void SetPropertyValue<TSource, TValue>(Expression<Func<TSource, TValue>> expression, TSource source, TValue newValue) =>
+            SetPropertyValue(expression.Body, source, newValue);
+
+        public static Action<TSource, TValue> SetPropertyValueFunc<TSource, TValue>(Expression<Func<TSource, TValue>> expression) =>
+            (source, newValue) => SetPropertyValue(expression, source, newValue);
+
+        public static Func<TSource, TValue> GetPropertyValueFunc<TSource, TValue>(Expression<Func<TSource, TValue>> expression) =>
+            source => GetPropertyValue(expression, source);
+
+        private static void SetPropertyValue(Expression expression, object source, object newValue)
         {
-            // This method recursively builds the chain of member access expressions
-            Stack<MemberExpression> memberStack = new Stack<MemberExpression>();
-            Expression currentExpression = memberExpression;
-            while (currentExpression is MemberExpression currentMemberExpression)
+            switch (expression.NodeType)
             {
-                memberStack.Push(currentMemberExpression);
-                currentExpression = currentMemberExpression.Expression;
+                case ExpressionType.MemberAccess:
+                    var memberExpr = (MemberExpression)expression;
+                    var parent = GetPropertyValue(memberExpr.Expression, source);
+                    SetPropertyValue(memberExpr, parent, newValue);
+                    break;
+
+                default:
+                    throw new NotSupportedException($"Unsupported expression type: {expression.NodeType}");
+            }
+        }
+
+        private static object GetPropertyValue(Expression expression, object source)
+        {
+            switch (expression.NodeType)
+            {
+                case ExpressionType.MemberAccess:
+                    var memberExpr = (MemberExpression)expression;
+                    var parent = GetPropertyValue(memberExpr.Expression, source);
+                    return GetPropertyValue(memberExpr, parent);
+
+                case ExpressionType.Call:
+                    var methodCallExpr = (MethodCallExpression)expression;
+                    var instance = GetPropertyValue(methodCallExpr.Object, source);
+                    return GetPropertyValue(methodCallExpr, instance);
+
+                case ExpressionType.Parameter:
+                    return source;
+
+                default:
+                    throw new NotSupportedException($"Unsupported expression type: {expression.NodeType}");
+            }
+        }
+
+        private static object GetPropertyValue(MemberExpression memberExpr, object instance)
+        {
+            switch (memberExpr.Member.MemberType)
+            {
+                case MemberTypes.Property:
+                    var propertyInfo = (PropertyInfo)memberExpr.Member;
+                    return propertyInfo.GetValue(instance, null);
+
+                case MemberTypes.Field:
+                    var fieldInfo = (FieldInfo)memberExpr.Member;
+                    return fieldInfo.GetValue(instance);
+
+                default:
+                    throw new NotSupportedException($"Unsupported member type: {memberExpr.Member.MemberType}");
+            }
+        }
+
+        private static void SetPropertyValue(MemberExpression memberExpr, object instance, object newValue)
+        {
+            switch (memberExpr.Member.MemberType)
+            {
+                case MemberTypes.Property:
+                    var propertyInfo = (PropertyInfo)memberExpr.Member;
+                    propertyInfo.SetValue(instance, newValue);
+                    break;
+
+                case MemberTypes.Field:
+                    var fieldInfo = (FieldInfo)memberExpr.Member;
+                    fieldInfo.SetValue(instance, newValue);
+                    break;
+
+                default:
+                    throw new NotSupportedException($"Unsupported member type: {memberExpr.Member.MemberType}");
+            }
+        }
+
+        private static object GetPropertyValue(MethodCallExpression methodCallExpr, object instance)
+        {
+            var methodInfo = methodCallExpr.Method;
+            if (methodInfo.GetParameters().Length == 0) // Ensure it's a parameter-less method
+            {
+                return methodInfo.Invoke(instance, null);
             }
 
-            Expression resultExpression = sourceParameter;
-            while (memberStack.Count > 0)
-            {
-                var member = memberStack.Pop();
-                resultExpression = Expression.MakeMemberAccess(resultExpression, member.Member);
-            }
-
-            return resultExpression;
+            throw new NotSupportedException("Method calls with parameters are not supported.");
         }
 
         private static string CombineStrings()
         {
-            if (!Stack.Any())
-            {
-                return "empty";
-            }
-
             Sb.Clear();
             while (true)
             {
@@ -201,21 +200,6 @@ namespace Flui.Binder
             }
 
             return Sb.ToString();
-        }
-
-        public interface ICachedExpression
-        {
-            long Code { get; }
-            string Path { get; }
-        }
-
-        public class CachedExpression<TSource, TValue> : ICachedExpression
-        {
-            public long Code { get; set; }
-            public string Path { get; set; }
-            public Func<TSource, TValue> Getter { get; set; }
-            public Action<TSource, TValue> Setter { get; set; }
-            public override string ToString() => $"Code={Code}, Path={Path}";
         }
     }
 }
