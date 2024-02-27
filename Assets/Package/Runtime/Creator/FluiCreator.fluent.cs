@@ -1078,7 +1078,21 @@ namespace Flui.Creator
 
                     initiateAction?.Invoke(b);
                 },
-                b => { updateAction?.Invoke(b); });
+                b =>
+                {
+                    updateAction?.Invoke(b);
+                    if (enabledFunc != null)
+                    {
+                        if (enabledFunc(b.Context))
+                        {
+                            b.Element.RemoveFromClassList("disabled");
+                        }
+                        else
+                        {
+                            b.Element.AddToClassList("disabled");
+                        }
+                    }
+                });
             return this;
         }
 
