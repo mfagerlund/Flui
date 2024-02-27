@@ -9,7 +9,7 @@ using static Flui.FluiHelper;
 
 namespace Flui.Creator
 {
-    public partial class FluiCreator<TContext, TVisualElement> 
+    public partial class FluiCreator<TContext, TVisualElement>
         where TVisualElement : VisualElement
     {
         public FluiCreator<TChildContext, TChildVisualElement> RawCreate<TChildContext, TChildVisualElement>(
@@ -341,6 +341,7 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, SliderInt>> buildAction = null,
             Action<FluiCreator<TContext, SliderInt>> initiateAction = null,
             Action<FluiCreator<TContext, SliderInt>> updateAction = null,
+            Func<int, string> postfixFunc = null,
             Action onModelChanged = null)
         {
             RawCreate(
@@ -360,7 +361,14 @@ namespace Flui.Creator
                             onModelChanged);
                         initiateAction?.Invoke(s);
                     },
-                    updateAction)
+                    s =>
+                    {
+                        updateAction?.Invoke(s);
+                        if (postfixFunc != null)
+                        {
+                            s.Element.label = label + postfixFunc(getValue(s.Context));
+                        }
+                    })
                 .Set(x => x.PurgeUnmanagedChildren = false);
 
             return this;
@@ -376,6 +384,7 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, SliderInt>> buildAction = null,
             Action<FluiCreator<TContext, SliderInt>> initiateAction = null,
             Action<FluiCreator<TContext, SliderInt>> updateAction = null,
+            Func<int, string> postfixFunc = null,
             Action onModelChanged = null)
         {
             // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
@@ -393,6 +402,7 @@ namespace Flui.Creator
                 buildAction,
                 initiateAction,
                 updateAction,
+                postfixFunc,
                 onModelChanged);
         }
 
@@ -404,6 +414,7 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, SliderInt>> buildAction = null,
             Action<FluiCreator<TContext, SliderInt>> initiateAction = null,
             Action<FluiCreator<TContext, SliderInt>> updateAction = null,
+            Func<int, string> postfixFunc = null,
             Action onModelChanged = null)
         {
             // var name = ReflectionHelper.GetPath(propertyFunc);
@@ -419,6 +430,7 @@ namespace Flui.Creator
                 buildAction,
                 initiateAction,
                 updateAction,
+                postfixFunc,
                 onModelChanged);
         }
 
