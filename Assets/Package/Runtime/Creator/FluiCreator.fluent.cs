@@ -185,7 +185,7 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, Label>> updateAction = null)
         {
             return Label(
-                nameAndText,
+                SanitizeUIToolkitName(nameAndText),
                 AddSpacesToSentence(nameAndText),
                 classes,
                 buildAction,
@@ -1417,6 +1417,30 @@ namespace Flui.Creator
         {
             Element.pickingMode = pickingMode;
             return this;
+        }
+
+        public static string SanitizeUIToolkitName(string name)
+        {
+            // Remove characters that are not letters, digits, underscores, or hyphens
+            var allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-";
+            var sanitized = new System.Text.StringBuilder();
+            foreach (var c in name)
+            {
+                if (allowedChars.Contains(c))
+                    sanitized.Append(c);
+            }
+
+            // Ensure the name does not start with a digit
+            if (sanitized.Length > 0 && char.IsDigit(sanitized[0]))
+            {
+                sanitized[0] = '_'; // Replace leading digit with underscore
+            }
+            else if (sanitized.Length == 0)
+            {
+                return "defaultName"; // Return a default name if all characters were removed
+            }
+
+            return sanitized.ToString();
         }
     }
 }
