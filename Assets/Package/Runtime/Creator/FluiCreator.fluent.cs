@@ -9,7 +9,7 @@ using static Flui.FluiHelper;
 
 namespace Flui.Creator
 {
-    public partial class FluiCreator<TContext, TVisualElement> : IFluiCreator
+    public partial class FluiCreator<TContext, TVisualElement> 
         where TVisualElement : VisualElement
     {
         public FluiCreator<TChildContext, TChildVisualElement> RawCreate<TChildContext, TChildVisualElement>(

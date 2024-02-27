@@ -181,6 +181,11 @@ namespace Flui.Binder
 
         private static string CombineStrings()
         {
+            if (!Stack.Any())
+            {
+                return "empty";
+            }
+
             Sb.Clear();
             while (true)
             {
