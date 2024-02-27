@@ -47,6 +47,7 @@ namespace Flui.Creator
             }
 
             var child = (FluiCreator<TChildContext, TChildVisualElement>)rawChild;
+            child.Context = contextFunc(Context);
             child._visited = true;
             child._updateAction?.Invoke(child);
             child.ValueBinding?.Update();
