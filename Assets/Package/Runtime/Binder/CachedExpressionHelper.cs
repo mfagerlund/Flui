@@ -210,7 +210,7 @@ namespace Flui.Binder
                 Setter = CreateSetterOrNull(expression);
 
                 int lastPeriodIndex = Path.LastIndexOf('.');
-                FinalPathSegment = lastPeriodIndex != -1 ? Path.Substring(lastPeriodIndex + 1) : "";
+                FinalPathSegment = lastPeriodIndex == -1 ? Path : Path.Substring(lastPeriodIndex + 1);
             }
 
             public long Code { get; set; }
