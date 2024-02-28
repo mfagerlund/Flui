@@ -175,6 +175,11 @@ namespace Flui.Binder
 
         private static string CombineStrings()
         {
+            if (!Stack.Any())
+            {
+                return "root";
+            }
+
             Sb.Clear();
             while (true)
             {
