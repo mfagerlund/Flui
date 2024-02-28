@@ -236,23 +236,23 @@ VisualElement {
     color: white;
 }
 
-.btn-success {
-    border-color: var(--btn-success-default-color);
+.btn-secondary {
+    border-color: var(--btn-secondary-default-color);
     transition: 0.175s all;
 }
 
-.btn-success:hover {
-    background-color: var(--btn-success-default-color);
-    border-color: var(--btn-success-default-color);
+.btn-secondary:hover {
+    background-color: var(--btn-secondary-default-color);
+    border-color: var(--btn-secondary-default-color);
 }
 
-.btn-success:active {
-    background-color: var(--btn-success-default-color);
-    border-color: var(--btn-success-active-color);
+.btn-secondary:active {
+    background-color: var(--btn-secondary-default-color);
+    border-color: var(--btn-secondary-active-color);
 }
 
-.btn-success.disabled {
-    border-color: var(--btn-success-disabled-color);
+.btn-secondary.disabled {
+    border-color: var(--btn-secondary-disabled-color);
     transition: 0.175s all;
 }
 
@@ -276,23 +276,23 @@ VisualElement {
     transition: 0.175s all;
 }
 
-.btn-secondary {
-    border-color: var(--btn-secondary-default-color);
+.btn-success {
+    border-color: var(--btn-success-default-color);
     transition: 0.175s all;
 }
 
-.btn-secondary:hover {
-    background-color: var(--btn-secondary-default-color);
-    border-color: var(--btn-secondary-default-color);
+.btn-success:hover {
+    background-color: var(--btn-success-default-color);
+    border-color: var(--btn-success-default-color);
 }
 
-.btn-secondary:active {
-    background-color: var(--btn-secondary-default-color);
-    border-color: var(--btn-secondary-active-color);
+.btn-success:active {
+    background-color: var(--btn-success-default-color);
+    border-color: var(--btn-success-active-color);
 }
 
-.btn-secondary.disabled {
-    border-color: var(--btn-secondary-disabled-color);
+.btn-success.disabled {
+    border-color: var(--btn-success-disabled-color);
     transition: 0.175s all;
 }
 
