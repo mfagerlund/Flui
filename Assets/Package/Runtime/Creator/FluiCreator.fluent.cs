@@ -331,7 +331,7 @@ namespace Flui.Creator
 
             return Slider(
                 expc.Path,
-                AddSpacesToSentence(expc.Path),
+                AddSpacesToSentence(expc.FinalPathSegment),
                 classes,
                 lowValue,
                 highValue,
@@ -435,7 +435,7 @@ namespace Flui.Creator
 
             return SliderInt(
                 expc.Path,
-                AddSpacesToSentence(expc.Path),
+                AddSpacesToSentence(expc.FinalPathSegment),
                 classes,
                 lowValue,
                 highValue,
@@ -509,7 +509,7 @@ namespace Flui.Creator
             var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
             return Toggle(
                 expc.Path,
-                AddSpacesToSentence(expc.Path),
+                AddSpacesToSentence(expc.FinalPathSegment),
                 classes,
                 propertyFunc,
                 buildAction,
@@ -650,7 +650,7 @@ namespace Flui.Creator
 
             return DropdownField(
                 expc.Path,
-                AddSpacesToSentence(expc.Path),
+                AddSpacesToSentence(expc.FinalPathSegment),
                 classes,
                 choices.Select(labelFunc).ToList(),
                 ctx => choices.IndexOf(expc.Getter(ctx)),
@@ -673,7 +673,7 @@ namespace Flui.Creator
             var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
             return EnumField(
                 expc.Path,
-                AddSpacesToSentence(expc.Path),
+                AddSpacesToSentence(expc.FinalPathSegment),
                 classes,
                 propertyFunc,
                 buildAction,
@@ -771,7 +771,7 @@ namespace Flui.Creator
             }
 
             VisualElement(name, topClasses, pr => pr
-                .Label(name + "Label", _ => label ?? (labelPrefix + AddSpacesToSentence(name)), "unity-text-element,unity-label,unity-base-field__label,unity-base-text-field__label,unity-text-field__label")
+                .Label(name + "Label", _ => label ?? (labelPrefix + AddSpacesToSentence(expc.FinalPathSegment)), "unity-text-element,unity-label,unity-base-field__label,unity-base-text-field__label,unity-text-field__label")
                 .VisualElement(name + "Value", "unity-base-text-field__input,unity-base-text-field__input--single-line,unity-base-field__input,unity-text-field__input,readonly", g => g
                     .Label(name + "Value", x => toStringFunc(expc.Getter(x)), "unity-text-element,unity-text-element--inner-input-field-component")
                 )
@@ -843,7 +843,7 @@ namespace Flui.Creator
 
             return TextField(
                 expc.Path,
-                AddSpacesToSentence(expc.Path),
+                AddSpacesToSentence(expc.FinalPathSegment),
                 classes,
                 propertyFunc,
                 buildAction,
@@ -891,7 +891,7 @@ namespace Flui.Creator
             var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
             return IntegerField(
                 expc.Path,
-                AddSpacesToSentence(expc.Path),
+                AddSpacesToSentence(expc.FinalPathSegment),
                 classes,
                 propertyFunc,
                 buildAction,
@@ -1006,10 +1006,11 @@ namespace Flui.Creator
             Action onModelChanged = null)
         {
             // var name = ReflectionHelper.GetPath(propertyFunc);
-            var name = CachedExpressionHelper.GetCachedExpression(propertyFunc).Path;
+            // var name = CachedExpressionHelper.GetCachedExpression(propertyFunc).Path;
+            var expc = CachedExpressionHelper.GetCachedExpression(propertyFunc);
             return FloatField(
-                name,
-                AddSpacesToSentence(name),
+                expc.Path,
+                AddSpacesToSentence(expc.FinalPathSegment),
                 classes,
                 propertyFunc,
                 buildAction,

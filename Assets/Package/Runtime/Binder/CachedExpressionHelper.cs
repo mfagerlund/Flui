@@ -23,13 +23,7 @@ namespace Flui.Binder
         public static CachedExpression<TSource, TValue> GetCachedExpression<TSource, TValue>(Expression<Func<TSource, TValue>> expression, long code)
         {
             return (CachedExpression<TSource, TValue>)
-                CachedExpressions.GetOrCreate(code, () => new CachedExpression<TSource, TValue>
-                {
-                    Code = code,
-                    Path = GetPath(expression),
-                    Getter = expression.Compile(),
-                    Setter = CreateSetterOrNull(expression)
-                });
+                CachedExpressions.GetOrCreate(code, () => new CachedExpression<TSource, TValue>(code, expression));
         }
 
         public static Action<TSource, TValue> CreateSetterOrNull<TSource, TValue>(Expression<Func<TSource, TValue>> getterExpression)
@@ -181,11 +175,6 @@ namespace Flui.Binder
 
         private static string CombineStrings()
         {
-            if (!Stack.Any())
-            {
-                return "empty";
-            }
-
             Sb.Clear();
             while (true)
             {
@@ -207,14 +196,28 @@ namespace Flui.Binder
         {
             long Code { get; }
             string Path { get; }
+            string FinalPathSegment { get; }
         }
 
         public class CachedExpression<TSource, TValue> : ICachedExpression
         {
+            public CachedExpression(long code, Expression<Func<TSource, TValue>> expression)
+                //long code, string path, Func<TSource, TValue> getter, Action<TSource, TValue> setter )
+            {
+                Code = code;
+                Path = GetPath(expression);
+                Getter = expression.Compile();
+                Setter = CreateSetterOrNull(expression);
+
+                int lastPeriodIndex = Path.LastIndexOf('.');
+                FinalPathSegment = lastPeriodIndex != -1 ? Path.Substring(lastPeriodIndex + 1) : "";
+            }
+
             public long Code { get; set; }
             public string Path { get; set; }
             public Func<TSource, TValue> Getter { get; set; }
             public Action<TSource, TValue> Setter { get; set; }
+            public string FinalPathSegment { get; set; }
             public override string ToString() => $"Code={Code}, Path={Path}";
         }
     }
