@@ -249,6 +249,7 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, Slider>> buildAction = null,
             Action<FluiCreator<TContext, Slider>> initiateAction = null,
             Action<FluiCreator<TContext, Slider>> updateAction = null,
+            Func<float, string> postfixFunc = null,
             Action onModelChanged = null)
         {
             RawCreate(
@@ -268,7 +269,14 @@ namespace Flui.Creator
                             onModelChanged);
                         initiateAction?.Invoke(s);
                     },
-                    updateAction)
+                    s =>
+                    {
+                        updateAction?.Invoke(s);
+                        if (postfixFunc != null)
+                        {
+                            s.Element.label = label + postfixFunc(getValue(Context));
+                        }
+                    })
                 .Set(x => x.PurgeUnmanagedChildren = false);
 
             return this;
@@ -284,6 +292,7 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, Slider>> buildAction = null,
             Action<FluiCreator<TContext, Slider>> initiateAction = null,
             Action<FluiCreator<TContext, Slider>> updateAction = null,
+            Func<float, string> postfixFunc = null,
             Action onModelChanged = null)
         {
             // var getFunc = ReflectionHelper.GetPropertyValueFunc(propertyFunc);
@@ -302,6 +311,7 @@ namespace Flui.Creator
                 buildAction,
                 initiateAction,
                 updateAction,
+                postfixFunc,
                 onModelChanged);
         }
 
@@ -313,6 +323,7 @@ namespace Flui.Creator
             Action<FluiCreator<TContext, Slider>> buildAction = null,
             Action<FluiCreator<TContext, Slider>> initiateAction = null,
             Action<FluiCreator<TContext, Slider>> updateAction = null,
+            Func<float, string> postfixFunc = null,
             Action onModelChanged = null)
         {
             // var name = ReflectionHelper.GetPath(propertyFunc);
@@ -328,6 +339,7 @@ namespace Flui.Creator
                 buildAction,
                 initiateAction,
                 updateAction,
+                postfixFunc,
                 onModelChanged);
         }
 
