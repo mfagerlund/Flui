@@ -62,23 +62,13 @@ namespace Flui.Creator
         }
 
         public FluiCreator<TContext, TVisualElement> Optional(
-            Expression<Func<TContext, bool>> predicate,
-            Action<FluiCreator<TContext, VisualElement>> buildAction)
+            Func<TContext, bool> predicate,
+            Action<FluiCreator<TContext, TVisualElement>> buildAction)
         {
-            var expc = CachedExpressionHelper.GetCachedExpression(predicate);
-            RawCreate<TContext, VisualElement>(
-                "Optional" + expc.Path,
-                "classes",
-                x => x,
-                x =>
-                {
-                    if (expc.Getter(Context))
-                    {
-                        buildAction(x);
-                    }
-                },
-                null,
-                null);
+            if (predicate(Context))
+            {
+                buildAction(this);
+            }
 
             return this;
         }
