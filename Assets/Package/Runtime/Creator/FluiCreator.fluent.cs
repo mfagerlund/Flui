@@ -61,6 +61,13 @@ namespace Flui.Creator
             return child;
         }
 
+        public FluiCreator<TContext, TVisualElement> Exec(
+            Action<FluiCreator<TContext, TVisualElement>> buildAction)
+        {
+            buildAction(this);
+            return this;
+        }
+
         public FluiCreator<TContext, TVisualElement> Optional(
             Func<TContext, bool> predicate,
             Action<FluiCreator<TContext, TVisualElement>> buildAction)
