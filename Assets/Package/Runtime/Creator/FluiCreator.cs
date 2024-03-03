@@ -12,6 +12,8 @@ namespace Flui.Creator
         private readonly HashSet<VisualElement> _childVisualElements = new();
         private Action<FluiCreator<TContext, TVisualElement>> _updateAction;
         private bool _visited;
+        private Func<TContext, bool> _hiddenFunc;
+        private Func<TContext, bool> _invisibleFunc;
 
         public FluiCreator(string name, TContext context, TVisualElement element)
         {
@@ -38,7 +40,9 @@ namespace Flui.Creator
         public TVisualElement Element { get; }
         public bool PurgeUnmanagedChildren { get; set; } = true;
         public bool IsFocused => Element.focusController.focusedElement == Element;
-
+        public bool Visible => !Hidden && !Invisible;
+        public bool Hidden { get; set; } = false;
+        public bool Invisible { get; set; } = false;
         public bool IsFocusedSelfOrChildren
         {
             get
@@ -118,5 +122,48 @@ namespace Flui.Creator
 
             return this;
         }
+
+        private void Update()
+        {
+            _visited = true;
+            UpdateVisibility();
+            if (!Invisible && !Hidden)
+            {
+                _updateAction?.Invoke(this);
+                ValueBinding?.Update();
+            }
+        }
+        
+        private void UpdateVisibility()
+        {
+            if (_hiddenFunc != null)
+            {
+                Hidden = _hiddenFunc(Context);
+            }
+
+            if (_invisibleFunc != null)
+            {
+                Invisible = _invisibleFunc(Context);
+            }
+
+            if (Hidden)
+            {
+                Element.AddToClassList("hidden");
+            }
+            else
+            {
+                Element.RemoveFromClassList("hidden");
+            }
+
+            if (Invisible)
+            {
+                Element.AddToClassList("invisible");
+            }
+            else
+            {
+                Element.RemoveFromClassList("invisible");
+            }
+        }
+
     }
 }

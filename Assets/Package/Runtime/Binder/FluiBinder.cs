@@ -18,8 +18,8 @@ namespace Flui.Binder
         private bool _visited;
         private IValueBinding _valueBinding;
         private Func<TContext, bool> _hiddenFunc;
-
         private Func<TContext, bool> _invisibleFunc;
+        
         // Data to use for complex binding actions - such as in ForEach
         // private object _data;
 
