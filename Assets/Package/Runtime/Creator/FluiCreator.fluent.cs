@@ -56,6 +56,18 @@ namespace Flui.Creator
             child.Update();
             return child;
         }
+        
+        public FluiCreator<TContext, TVisualElement> SetHiddenFunc(Func<TContext, bool> hiddenFunc)
+        {
+            _hiddenFunc = hiddenFunc;
+            return this;
+        }
+
+        public FluiCreator<TContext, TVisualElement> SetInvisibleFunc(Func<TContext, bool> invisibleFunc)
+        {
+            _invisibleFunc = invisibleFunc;
+            return this;
+        }
 
         public FluiCreator<TContext, TVisualElement> Exec(
             Action<FluiCreator<TContext, TVisualElement>> buildAction)
